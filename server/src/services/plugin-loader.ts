@@ -4,8 +4,8 @@
  * This service is the entry point for the plugin system's I/O boundary:
  *
  * 1. **Discovery** — Scans the local plugin directory
- *    (`~/.paperclip/plugins/`) and `node_modules` for packages matching
- *    the `paperclip-plugin-*` naming convention. Aggregates results with
+ *    (`~/.baaraly/plugins/`) and `node_modules` for packages matching
+ *    the `baaraly-plugin-*` naming convention. Aggregates results with
  *    path-based deduplication.
  *
  * 2. **Installation** — `installPlugin()` downloads from npm (or reads a
@@ -57,12 +57,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // ---------------------------------------------------------------------------
 
 /**
- * Naming convention for npm-published Paperclip plugins.
- * Packages matching this pattern are considered Paperclip plugins.
+ * Naming convention for npm-published Baaraly plugins.
+ * Packages matching this pattern are considered Baaraly plugins.
  *
  * @see PLUGIN_SPEC.md §10 — Package Contract
  */
-export const NPM_PLUGIN_PACKAGE_PREFIX = "paperclip-plugin-";
+export const NPM_PLUGIN_PACKAGE_PREFIX = "baaraly-plugin-";
 
 /**
  * Default local plugin directory.  The loader scans this directory for
@@ -72,7 +72,7 @@ export const NPM_PLUGIN_PACKAGE_PREFIX = "paperclip-plugin-";
  */
 export const DEFAULT_LOCAL_PLUGIN_DIR = path.join(
   os.homedir(),
-  ".paperclip",
+  ".baaraly",
   "plugins",
 );
 
@@ -104,8 +104,8 @@ export interface DiscoveredPlugin {
  * @see PLUGIN_SPEC.md §8.1 — On-Disk Layout
  */
 export type PluginSource =
-  | "local-filesystem"  // ~/.paperclip/plugins/ local directory
-  | "npm"               // npm packages matching paperclip-plugin-* convention
+  | "local-filesystem"  // ~/.baaraly/plugins/ local directory
+  | "npm"               // npm packages matching baaraly-plugin-* convention
   | "registry";         // future: remote plugin registry URL
 
 type ParsedSemver = {
@@ -143,7 +143,7 @@ function getDeclaredPageRoutePaths(manifest: PaperclipPluginManifestV1): string[
 export interface PluginLoaderOptions {
   /**
    * Path to the local plugin directory to scan.
-   * Defaults to ~/.paperclip/plugins/
+   * Defaults to ~/.baaraly/plugins/
    */
   localPluginDir?: string;
 
@@ -154,7 +154,7 @@ export interface PluginLoaderOptions {
   enableLocalFilesystem?: boolean;
 
   /**
-   * Whether to discover installed npm packages matching the paperclip-plugin-*
+   * Whether to discover installed npm packages matching the baaraly-plugin-*
    * naming convention.
    * Defaults to true.
    */
@@ -177,7 +177,7 @@ export interface PluginLoaderOptions {
  */
 export interface PluginInstallOptions {
   /**
-   * npm package name to install (e.g. "paperclip-plugin-linear" or "@acme/plugin-linear").
+   * npm package name to install (e.g. "baaraly-plugin-linear" or "@acme/plugin-linear").
    * Either packageName or localPath must be set.
    */
   packageName?: string;
@@ -336,8 +336,8 @@ export interface PluginLoader {
   discoverFromLocalFilesystem(dir?: string): Promise<PluginDiscoveryResult>;
 
   /**
-   * Discover Paperclip plugins installed as npm packages in the current
-   * Node.js environment matching the "paperclip-plugin-*" naming convention.
+   * Discover Baaraly plugins installed as npm packages in the current
+   * Node.js environment matching the "baaraly-plugin-*" naming convention.
    *
    * Looks for packages in node_modules that match the naming convention.
    *
@@ -349,11 +349,11 @@ export interface PluginLoader {
    * Load and parse the plugin manifest from a package directory.
    *
    * Reads the package.json, finds the manifest entrypoint declared under
-   * the "paperclipPlugin.manifest" key, loads the manifest module, and
+   * the "baaralyPlugin.manifest" key, loads the manifest module, and
    * validates it against the plugin manifest schema.
    *
-   * Returns null if the package is not a Paperclip plugin.
-   * Throws if the package is a Paperclip plugin but the manifest is invalid.
+   * Returns null if the package is not a Baaraly plugin.
+   * Throws if the package is a Baaraly plugin but the manifest is invalid.
    *
    * @see PLUGIN_SPEC.md §10 — Package Contract
    */
@@ -500,8 +500,8 @@ export interface PluginLoader {
 // ---------------------------------------------------------------------------
 
 /**
- * Check whether a package name matches the Paperclip plugin naming convention.
- * Accepts both the "paperclip-plugin-" prefix and scoped "@scope/plugin-" packages.
+ * Check whether a package name matches the Baaraly plugin naming convention.
+ * Accepts both the "baaraly-plugin-" prefix and scoped "@scope/plugin-" packages.
  *
  * @see PLUGIN_SPEC.md §10 — Package Contract
  */
@@ -536,7 +536,7 @@ async function readPackageJson(
 /**
  * Resolve the manifest entrypoint from a package.json and package root.
  *
- * The spec defines a "paperclipPlugin" key in package.json with a "manifest"
+ * The spec defines a "baaralyPlugin" key in package.json with a "manifest"
  * subkey pointing to the manifest module.  This helper resolves the path.
  *
  * @see PLUGIN_SPEC.md §10 — Package Contract
@@ -545,13 +545,13 @@ function resolveManifestPath(
   packageRoot: string,
   pkgJson: Record<string, unknown>,
 ): string | null {
-  const paperclipPlugin = pkgJson["paperclipPlugin"];
+  const baaralyPlugin = pkgJson["baaralyPlugin"];
   if (
-    paperclipPlugin !== null &&
-    typeof paperclipPlugin === "object" &&
-    !Array.isArray(paperclipPlugin)
+    baaralyPlugin !== null &&
+    typeof baaralyPlugin === "object" &&
+    !Array.isArray(baaralyPlugin)
   ) {
-    const manifestRelPath = (paperclipPlugin as Record<string, unknown>)[
+    const manifestRelPath = (baaralyPlugin as Record<string, unknown>)[
       "manifest"
     ];
     if (typeof manifestRelPath === "string") {
@@ -695,7 +695,7 @@ export function getPluginUiContributionMetadata(
  *
  * // Install a specific plugin
  * const discovered = await loader.installPlugin({
- *   packageName: "paperclip-plugin-linear",
+ *   packageName: "baaraly-plugin-linear",
  *   version: "^1.0.0",
  * });
  * ```
@@ -868,7 +868,7 @@ export function pluginLoader(
     const manifestPath = resolveManifestPath(resolvedPackagePath, pkgJson);
     if (!manifestPath || !existsSync(manifestPath)) {
       throw new Error(
-        `Package ${resolvedPackageName} at ${resolvedPackagePath} does not appear to be a Paperclip plugin (no manifest found).`,
+        `Package ${resolvedPackageName} at ${resolvedPackagePath} does not appear to be a Baaraly plugin (no manifest found).`,
       );
     }
 
@@ -941,7 +941,7 @@ export function pluginLoader(
 
   /**
    * Build a DiscoveredPlugin from a resolved package directory, or null
-   * if the package is not a Paperclip plugin.
+   * if the package is not a Baaraly plugin.
    */
   async function buildDiscoveredPlugin(
     packagePath: string,
@@ -954,10 +954,10 @@ export function pluginLoader(
     const version = typeof pkgJson["version"] === "string" ? pkgJson["version"] : "0.0.0";
 
     // Determine if this is a plugin package at all
-    const hasPaperclipPlugin = "paperclipPlugin" in pkgJson;
+    const hasBaaralyPlugin = "baaralyPlugin" in pkgJson;
     const nameMatchesConvention = isPluginPackageName(packageName);
 
-    if (!hasPaperclipPlugin && !nameMatchesConvention) {
+    if (!hasBaaralyPlugin && !nameMatchesConvention) {
       return null;
     }
 
@@ -1231,11 +1231,11 @@ export function pluginLoader(
       const pkgJson = await readPackageJson(packagePath);
       if (!pkgJson) return null;
 
-      const hasPaperclipPlugin = "paperclipPlugin" in pkgJson;
+      const hasBaaralyPlugin = "baaralyPlugin" in pkgJson;
       const packageName = typeof pkgJson["name"] === "string" ? pkgJson["name"] : "";
       const nameMatchesConvention = isPluginPackageName(packageName);
 
-      if (!hasPaperclipPlugin && !nameMatchesConvention) {
+      if (!hasBaaralyPlugin && !nameMatchesConvention) {
         return null;
       }
 

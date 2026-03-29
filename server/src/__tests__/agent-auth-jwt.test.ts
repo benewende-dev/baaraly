@@ -2,10 +2,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createLocalAgentJwt, verifyLocalAgentJwt } from "../agent-auth-jwt.js";
 
 describe("agent local JWT", () => {
-  const secretEnv = "PAPERCLIP_AGENT_JWT_SECRET";
-  const ttlEnv = "PAPERCLIP_AGENT_JWT_TTL_SECONDS";
-  const issuerEnv = "PAPERCLIP_AGENT_JWT_ISSUER";
-  const audienceEnv = "PAPERCLIP_AGENT_JWT_AUDIENCE";
+  const secretEnv = "BAARALY_AGENT_JWT_SECRET";
+  const ttlEnv = "BAARALY_AGENT_JWT_TTL_SECONDS";
+  const issuerEnv = "BAARALY_AGENT_JWT_ISSUER";
+  const audienceEnv = "BAARALY_AGENT_JWT_AUDIENCE";
 
   const originalEnv = {
     secret: process.env[secretEnv],
@@ -46,7 +46,7 @@ describe("agent local JWT", () => {
       adapter_type: "claude_local",
       run_id: "run-1",
       iss: "paperclip",
-      aud: "paperclip-api",
+      aud: "baaraly-api",
     });
   });
 
@@ -73,7 +73,7 @@ describe("agent local JWT", () => {
     const token = createLocalAgentJwt("agent-1", "company-1", "codex_local", "run-1");
 
     process.env[issuerEnv] = "paperclip";
-    process.env[audienceEnv] = "paperclip-api";
+    process.env[audienceEnv] = "baaraly-api";
     expect(verifyLocalAgentJwt(token!)).toBeNull();
   });
 });

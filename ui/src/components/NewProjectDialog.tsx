@@ -41,7 +41,7 @@ const projectStatuses = [
   { value: "backlog", label: "Backlog" },
   { value: "planned", label: "Planned" },
   { value: "in_progress", label: "In Progress" },
-  { value: "completed", label: "Completed" },
+  { value: "completed", label: "Terminé" },
   { value: "cancelled", label: "Cancelled" },
 ];
 
@@ -441,7 +441,7 @@ export function NewProjectDialog() {
             disabled={!name.trim() || createProject.isPending}
             onClick={handleSubmit}
           >
-            {createProject.isPending ? "Creating…" : "Create project"}
+            {createProject.isPending ? "Création…" : "Créer un projet"}
           </Button>
         </div>
       </DialogContent>

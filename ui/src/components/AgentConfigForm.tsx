@@ -137,17 +137,17 @@ function formatArgList(value: unknown): string {
 const codexThinkingEffortOptions = [
   { id: "", label: "Auto" },
   { id: "minimal", label: "Minimal" },
-  { id: "low", label: "Low" },
-  { id: "medium", label: "Medium" },
-  { id: "high", label: "High" },
+  { id: "low", label: "Basse" },
+  { id: "medium", label: "Moyenne" },
+  { id: "high", label: "Haute" },
 ] as const;
 
 const openCodeThinkingEffortOptions = [
   { id: "", label: "Auto" },
   { id: "minimal", label: "Minimal" },
-  { id: "low", label: "Low" },
-  { id: "medium", label: "Medium" },
-  { id: "high", label: "High" },
+  { id: "low", label: "Basse" },
+  { id: "medium", label: "Moyenne" },
+  { id: "high", label: "Haute" },
   { id: "max", label: "Max" },
 ] as const;
 
@@ -159,9 +159,9 @@ const cursorModeOptions = [
 
 const claudeThinkingEffortOptions = [
   { id: "", label: "Auto" },
-  { id: "low", label: "Low" },
-  { id: "medium", label: "Medium" },
-  { id: "high", label: "High" },
+  { id: "low", label: "Basse" },
+  { id: "medium", label: "Moyenne" },
+  { id: "high", label: "Haute" },
 ] as const;
 
 
@@ -472,7 +472,7 @@ export function AgentConfigForm(props: AgentConfigFormProps) {
               onClick={handleSave}
               disabled={!isCreate && props.isSaving}
             >
-              {!isCreate && props.isSaving ? "Saving..." : "Save"}
+              {!isCreate && props.isSaving ? "Sauvegarde..." : "Sauvegarder"}
             </Button>
           </div>
         </div>
@@ -1324,7 +1324,7 @@ function EnvVarEditor({
       })}
       {sealError && <p className="text-[11px] text-destructive">{sealError}</p>}
       <p className="text-[11px] text-muted-foreground/60">
-        PAPERCLIP_* variables are injected automatically at runtime.
+        BAARALY_* variables are injected automatically at runtime.
       </p>
     </div>
   );

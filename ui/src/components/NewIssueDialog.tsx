@@ -54,7 +54,7 @@ import { MarkdownEditor, type MarkdownEditorRef, type MentionOption } from "./Ma
 import { AgentIcon } from "./AgentIconPicker";
 import { InlineEntitySelector, type InlineEntityOption } from "./InlineEntitySelector";
 
-const DRAFT_KEY = "paperclip:issue-draft";
+const DRAFT_KEY = "baaraly:issue-draft";
 const DEBOUNCE_MS = 800;
 
 
@@ -89,23 +89,23 @@ const STAGED_FILE_ACCEPT = "image/*,application/pdf,text/plain,text/markdown,app
 const ISSUE_THINKING_EFFORT_OPTIONS = {
   claude_local: [
     { value: "", label: "Default" },
-    { value: "low", label: "Low" },
-    { value: "medium", label: "Medium" },
-    { value: "high", label: "High" },
+    { value: "low", label: "Basse" },
+    { value: "medium", label: "Moyenne" },
+    { value: "high", label: "Haute" },
   ],
   codex_local: [
     { value: "", label: "Default" },
     { value: "minimal", label: "Minimal" },
-    { value: "low", label: "Low" },
-    { value: "medium", label: "Medium" },
-    { value: "high", label: "High" },
+    { value: "low", label: "Basse" },
+    { value: "medium", label: "Moyenne" },
+    { value: "high", label: "Haute" },
   ],
   opencode_local: [
     { value: "", label: "Default" },
     { value: "minimal", label: "Minimal" },
-    { value: "low", label: "Low" },
-    { value: "medium", label: "Medium" },
-    { value: "high", label: "High" },
+    { value: "low", label: "Basse" },
+    { value: "medium", label: "Moyenne" },
+    { value: "high", label: "Haute" },
     { value: "max", label: "Max" },
   ],
 } as const;
@@ -218,7 +218,7 @@ function formatFileSize(file: File) {
 
 const statuses = [
   { value: "backlog", label: "Backlog", color: issueStatusText.backlog ?? issueStatusTextDefault },
-  { value: "todo", label: "Todo", color: issueStatusText.todo ?? issueStatusTextDefault },
+  { value: "todo", label: "À faire", color: issueStatusText.todo ?? issueStatusTextDefault },
   { value: "in_progress", label: "In Progress", color: issueStatusText.in_progress ?? issueStatusTextDefault },
   { value: "in_review", label: "In Review", color: issueStatusText.in_review ?? issueStatusTextDefault },
   { value: "done", label: "Done", color: issueStatusText.done ?? issueStatusTextDefault },
@@ -226,9 +226,9 @@ const statuses = [
 
 const priorities = [
   { value: "critical", label: "Critical", icon: AlertTriangle, color: priorityColor.critical ?? priorityColorDefault },
-  { value: "high", label: "High", icon: ArrowUp, color: priorityColor.high ?? priorityColorDefault },
-  { value: "medium", label: "Medium", icon: Minus, color: priorityColor.medium ?? priorityColorDefault },
-  { value: "low", label: "Low", icon: ArrowDown, color: priorityColor.low ?? priorityColorDefault },
+  { value: "high", label: "Haute", icon: ArrowUp, color: priorityColor.high ?? priorityColorDefault },
+  { value: "medium", label: "Moyenne", icon: Minus, color: priorityColor.medium ?? priorityColorDefault },
+  { value: "low", label: "Basse", icon: ArrowDown, color: priorityColor.low ?? priorityColorDefault },
 ];
 
 const EXECUTION_WORKSPACE_MODES = [
@@ -1462,7 +1462,7 @@ export function NewIssueDialog() {
             >
               <span className="inline-flex items-center justify-center gap-1.5">
                 {createIssue.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
-                <span>{createIssue.isPending ? "Creating..." : "Create Issue"}</span>
+                <span>{createIssue.isPending ? "Création..." : "Créer une tâche"}</span>
               </span>
             </Button>
           </div>

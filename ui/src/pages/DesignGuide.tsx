@@ -185,7 +185,7 @@ export function DesignGuide() {
   );
   const [filters, setFilters] = useState<FilterValue[]>([
     { key: "status", label: "Status", value: "Active" },
-    { key: "priority", label: "Priority", value: "High" },
+    { key: "priority", label: "Priority", value: "Haute" },
   ]);
 
   return (
@@ -194,7 +194,7 @@ export function DesignGuide() {
       <div>
         <h2 className="text-xl font-bold">Design Guide</h2>
         <p className="text-sm text-muted-foreground mt-1">
-          Every component, style, and pattern used across Paperclip.
+          Every component, style, and pattern used across Baaraly.
         </p>
       </div>
 
@@ -668,8 +668,8 @@ export function DesignGuide() {
               </div>
             </div>
             <SheetFooter>
-              <Button variant="outline">Cancel</Button>
-              <Button>Save</Button>
+              <Button variant="outline">Annuler</Button>
+              <Button>Sauvegarder</Button>
             </SheetFooter>
           </SheetContent>
         </Sheet>
@@ -736,7 +736,7 @@ export function DesignGuide() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="#">Paperclip App</BreadcrumbLink>
+              <BreadcrumbLink href="#">Baaraly App</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -761,7 +761,7 @@ export function DesignGuide() {
             </CardContent>
             <CardFooter className="gap-2">
               <Button size="sm">Action</Button>
-              <Button variant="outline" size="sm">Cancel</Button>
+              <Button variant="outline" size="sm">Annuler</Button>
             </CardFooter>
           </Card>
         </SubSection>
@@ -898,7 +898,7 @@ export function DesignGuide() {
             onClick={() =>
               setFilters([
                 { key: "status", label: "Status", value: "Active" },
-                { key: "priority", label: "Priority", value: "High" },
+                { key: "priority", label: "Priority", value: "Haute" },
               ])
             }
           >
@@ -1000,8 +1000,8 @@ export function DesignGuide() {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline">Cancel</Button>
-              <Button>Save</Button>
+              <Button variant="outline">Annuler</Button>
+              <Button>Sauvegarder</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -1283,7 +1283,7 @@ export function DesignGuide() {
             ["Bot", Bot],
             ["DollarSign", DollarSign],
             ["History", History],
-            ["Search", Search],
+            ["Rechercher", Search],
             ["Plus", Plus],
             ["Trash2", Trash2],
             ["Settings", Settings],

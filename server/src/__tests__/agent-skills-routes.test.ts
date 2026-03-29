@@ -139,9 +139,9 @@ describe("agent skill routes", () => {
     mockSecretService.resolveAdapterConfigForRuntime.mockResolvedValue({ config: { env: {} } });
     mockCompanySkillService.listRuntimeSkillEntries.mockResolvedValue([
       {
-        key: "paperclipai/paperclip/paperclip",
+        key: "baaralyai/baaraly/baaraly",
         runtimeName: "paperclip",
-        source: "/tmp/paperclip",
+        source: "/tmp/baaraly",
         required: true,
         requiredReason: "required",
       },
@@ -150,7 +150,7 @@ describe("agent skill routes", () => {
       async (_companyId: string, requested: string[]) =>
         requested.map((value) =>
           value === "paperclip"
-            ? "paperclipai/paperclip/paperclip"
+            ? "baaralyai/baaraly/baaraly"
             : value,
         ),
     );
@@ -158,7 +158,7 @@ describe("agent skill routes", () => {
       adapterType: "claude_local",
       supported: true,
       mode: "ephemeral",
-      desiredSkills: ["paperclipai/paperclip/paperclip"],
+      desiredSkills: ["baaralyai/baaraly/baaraly"],
       entries: [],
       warnings: [],
     });
@@ -166,7 +166,7 @@ describe("agent skill routes", () => {
       adapterType: "claude_local",
       supported: true,
       mode: "ephemeral",
-      desiredSkills: ["paperclipai/paperclip/paperclip"],
+      desiredSkills: ["baaralyai/baaraly/baaraly"],
       entries: [],
       warnings: [],
     });
@@ -225,7 +225,7 @@ describe("agent skill routes", () => {
       expect.objectContaining({
         adapterType: "claude_local",
         config: expect.objectContaining({
-          paperclipRuntimeSkills: expect.any(Array),
+          baaralyRuntimeSkills: expect.any(Array),
         }),
       }),
     );
@@ -237,7 +237,7 @@ describe("agent skill routes", () => {
       adapterType: "codex_local",
       supported: true,
       mode: "persistent",
-      desiredSkills: ["paperclipai/paperclip/paperclip"],
+      desiredSkills: ["baaralyai/baaraly/baaraly"],
       entries: [],
       warnings: [],
     });
@@ -256,7 +256,7 @@ describe("agent skill routes", () => {
 
     const res = await request(createApp())
       .post("/api/agents/11111111-1111-4111-8111-111111111111/skills/sync?companyId=company-1")
-      .send({ desiredSkills: ["paperclipai/paperclip/paperclip"] });
+      .send({ desiredSkills: ["baaralyai/baaraly/baaraly"] });
 
     expect(res.status, JSON.stringify(res.body)).toBe(200);
     expect(mockCompanySkillService.listRuntimeSkillEntries).toHaveBeenCalledWith("company-1", {
@@ -278,8 +278,8 @@ describe("agent skill routes", () => {
       expect.any(String),
       expect.objectContaining({
         adapterConfig: expect.objectContaining({
-          paperclipSkillSync: expect.objectContaining({
-            desiredSkills: ["paperclipai/paperclip/paperclip"],
+          baaralySkillSync: expect.objectContaining({
+            desiredSkills: ["baaralyai/baaraly/baaraly"],
           }),
         }),
       }),
@@ -304,8 +304,8 @@ describe("agent skill routes", () => {
       "company-1",
       expect.objectContaining({
         adapterConfig: expect.objectContaining({
-          paperclipSkillSync: expect.objectContaining({
-            desiredSkills: ["paperclipai/paperclip/paperclip"],
+          baaralySkillSync: expect.objectContaining({
+            desiredSkills: ["baaralyai/baaraly/baaraly"],
           }),
         }),
       }),
@@ -420,9 +420,9 @@ describe("agent skill routes", () => {
       "company-1",
       expect.objectContaining({
         payload: expect.objectContaining({
-          desiredSkills: ["paperclipai/paperclip/paperclip"],
+          desiredSkills: ["baaralyai/baaraly/baaraly"],
           requestedConfigurationSnapshot: expect.objectContaining({
-            desiredSkills: ["paperclipai/paperclip/paperclip"],
+            desiredSkills: ["baaralyai/baaraly/baaraly"],
           }),
         }),
       }),

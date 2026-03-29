@@ -155,7 +155,7 @@ export function Routines() {
     onError: (mutationError) => {
       pushToast({
         title: "Failed to update routine",
-        body: mutationError instanceof Error ? mutationError.message : "Paperclip could not update the routine.",
+        body: mutationError instanceof Error ? mutationError.message : "Baaraly could not update the routine.",
         tone: "error",
       });
     },
@@ -178,7 +178,7 @@ export function Routines() {
     onError: (mutationError) => {
       pushToast({
         title: "Routine run failed",
-        body: mutationError instanceof Error ? mutationError.message : "Paperclip could not start the routine run.",
+        body: mutationError instanceof Error ? mutationError.message : "Baaraly could not start the routine run.",
         tone: "error",
       });
     },
@@ -464,7 +464,7 @@ export function Routines() {
 
           <div className="flex flex-col gap-3 border-t border-border/60 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="text-sm text-muted-foreground">
-              After creation, Paperclip takes you straight to trigger setup for schedules, webhooks, or internal runs.
+              After creation, Baaraly takes you straight to trigger setup for schedules, webhooks, or internal runs.
             </div>
             <div className="flex flex-col gap-2 sm:items-end">
               <Button
@@ -477,7 +477,7 @@ export function Routines() {
                 }
               >
                 <Plus className="mr-2 h-4 w-4" />
-                {createRoutine.isPending ? "Creating..." : "Create routine"}
+                {createRoutine.isPending ? "Création..." : "Créer une routine"}
               </Button>
               {createRoutine.isError ? (
                 <p className="text-sm text-destructive">

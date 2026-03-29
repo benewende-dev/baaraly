@@ -172,7 +172,7 @@ const statusLabels: Record<string, string> = {
   in_progress: "In Progress",
   in_review: "In Review",
   done: "Done",
-  blocked: "Blocked",
+  blocked: "Bloqué",
   cancelled: "Cancelled",
   backlog: "Backlog",
 };

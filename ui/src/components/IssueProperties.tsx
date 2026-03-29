@@ -315,7 +315,7 @@ export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProp
           }
         >
           <Plus className="h-3 w-3" />
-          {createLabel.isPending ? "Creating…" : "Create label"}
+          {createLabel.isPending ? "Création…" : "Créer un label"}
         </button>
       </div>
     </>
@@ -604,7 +604,7 @@ export function IssueProperties({ issue, onUpdate, inline }: IssuePropertiesProp
           </PropertyRow>
         )}
         {issue.completedAt && (
-          <PropertyRow label="Completed">
+          <PropertyRow label="Terminé">
             <span className="text-sm">{formatDate(issue.completedAt)}</span>
           </PropertyRow>
         )}

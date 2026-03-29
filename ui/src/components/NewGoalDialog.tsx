@@ -273,7 +273,7 @@ export function NewGoalDialog() {
             disabled={!title.trim() || createGoal.isPending}
             onClick={handleSubmit}
           >
-            {createGoal.isPending ? "Creating…" : newGoalDefaults.parentId ? "Create sub-goal" : "Create goal"}
+            {createGoal.isPending ? "Création…" : newGoalDefaults.parentId ? "Créer un sous-objectif" : "Créer un objectif"}
           </Button>
         </div>
       </DialogContent>

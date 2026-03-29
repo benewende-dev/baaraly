@@ -46,7 +46,7 @@ function getPluginErrorSummary(plugin: PluginRecord): string {
 /**
  * PluginManager page component.
  *
- * Provides a management UI for the Paperclip plugin system:
+ * Provides a management UI for the Baaraly plugin system:
  * - Lists all installed plugins with their status, version, and category badges.
  * - Allows installing new plugins by npm package name.
  * - Provides per-plugin actions: enable, disable, navigate to settings.
@@ -192,7 +192,7 @@ export function PluginManager() {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setInstallDialogOpen(false)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setInstallDialogOpen(false)}>Annuler</Button>
               <Button
                 onClick={() => installMutation.mutate({ packageName: installPackage })}
                 disabled={!installPackage || installMutation.isPending}
@@ -447,7 +447,7 @@ export function PluginManager() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setUninstallPluginId(null)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setUninstallPluginId(null)}>Annuler</Button>
             <Button
               variant="destructive"
               disabled={uninstallMutation.isPending}

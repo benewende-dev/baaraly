@@ -1,11 +1,11 @@
-# @paperclipai/ui
+# @baaraly/ui
 
-Published static assets for the Paperclip board UI.
+Assets statiques de l'interface Baaraly — tableau de bord IA souverain africain.
 
-## What gets published
+## Ce qui est publié
 
-The npm package contains the production build under `dist/`. It does not ship the UI source tree or workspace-only dependencies.
+Le package npm contient le build de production dans `dist/`. Il n'inclut pas le code source UI ni les dépendances workspace.
 
-## Typical use
+## Utilisation
 
-Install the package, then serve or copy the built files from `node_modules/@paperclipai/ui/dist`.
+Installer le package, puis servir ou copier les fichiers depuis `node_modules/@baaraly/ui/dist`.

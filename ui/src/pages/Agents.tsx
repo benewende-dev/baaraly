@@ -141,7 +141,7 @@ export function Agents() {
             items={[
               { value: "all", label: "All" },
               { value: "active", label: "Active" },
-              { value: "paused", label: "Paused" },
+              { value: "paused", label: "En pause" },
               { value: "error", label: "Error" },
             ]}
             value={tab}

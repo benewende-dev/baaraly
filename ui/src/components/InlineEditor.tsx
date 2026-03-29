@@ -170,7 +170,7 @@ export function InlineEditor({
           placeholder={placeholder}
           bordered={false}
           className="bg-transparent"
-          contentClassName={cn("paperclip-edit-in-place-content", className)}
+          contentClassName={cn("baaraly-edit-in-place-content", className)}
           imageUploadHandler={imageUploadHandler}
           mentions={mentions}
           onSubmit={() => {
@@ -197,7 +197,7 @@ export function InlineEditor({
                 ? "Saved"
                 : autosaveState === "error"
                   ? "Could not save"
-                  : "Idle"}
+                  : "En attente"}
           </span>
         </div>
       </div>

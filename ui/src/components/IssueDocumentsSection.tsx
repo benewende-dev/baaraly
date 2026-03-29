@@ -37,7 +37,7 @@ type DocumentConflictState = {
 
 const DOCUMENT_AUTOSAVE_DEBOUNCE_MS = 900;
 const DOCUMENT_KEY_PATTERN = /^[a-z0-9][a-z0-9_-]*$/;
-const getFoldedDocumentsStorageKey = (issueId: string) => `paperclip:issue-document-folds:${issueId}`;
+const getFoldedDocumentsStorageKey = (issueId: string) => `baaraly:issue-document-folds:${issueId}`;
 
 function loadFoldedDocumentKeys(issueId: string) {
   if (typeof window === "undefined") return [];
@@ -507,7 +507,7 @@ export function IssueDocumentsSection({
 
   const documentBodyShellClassName = "mt-3 overflow-hidden rounded-md";
   const documentBodyPaddingClassName = "";
-  const documentBodyContentClassName = "paperclip-edit-in-place-content min-h-[220px] text-[15px] leading-7";
+  const documentBodyContentClassName = "baaraly-edit-in-place-content min-h-[220px] text-[15px] leading-7";
   const toggleFoldedDocument = (key: string) => {
     setFoldedDocumentKeys((current) =>
       current.includes(key)
@@ -592,7 +592,7 @@ export function IssueDocumentsSection({
               onClick={() => void commitDraft(draft, { clearAfterSave: false, trackAutosave: false })}
               disabled={upsertDocument.isPending}
             >
-              {upsertDocument.isPending ? "Saving..." : "Create document"}
+              {upsertDocument.isPending ? "Sauvegarde..." : "Créer un document"}
             </Button>
           </div>
         </div>
@@ -769,7 +769,7 @@ export function IssueDocumentsSection({
                             onClick={() => void overwriteDocumentFromDraft(doc.key)}
                             disabled={upsertDocument.isPending}
                           >
-                            {upsertDocument.isPending ? "Saving..." : "Overwrite remote"}
+                            {upsertDocument.isPending ? "Sauvegarde..." : "Écraser à distance"}
                           </Button>
                         </div>
                       </div>
@@ -877,7 +877,7 @@ export function IssueDocumentsSection({
                       onClick={() => deleteDocument.mutate(doc.key)}
                       disabled={deleteDocument.isPending}
                     >
-                      {deleteDocument.isPending ? "Deleting..." : "Delete"}
+                      {deleteDocument.isPending ? "Suppression..." : "Supprimer"}
                     </Button>
                   </div>
                 </div>

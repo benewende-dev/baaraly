@@ -1,5 +1,6 @@
 {
-  "name": "paperclip",
+  "name": "baaraly",
+  "author": "Benewende Group SARL",
   "private": true,
   "type": "module",
   "scripts": {
