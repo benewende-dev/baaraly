@@ -1,0 +1,98 @@
+{
+  "app": {
+    "name": "Baaraly",
+    "tagline": "The AI that makes your business thrive"
+  },
+  "onboarding": {
+    "nameYourCompany": "Name your company",
+    "companyDescription": "This is the organization your agents will work for.",
+    "companyName": "Company name",
+    "missionGoal": "Mission / goal (optional)",
+    "next": "Next",
+    "getStarted": "Get started",
+    "createWorkspace": "Create workspace",
+    "inviteYourTeam": "Invite your team",
+    "skip": "Skip",
+    "back": "Back"
+  },
+  "nav": {
+    "tasks": "Tasks",
+    "settings": "Settings",
+    "dashboard": "Dashboard",
+    "company": "Company",
+    "members": "Members",
+    "billing": "Billing",
+    "help": "Help",
+    "logout": "Logout",
+    "inbox": "Inbox",
+    "agents": "Agents",
+    "projects": "Projects",
+    "goals": "Goals",
+    "activity": "Activity",
+    "costs": "Costs",
+    "org": "Org",
+    "skills": "Skills"
+  },
+  "actions": {
+    "create": "Create",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "done": "Done",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "add": "Add",
+    "remove": "Remove",
+    "update": "Update",
+    "close": "Close",
+    "search": "Search",
+    "filter": "Filter",
+    "submit": "Submit"
+  },
+  "agents": {
+    "new": "New agent",
+    "name": "Agent name",
+    "role": "Agent role",
+    "add": "Add agent",
+    "status": {
+      "running": "Running",
+      "paused": "Paused",
+      "stopped": "Stopped",
+      "idle": "Idle"
+    }
+  },
+  "tasks": {
+    "new": "New task",
+    "name": "Task name",
+    "assignTo": "Assign to",
+    "dueDate": "Due date",
+    "priority": {
+      "label": "Priority",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "status": {
+      "completed": "Completed",
+      "inProgress": "In progress",
+      "pending": "Pending",
+      "todo": "Todo",
+      "blocked": "Blocked"
+    }
+  },
+  "currencies": {
+    "XOF": "West African CFA franc",
+    "XAF": "Central African CFA franc",
+    "NGN": "Nigerian Naira",
+    "GHS": "Ghanaian Cedi",
+    "KES": "Kenyan Shilling",
+    "CDF": "Congolese Franc",
+    "RWF": "Rwandan Franc",
+    "USD": "US Dollar"
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "app": {
+    "name": "Baaraly",
+    "tagline": "L'IA qui fait prospérer ton entreprise"
+  },
+  "onboarding": {
+    "nameYourCompany": "Nomme ton entreprise",
+    "companyDescription": "C'est l'organisation pour laquelle tes agents vont travailler.",
+    "companyName": "Nom de l'entreprise",
+    "missionGoal": "Mission / objectif (optionnel)",
+    "next": "Suivant",
+    "getStarted": "Commencer",
+    "createWorkspace": "Créer l'espace de travail",
+    "inviteYourTeam": "Inviter ton équipe",
+    "skip": "Passer",
+    "back": "Retour"
+  },
+  "nav": {
+    "tasks": "Tâches",
+    "settings": "Paramètres",
+    "dashboard": "Tableau de bord",
+    "company": "Entreprise",
+    "members": "Membres",
+    "billing": "Abonnement",
+    "help": "Aide",
+    "logout": "Déconnexion",
+    "inbox": "Boîte de réception",
+    "agents": "Agents",
+    "projects": "Projets",
+    "goals": "Objectifs",
+    "activity": "Activité",
+    "costs": "Coûts",
+    "org": "Organisation",
+    "skills": "Compétences"
+  },
+  "actions": {
+    "create": "Créer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "next": "Suivant",
+    "done": "Terminé",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "add": "Ajouter",
+    "remove": "Retirer",
+    "update": "Mettre à jour",
+    "close": "Fermer",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "submit": "Envoyer"
+  },
+  "agents": {
+    "new": "Nouvel agent",
+    "name": "Nom de l'agent",
+    "role": "Rôle de l'agent",
+    "add": "Ajouter un agent",
+    "status": {
+      "running": "En cours",
+      "paused": "En pause",
+      "stopped": "Arrêté",
+      "idle": "En attente"
+    }
+  },
+  "tasks": {
+    "new": "Nouvelle tâche",
+    "name": "Nom de la tâche",
+    "assignTo": "Assigner à",
+    "dueDate": "Date limite",
+    "priority": {
+      "label": "Priorité",
+      "high": "Haute",
+      "medium": "Moyenne",
+      "low": "Basse"
+    },
+    "status": {
+      "completed": "Terminé",
+      "inProgress": "En cours",
+      "pending": "En attente",
+      "todo": "À faire",
+      "blocked": "Bloqué"
+    }
+  },
+  "currencies": {
+    "XOF": "Franc CFA Ouest",
+    "XAF": "Franc CFA Centre",
+    "NGN": "Naira",
+    "GHS": "Cedi",
+    "KES": "Shilling Kenyan",
+    "CDF": "Franc Congolais",
+    "RWF": "Franc Rwandais",
+    "USD": "Dollar"
+  }
+}
