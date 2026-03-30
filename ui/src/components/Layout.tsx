@@ -47,7 +47,7 @@ function readRememberedInstanceSettingsPath(): string {
 }
 
 export function Layout() {
-  const { sidebarOpen, setSidebarOpen, toggleSidebar, isMobile } = useSidebar();
+  const { sidebarOpen, setSidebarOpen, toggleSidebar, isMobile, sidebarCollapsed } = useSidebar();
   const { openNewIssue, openOnboarding } = useDialog();
   const { togglePanelVisible } = usePanel();
   const {
@@ -345,8 +345,8 @@ export function Layout() {
               <CompanyRail />
               <div
                 className={cn(
-                  "overflow-hidden transition-[width] duration-100 ease-out",
-                  sidebarOpen ? "w-60" : "w-0"
+                  "overflow-hidden transition-[width] duration-300 ease-out",
+                  sidebarOpen ? (sidebarCollapsed ? "w-16" : "w-60") : "w-0"
                 )}
               >
                 {isInstanceSettingsRoute ? <InstanceSidebar /> : <Sidebar />}

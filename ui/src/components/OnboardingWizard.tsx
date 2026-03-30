@@ -70,11 +70,11 @@ type AdapterType =
   | "http"
   | "openclaw_gateway";
 
-const DEFAULT_TASK_DESCRIPTION = `You are the CEO. You set the direction for the company.
+const DEFAULT_TASK_DESCRIPTION = `Vous êtes le PDG. Vous définissez la direction de l'organisation.
 
-- hire a founding engineer
-- write a hiring plan
-- break the roadmap into concrete tasks and start delegating work`;
+- recruter un ingénieur fondateur
+- rédiger un plan de recrutement
+- décomposer la feuille de route en tâches concrètes et commencer à déléguer`;
 
 export function OnboardingWizard() {
   const { onboardingOpen, onboardingOptions, closeOnboarding } = useDialog();
@@ -130,7 +130,7 @@ export function OnboardingWizard() {
 
   // Step 3
   const [taskTitle, setTaskTitle] = useState(
-    "Hire your first engineer and create a hiring plan"
+    "Recruter votre premier ingénieur et créer un plan de recrutement"
   );
   const [taskDescription, setTaskDescription] = useState(
     DEFAULT_TASK_DESCRIPTION
@@ -299,7 +299,7 @@ export function OnboardingWizard() {
     setAdapterEnvLoading(false);
     setForceUnsetAnthropicApiKey(false);
     setUnsetAnthropicLoading(false);
-    setTaskTitle("Hire your first engineer and create a hiring plan");
+    setTaskTitle("Recruter votre premier ingénieur et créer un plan de recrutement");
     setTaskDescription(DEFAULT_TASK_DESCRIPTION);
     setCreatedCompanyId(null);
     setCreatedCompanyPrefix(null);
@@ -355,7 +355,7 @@ export function OnboardingWizard() {
   ): Promise<AdapterEnvironmentTestResult | null> {
     if (!createdCompanyId) {
       setAdapterEnvError(
-        "Create or select a company before testing adapter environment."
+        "Créez ou sélectionnez une organisation avant de tester l'environnement."
       );
       return null;
     }
@@ -373,7 +373,7 @@ export function OnboardingWizard() {
       return result;
     } catch (err) {
       setAdapterEnvError(
-        err instanceof Error ? err.message : "Adapter environment test failed"
+        err instanceof Error ? err.message : "Échec du test de l'environnement"
       );
       return null;
     } finally {
@@ -411,7 +411,7 @@ export function OnboardingWizard() {
 
       setStep(2);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create company");
+      setError(err instanceof Error ? err.message : "Échec de la création de l'organisation");
     } finally {
       setLoading(false);
     }
@@ -426,7 +426,7 @@ export function OnboardingWizard() {
         const selectedModelId = model.trim();
         if (!selectedModelId) {
           setError(
-            "OpenCode requires an explicit model in provider/model format."
+            "OpenCode nécessite un modèle explicite au format fournisseur/modèle."
           );
           return;
         }
@@ -434,7 +434,7 @@ export function OnboardingWizard() {
           setError(
             adapterModelsError instanceof Error
               ? adapterModelsError.message
-              : "Failed to load OpenCode models."
+              : "Échec du chargement des modèles OpenCode."
           );
           return;
         }
@@ -481,7 +481,7 @@ export function OnboardingWizard() {
       });
       setStep(3);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create agent");
+      setError(err instanceof Error ? err.message : "Échec de la création de l'agent");
     } finally {
       setLoading(false);
     }
@@ -595,7 +595,7 @@ export function OnboardingWizard() {
           : `/issues/${issueRef}`
       );
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create task");
+      setError(err instanceof Error ? err.message : "Échec de la création de la tâche");
     } finally {
       setLoading(false);
     }
@@ -628,50 +628,109 @@ export function OnboardingWizard() {
             RemoveScroll which blocks wheel events on our custom (non-DialogContent)
             scroll container. A plain div preserves the background without scroll-locking. */}
         <div className="fixed inset-0 z-50 bg-background" />
-        <div className="fixed inset-0 z-50 flex" onKeyDown={handleKeyDown}>
-          {/* Close button */}
+        <div
+          className="fixed inset-0 z-50 flex items-start justify-center md:items-center"
+          onKeyDown={handleKeyDown}
+          style={{ background: "rgba(0,0,0,0.85)" }}
+        >
+          {/* Bouton fermer */}
           <button
             onClick={handleClose}
-            className="absolute top-4 left-4 z-10 rounded-sm p-1.5 text-muted-foreground/60 hover:text-foreground transition-colors"
+            className="absolute top-4 left-4 z-10 rounded-full p-2 transition-colors"
+            style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.6)" }}
           >
             <X className="h-5 w-5" />
             <span className="sr-only">Fermer</span>
           </button>
 
-          {/* Left half — form */}
+          {/* Card principale */}
           <div
-            className={cn(
-              "w-full flex flex-col overflow-y-auto transition-[width] duration-500 ease-in-out",
-              step === 1 ? "md:w-1/2" : "md:w-full"
-            )}
+            className="w-full md:max-w-[600px] flex flex-col overflow-y-auto"
+            style={{
+              background: "#0A0A0A",
+              border: "1px solid #1C1C1E",
+              borderRadius: 0,
+              minHeight: "100dvh",
+              padding: "0",
+            }}
           >
-            <div className="w-full max-w-md mx-auto my-auto px-8 py-12 shrink-0">
-              {/* Progress tabs */}
-              <div className="flex items-center gap-0 mb-8 border-b border-border">
-                {(
-                  [
-                    { step: 1 as Step, label: "Company", icon: Building2 },
-                    { step: 2 as Step, label: "Agent", icon: Bot },
-                    { step: 3 as Step, label: "Task", icon: ListTodo },
-                    { step: 4 as Step, label: "Launch", icon: Rocket }
-                  ] as const
-                ).map(({ step: s, label, icon: Icon }) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => setStep(s)}
-                    className={cn(
-                      "flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 -mb-px transition-colors cursor-pointer",
-                      s === step
-                        ? "border-foreground text-foreground"
-                        : "border-transparent text-muted-foreground hover:text-foreground/70 hover:border-border"
-                    )}
-                  >
-                    <Icon className="h-3.5 w-3.5" />
-                    {label}
-                  </button>
-                ))}
-              </div>
+            {/* Sur desktop : card centrée avec border-radius */}
+            <style>{`
+              @media (min-width: 768px) {
+                .onboarding-card {
+                  border-radius: 24px !important;
+                  min-height: unset !important;
+                  max-height: 90dvh;
+                  overflow-y: auto;
+                }
+              }
+            `}</style>
+            <div
+              className="onboarding-card flex-1 flex flex-col"
+              style={{ minHeight: "100dvh" }}
+            >
+              <div className="flex-1 px-6 pt-16 pb-[120px] md:px-12 md:pt-12 md:pb-12">
+                {/* Stepper points + lignes */}
+                <div className="flex items-center mb-10">
+                  {([
+                    { s: 1, label: "Entreprise" },
+                    { s: 2, label: "Agent" },
+                    { s: 3, label: "Tâche" },
+                    { s: 4, label: "Lancer" },
+                  ] as const).map(({ s, label }, idx) => (
+                    <div key={s} className="flex items-center" style={{ flex: idx < 3 ? 1 : undefined }}>
+                      <button
+                        type="button"
+                        onClick={() => setStep(s as Step)}
+                        className="flex flex-col items-center gap-1.5 cursor-pointer"
+                        style={{ background: "none", border: "none", padding: 0 }}
+                      >
+                        {/* Cercle */}
+                        <div
+                          style={{
+                            width: 24,
+                            height: 24,
+                            borderRadius: "50%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: 11,
+                            fontWeight: 700,
+                            transition: "all 200ms ease",
+                            background: s < step ? "#30D158" : s === step ? "#0071E3" : "#1C1C1E",
+                            color: s <= step ? "#fff" : "rgba(255,255,255,0.3)",
+                          }}
+                        >
+                          {s < step ? "✓" : s}
+                        </div>
+                        {/* Label */}
+                        <span
+                          style={{
+                            fontSize: 11,
+                            fontWeight: s === step ? 600 : 400,
+                            color: s === step ? "#0071E3" : s < step ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.3)",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {label}
+                        </span>
+                      </button>
+                      {/* Ligne de connexion */}
+                      {idx < 3 && (
+                        <div
+                          style={{
+                            flex: 1,
+                            height: 1,
+                            marginBottom: 18,
+                            marginInline: 4,
+                            background: s < step ? "#30D158" : "#1C1C1E",
+                            transition: "background 300ms ease",
+                          }}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
 
               {/* Step content */}
               {step === 1 && (
@@ -681,9 +740,9 @@ export function OnboardingWizard() {
                       <Building2 className="h-5 w-5 text-muted-foreground" />
                     </div>
                     <div>
-                      <h3 className="font-medium">Name your company</h3>
+                      <h3 className="font-medium">Nommer votre organisation</h3>
                       <p className="text-xs text-muted-foreground">
-                        This is the organization your agents will work for.
+                        C'est l'organisation pour laquelle vos agents travailleront.
                       </p>
                     </div>
                   </div>
@@ -696,7 +755,7 @@ export function OnboardingWizard() {
                           : "text-muted-foreground group-focus-within:text-foreground"
                       )}
                     >
-                      Company name
+                      Nom de l'organisation
                     </label>
                     <input
                       className="w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-ring placeholder:text-muted-foreground/50"
@@ -715,11 +774,11 @@ export function OnboardingWizard() {
                           : "text-muted-foreground group-focus-within:text-foreground"
                       )}
                     >
-                      Mission / goal (optional)
+                      Mission / objectif (optionnel)
                     </label>
                     <textarea
                       className="w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-ring placeholder:text-muted-foreground/50 resize-none min-h-[60px]"
-                      placeholder="What is this company trying to achieve?"
+                      placeholder="Que cherche à accomplir cette organisation ?"
                       value={companyGoal}
                       onChange={(e) => setCompanyGoal(e.target.value)}
                     />
@@ -734,15 +793,15 @@ export function OnboardingWizard() {
                       <Bot className="h-5 w-5 text-muted-foreground" />
                     </div>
                     <div>
-                      <h3 className="font-medium">Create your first agent</h3>
+                      <h3 className="font-medium">Créer votre premier agent</h3>
                       <p className="text-xs text-muted-foreground">
-                        Choose how this agent will run tasks.
+                        Choisissez comment cet agent exécutera les tâches.
                       </p>
                     </div>
                   </div>
                   <div>
                     <label className="text-xs text-muted-foreground mb-1 block">
-                      Agent name
+                      Nom de l'agent
                     </label>
                     <input
                       className="w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-ring placeholder:text-muted-foreground/50"
@@ -756,7 +815,7 @@ export function OnboardingWizard() {
                   {/* Adapter type radio cards */}
                   <div>
                     <label className="text-xs text-muted-foreground mb-2 block">
-                      Adapter type
+                      Type d'adaptateur
                     </label>
                     <div className="grid grid-cols-2 gap-2">
                       {[
@@ -764,14 +823,14 @@ export function OnboardingWizard() {
                           value: "claude_local" as const,
                           label: "Claude Code",
                           icon: Sparkles,
-                          desc: "Local Claude agent",
+                          desc: "Agent Claude local",
                           recommended: true
                         },
                         {
                           value: "codex_local" as const,
                           label: "Codex",
                           icon: Code,
-                          desc: "Local Codex agent",
+                          desc: "Agent Codex local",
                           recommended: true
                         }
                       ].map((opt) => (
@@ -796,7 +855,7 @@ export function OnboardingWizard() {
                         >
                           {opt.recommended && (
                             <span className="absolute -top-1.5 right-1.5 bg-green-500 text-white text-[9px] font-semibold px-1.5 py-0.5 rounded-full leading-none">
-                              Recommended
+                              Recommandé
                             </span>
                           )}
                           <opt.icon className="h-4 w-4" />
@@ -818,7 +877,7 @@ export function OnboardingWizard() {
                           showMoreAdapters ? "rotate-0" : "-rotate-90"
                         )}
                       />
-                      More Agent Adapter Types
+                      Plus de types d'adaptateurs
                     </button>
 
                     {showMoreAdapters && (
@@ -828,39 +887,39 @@ export function OnboardingWizard() {
                             value: "gemini_local" as const,
                             label: "Gemini CLI",
                             icon: Gem,
-                            desc: "Local Gemini agent"
+                            desc: "Agent Gemini local"
                           },
                           {
                             value: "opencode_local" as const,
                             label: "OpenCode",
                             icon: OpenCodeLogoIcon,
-                            desc: "Local multi-provider agent"
+                            desc: "Agent multi-fournisseur local"
                           },
                           {
                             value: "pi_local" as const,
                             label: "Pi",
                             icon: Terminal,
-                            desc: "Local Pi agent"
+                            desc: "Agent Pi local"
                           },
                           {
                             value: "cursor" as const,
                             label: "Cursor",
                             icon: MousePointer2,
-                            desc: "Local Cursor agent"
+                            desc: "Agent Cursor local"
                           },
                           {
                             value: "hermes_local" as const,
                             label: "Hermes Agent",
                             icon: HermesIcon,
-                            desc: "Local multi-provider agent"
+                            desc: "Agent multi-fournisseur local"
                           },
                           {
                             value: "openclaw_gateway" as const,
                             label: "OpenClaw Gateway",
                             icon: Bot,
-                            desc: "Invoke OpenClaw via gateway protocol",
+                            desc: "Passerelle vers OpenClaw",
                             comingSoon: true,
-                            disabledLabel: "Configure OpenClaw within the App"
+                            disabledLabel: "Configurer OpenClaw dans l'application"
                           }
                         ].map((opt) => (
                           <button
@@ -900,7 +959,7 @@ export function OnboardingWizard() {
                             <span className="text-muted-foreground text-[10px]">
                               {opt.comingSoon
                                 ? (opt as { disabledLabel?: string })
-                                    .disabledLabel ?? "Coming soon"
+                                    .disabledLabel ?? "Bientôt disponible"
                                 : opt.desc}
                             </span>
                           </button>
@@ -920,7 +979,7 @@ export function OnboardingWizard() {
                     <div className="space-y-3">
                       <div>
                         <label className="text-xs text-muted-foreground mb-1 block">
-                          Model
+                          Modèle
                         </label>
                         <Popover
                           open={modelOpen}
@@ -940,8 +999,8 @@ export function OnboardingWizard() {
                                   ? selectedModel.label
                                   : model ||
                                     (adapterType === "opencode_local"
-                                      ? "Select model (required)"
-                                      : "Default")}
+                                      ? "Sélectionner un modèle (requis)"
+                                      : "Par défaut")}
                               </span>
                               <ChevronDown className="h-3 w-3 text-muted-foreground" />
                             </button>
@@ -952,7 +1011,7 @@ export function OnboardingWizard() {
                           >
                             <input
                               className="w-full px-2 py-1.5 text-xs bg-transparent outline-none border-b border-border mb-1 placeholder:text-muted-foreground/50"
-                              placeholder="Search models..."
+                              placeholder="Rechercher des modèles..."
                               value={modelSearch}
                               onChange={(e) => setModelSearch(e.target.value)}
                               autoFocus
@@ -968,7 +1027,7 @@ export function OnboardingWizard() {
                                   setModelOpen(false);
                                 }}
                               >
-                                Default
+                                Par défaut
                               </button>
                             )}
                             <div className="max-h-[240px] overflow-y-auto">
@@ -1009,7 +1068,7 @@ export function OnboardingWizard() {
                             </div>
                             {filteredModels.length === 0 && (
                               <p className="px-2 py-1.5 text-xs text-muted-foreground">
-                                No models discovered.
+                                Aucun modèle découvert.
                               </p>
                             )}
                           </PopoverContent>
@@ -1023,11 +1082,11 @@ export function OnboardingWizard() {
                       <div className="flex items-center justify-between gap-2">
                         <div>
                           <p className="text-xs font-medium">
-                            Adapter environment check
+                            Vérification de l'environnement
                           </p>
                           <p className="text-[11px] text-muted-foreground">
-                            Runs a live probe that asks the adapter CLI to
-                            respond with hello.
+                            Lance une sonde qui demande à l'adaptateur CLI de
+                            répondre avec hello.
                           </p>
                         </div>
                         <Button
@@ -1037,7 +1096,7 @@ export function OnboardingWizard() {
                           disabled={adapterEnvLoading}
                           onClick={() => void runAdapterEnvironmentTest()}
                         >
-                          {adapterEnvLoading ? "Testing..." : "Test now"}
+                          {adapterEnvLoading ? "Test en cours..." : "Tester"}
                         </Button>
                       </div>
 
@@ -1051,7 +1110,7 @@ export function OnboardingWizard() {
                       adapterEnvResult.status === "pass" ? (
                         <div className="flex items-center gap-2 rounded-md border border-green-300 dark:border-green-500/40 bg-green-50 dark:bg-green-500/10 px-3 py-2 text-xs text-green-700 dark:text-green-300 animate-in fade-in slide-in-from-bottom-1 duration-300">
                           <Check className="h-3.5 w-3.5 shrink-0" />
-                          <span className="font-medium">Passed</span>
+                          <span className="font-medium">Réussi</span>
                         </div>
                       ) : adapterEnvResult ? (
                         <AdapterEnvironmentResult result={adapterEnvResult} />
@@ -1060,10 +1119,10 @@ export function OnboardingWizard() {
                       {shouldSuggestUnsetAnthropicApiKey && (
                         <div className="rounded-md border border-amber-300/60 bg-amber-50/40 px-2.5 py-2 space-y-2">
                           <p className="text-[11px] text-amber-900/90 leading-relaxed">
-                            Claude failed while{" "}
+                            Claude a échoué avec{" "}
                             <span className="font-mono">ANTHROPIC_API_KEY</span>{" "}
-                            is set. You can clear it in this CEO adapter config
-                            and retry the probe.
+                            définie. Vous pouvez la supprimer dans la config de cet adaptateur
+                            et relancer la sonde.
                           </p>
                           <Button
                             size="sm"
@@ -1075,15 +1134,15 @@ export function OnboardingWizard() {
                             onClick={() => void handleUnsetAnthropicApiKey()}
                           >
                             {unsetAnthropicLoading
-                              ? "Retrying..."
-                              : "Unset ANTHROPIC_API_KEY"}
+                              ? "Nouvelle tentative..."
+                              : "Supprimer ANTHROPIC_API_KEY"}
                           </Button>
                         </div>
                       )}
 
                       {adapterEnvResult && adapterEnvResult.status === "fail" && (
                         <div className="rounded-md border border-border/70 bg-muted/20 px-2.5 py-2 text-[11px] space-y-1.5">
-                          <p className="font-medium">Manual debug</p>
+                          <p className="font-medium">Débogage manuel</p>
                           <p className="text-muted-foreground font-mono break-all">
                             {adapterType === "cursor"
                               ? `${effectiveAdapterCommand} -p --mode ask --output-format json \"Respond with hello.\"`
@@ -1096,7 +1155,7 @@ export function OnboardingWizard() {
                               : `${effectiveAdapterCommand} --print - --output-format stream-json --verbose`}
                           </p>
                           <p className="text-muted-foreground">
-                            Prompt:{" "}
+                            Invite :{" "}
                             <span className="font-mono">Respond with hello.</span>
                           </p>
                           {adapterType === "cursor" ||
@@ -1104,7 +1163,7 @@ export function OnboardingWizard() {
                           adapterType === "gemini_local" ||
                           adapterType === "opencode_local" ? (
                             <p className="text-muted-foreground">
-                              If auth fails, set{" "}
+                              Si l'auth échoue, définissez{" "}
                               <span className="font-mono">
                                 {adapterType === "cursor"
                                   ? "CURSOR_API_KEY"
@@ -1112,7 +1171,7 @@ export function OnboardingWizard() {
                                     ? "GEMINI_API_KEY"
                                     : "OPENAI_API_KEY"}
                               </span>{" "}
-                              in env or run{" "}
+                              ou lancez{" "}
                               <span className="font-mono">
                                 {adapterType === "cursor"
                                   ? "agent login"
@@ -1126,9 +1185,9 @@ export function OnboardingWizard() {
                             </p>
                           ) : (
                             <p className="text-muted-foreground">
-                              If login is required, run{" "}
+                              Si une connexion est requise, lancez{" "}
                               <span className="font-mono">claude login</span>{" "}
-                              and retry.
+                              et réessayez.
                             </p>
                           )}
                         </div>
@@ -1141,8 +1200,8 @@ export function OnboardingWizard() {
                     <div>
                       <label className="text-xs text-muted-foreground mb-1 block">
                         {adapterType === "openclaw_gateway"
-                          ? "Gateway URL"
-                          : "Webhook URL"}
+                          ? "URL de la passerelle"
+                          : "URL du webhook"}
                       </label>
                       <input
                         className="w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm font-mono outline-none focus:ring-1 focus:ring-ring placeholder:text-muted-foreground/50"
@@ -1166,20 +1225,20 @@ export function OnboardingWizard() {
                       <ListTodo className="h-5 w-5 text-muted-foreground" />
                     </div>
                     <div>
-                      <h3 className="font-medium">Give it something to do</h3>
+                      <h3 className="font-medium">Lui donner une tâche</h3>
                       <p className="text-xs text-muted-foreground">
-                        Give your agent a small task to start with — a bug fix,
-                        a research question, writing a script.
+                        Donnez à votre agent une petite tâche pour commencer — un correctif,
+                        une question de recherche, un script.
                       </p>
                     </div>
                   </div>
                   <div>
                     <label className="text-xs text-muted-foreground mb-1 block">
-                      Task title
+                      Titre de la tâche
                     </label>
                     <input
                       className="w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-ring placeholder:text-muted-foreground/50"
-                      placeholder="e.g. Research competitor pricing"
+                      placeholder="ex : Analyser la tarification des concurrents"
                       value={taskTitle}
                       onChange={(e) => setTaskTitle(e.target.value)}
                       autoFocus
@@ -1187,12 +1246,12 @@ export function OnboardingWizard() {
                   </div>
                   <div>
                     <label className="text-xs text-muted-foreground mb-1 block">
-                      Description (optional)
+                      Description (optionnelle)
                     </label>
                     <textarea
                       ref={textareaRef}
                       className="w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-ring placeholder:text-muted-foreground/50 resize-none min-h-[120px] max-h-[300px] overflow-y-auto"
-                      placeholder="Add more detail about what the agent should do..."
+                      placeholder="Ajoutez plus de détails sur ce que l'agent doit faire..."
                       value={taskDescription}
                       onChange={(e) => setTaskDescription(e.target.value)}
                     />
@@ -1207,10 +1266,10 @@ export function OnboardingWizard() {
                       <Rocket className="h-5 w-5 text-muted-foreground" />
                     </div>
                     <div>
-                      <h3 className="font-medium">Ready to launch</h3>
+                      <h3 className="font-medium">Prêt à lancer</h3>
                       <p className="text-xs text-muted-foreground">
-                        Everything is set up. Launching now will create the
-                        starter task, wake the agent, and open the issue.
+                        Tout est configuré. Le lancement créera la tâche,
+                        réveillera l'agent et ouvrira le ticket.
                       </p>
                     </div>
                   </div>
@@ -1221,7 +1280,7 @@ export function OnboardingWizard() {
                         <p className="text-sm font-medium truncate">
                           {companyName}
                         </p>
-                        <p className="text-xs text-muted-foreground">Company</p>
+                        <p className="text-xs text-muted-foreground">Organisation</p>
                       </div>
                       <Check className="h-4 w-4 text-green-500 shrink-0" />
                     </div>
@@ -1243,7 +1302,7 @@ export function OnboardingWizard() {
                         <p className="text-sm font-medium truncate">
                           {taskTitle}
                         </p>
-                        <p className="text-xs text-muted-foreground">Task</p>
+                        <p className="text-xs text-muted-foreground">Tâche</p>
                       </div>
                       <Check className="h-4 w-4 text-green-500 shrink-0" />
                     </div>
@@ -1258,89 +1317,133 @@ export function OnboardingWizard() {
                 </div>
               )}
 
-              {/* Footer navigation */}
-              <div className="flex items-center justify-between mt-8">
+              {/* Footer inline sur desktop */}
+              <div className="hidden md:flex items-center justify-between mt-8">
                 <div>
                   {step > 1 && step > (onboardingOptions.initialStep ?? 1) && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
+                    <button
                       onClick={() => setStep((step - 1) as Step)}
                       disabled={loading}
+                      style={{
+                        background: "none",
+                        border: "1px solid #1C1C1E",
+                        borderRadius: 10,
+                        padding: "10px 20px",
+                        color: "rgba(255,255,255,0.6)",
+                        fontSize: 15,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 6,
+                      }}
                     >
-                      <ArrowLeft className="h-3.5 w-3.5 mr-1" />
-                      Back
-                    </Button>
+                      <ArrowLeft className="h-4 w-4" />
+                      Retour
+                    </button>
                   )}
                 </div>
-                <div className="flex items-center gap-2">
-                  {step === 1 && (
-                    <Button
-                      size="sm"
-                      disabled={!companyName.trim() || loading}
-                      onClick={handleStep1Next}
-                    >
-                      {loading ? (
-                        <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" />
-                      ) : (
-                        <ArrowRight className="h-3.5 w-3.5 mr-1" />
-                      )}
-                      {loading ? "Création..." : "Suivant"}
-                    </Button>
-                  )}
-                  {step === 2 && (
-                    <Button
-                      size="sm"
-                      disabled={
-                        !agentName.trim() || loading || adapterEnvLoading
-                      }
-                      onClick={handleStep2Next}
-                    >
-                      {loading ? (
-                        <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" />
-                      ) : (
-                        <ArrowRight className="h-3.5 w-3.5 mr-1" />
-                      )}
-                      {loading ? "Création..." : "Suivant"}
-                    </Button>
-                  )}
-                  {step === 3 && (
-                    <Button
-                      size="sm"
-                      disabled={!taskTitle.trim() || loading}
-                      onClick={handleStep3Next}
-                    >
-                      {loading ? (
-                        <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" />
-                      ) : (
-                        <ArrowRight className="h-3.5 w-3.5 mr-1" />
-                      )}
-                      {loading ? "Création..." : "Suivant"}
-                    </Button>
-                  )}
-                  {step === 4 && (
-                    <Button size="sm" disabled={loading} onClick={handleLaunch}>
-                      {loading ? (
-                        <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" />
-                      ) : (
-                        <ArrowRight className="h-3.5 w-3.5 mr-1" />
-                      )}
-                      {loading ? "Création..." : "Créer et ouvrir la tâche"}
-                    </Button>
-                  )}
-                </div>
+                <button
+                  disabled={
+                    loading ||
+                    (step === 1 && !companyName.trim()) ||
+                    (step === 2 && (!agentName.trim() || adapterEnvLoading)) ||
+                    (step === 3 && !taskTitle.trim())
+                  }
+                  onClick={
+                    step === 1 ? handleStep1Next
+                    : step === 2 ? handleStep2Next
+                    : step === 3 ? handleStep3Next
+                    : handleLaunch
+                  }
+                  style={{
+                    background: "#0071E3",
+                    border: "none",
+                    borderRadius: 14,
+                    padding: "12px 28px",
+                    color: "#fff",
+                    fontSize: 16,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    opacity: loading ? 0.7 : 1,
+                    transition: "opacity 200ms ease",
+                  }}
+                >
+                  {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowRight className="h-4 w-4" />}
+                  {loading ? "Création..." : step === 4 ? "Créer et ouvrir la tâche" : "Suivant →"}
+                </button>
               </div>
-            </div>
-          </div>
+              </div>{/* fin inner padding */}
+            </div>{/* fin onboarding-card */}
+          </div>{/* fin card wrapper */}
 
-          {/* Right half — ASCII art (hidden on mobile) */}
+          {/* Bouton Suivant fixé en bas sur mobile */}
           <div
-            className={cn(
-              "hidden md:block overflow-hidden bg-[#1d1d1d] transition-[width,opacity] duration-500 ease-in-out",
-              step === 1 ? "w-1/2 opacity-100" : "w-0 opacity-0"
-            )}
+            className="md:hidden fixed bottom-0 left-0 right-0 z-[60]"
+            style={{
+              background: "#000",
+              borderTop: "1px solid #1C1C1E",
+              padding: "16px 24px",
+              paddingBottom: "max(16px, env(safe-area-inset-bottom))",
+            }}
           >
-            <AsciiArtAnimation />
+            {step > 1 && step > (onboardingOptions.initialStep ?? 1) && (
+              <button
+                onClick={() => setStep((step - 1) as Step)}
+                disabled={loading}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "rgba(255,255,255,0.5)",
+                  fontSize: 14,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  marginBottom: 10,
+                  padding: 0,
+                }}
+              >
+                <ArrowLeft className="h-3.5 w-3.5" />
+                Retour
+              </button>
+            )}
+            <button
+              disabled={
+                loading ||
+                (step === 1 && !companyName.trim()) ||
+                (step === 2 && (!agentName.trim() || adapterEnvLoading)) ||
+                (step === 3 && !taskTitle.trim())
+              }
+              onClick={
+                step === 1 ? handleStep1Next
+                : step === 2 ? handleStep2Next
+                : step === 3 ? handleStep3Next
+                : handleLaunch
+              }
+              style={{
+                width: "100%",
+                padding: "18px 0",
+                background: "#0071E3",
+                borderRadius: 14,
+                color: "#fff",
+                fontSize: 17,
+                fontWeight: 600,
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                opacity: loading ? 0.7 : 1,
+                transition: "opacity 200ms ease",
+              }}
+            >
+              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <ArrowRight className="h-5 w-5" />}
+              {loading ? "Création..." : step === 4 ? "Créer et ouvrir la tâche" : "Suivant →"}
+            </button>
           </div>
         </div>
       </DialogPortal>
@@ -1355,10 +1458,10 @@ function AdapterEnvironmentResult({
 }) {
   const statusLabel =
     result.status === "pass"
-      ? "Passed"
+      ? "Réussi"
       : result.status === "warn"
-      ? "Warnings"
-      : "Failed";
+      ? "Avertissements"
+      : "Échec";
   const statusClass =
     result.status === "pass"
       ? "text-green-700 dark:text-green-300 border-green-300 dark:border-green-500/40 bg-green-50 dark:bg-green-500/10"

@@ -1,10 +1,14 @@
 import { createContext, useCallback, useContext, useState, useEffect, type ReactNode } from "react";
 
+const COLLAPSED_KEY = "baaraly.sidebar.collapsed";
+
 interface SidebarContextValue {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
   toggleSidebar: () => void;
   isMobile: boolean;
+  sidebarCollapsed: boolean;
+  toggleSidebarCollapsed: () => void;
 }
 
 const SidebarContext = createContext<SidebarContextValue | null>(null);
@@ -14,6 +18,13 @@ const MOBILE_BREAKPOINT = 768;
 export function SidebarProvider({ children }: { children: ReactNode }) {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < MOBILE_BREAKPOINT);
   const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth >= MOBILE_BREAKPOINT);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    try {
+      return window.localStorage.getItem(COLLAPSED_KEY) === "true";
+    } catch {
+      return false;
+    }
+  });
 
   useEffect(() => {
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
@@ -27,8 +38,20 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
 
   const toggleSidebar = useCallback(() => setSidebarOpen((v) => !v), []);
 
+  const toggleSidebarCollapsed = useCallback(() => {
+    setSidebarCollapsed((v) => {
+      const next = !v;
+      try {
+        window.localStorage.setItem(COLLAPSED_KEY, String(next));
+      } catch {
+        // ignore
+      }
+      return next;
+    });
+  }, []);
+
   return (
-    <SidebarContext.Provider value={{ sidebarOpen, setSidebarOpen, toggleSidebar, isMobile }}>
+    <SidebarContext.Provider value={{ sidebarOpen, setSidebarOpen, toggleSidebar, isMobile, sidebarCollapsed, toggleSidebarCollapsed }}>
       {children}
     </SidebarContext.Provider>
   );

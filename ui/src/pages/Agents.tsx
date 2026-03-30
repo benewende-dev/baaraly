@@ -19,6 +19,7 @@ import { Tabs } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Bot, Plus, List, GitBranch, SlidersHorizontal } from "lucide-react";
 import { AGENT_ROLE_LABELS, type Agent } from "@paperclipai/shared";
+import { AgentCard } from "../components/AgentCard";
 
 const adapterLabels: Record<string, string> = {
   claude_local: "Claude",
@@ -226,35 +227,36 @@ export function Agents() {
 
       {/* List view */}
       {effectiveView === "list" && filtered.length > 0 && (
-        <div className="border border-border">
-          {filtered.map((agent) => {
-            return (
-              <EntityRow
-                key={agent.id}
-                title={agent.name}
-                subtitle={`${roleLabels[agent.role] ?? agent.role}${agent.title ? ` - ${agent.title}` : ""}`}
-                to={agentUrl(agent)}
-                leading={
-                  <span className="relative flex h-2.5 w-2.5">
-                    <span
-                      className={`absolute inline-flex h-full w-full rounded-full ${agentStatusDot[agent.status] ?? agentStatusDotDefault}`}
-                    />
-                  </span>
-                }
-                trailing={
-                  <div className="flex items-center gap-3">
-                    <span className="sm:hidden">
-                      {liveRunByAgent.has(agent.id) ? (
-                        <LiveRunIndicator
-                          agentRef={agentRouteRef(agent)}
-                          runId={liveRunByAgent.get(agent.id)!.runId}
-                          liveCount={liveRunByAgent.get(agent.id)!.liveCount}
-                        />
-                      ) : (
-                        <StatusBadge status={agent.status} />
-                      )}
+        <>
+          {/* Mobile : grille de cards */}
+          {isMobile ? (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 12 }}>
+              {filtered.map((agent) => (
+                <AgentCard
+                  key={agent.id}
+                  agent={agent}
+                  liveRunId={liveRunByAgent.get(agent.id)?.runId}
+                  liveCount={liveRunByAgent.get(agent.id)?.liveCount}
+                  lastActivity={agent.lastHeartbeatAt ? relativeTime(agent.lastHeartbeatAt) : null}
+                />
+              ))}
+            </div>
+          ) : (
+            /* Desktop : liste existante */
+            <div className="border border-border">
+              {filtered.map((agent) => (
+                <EntityRow
+                  key={agent.id}
+                  title={agent.name}
+                  subtitle={`${roleLabels[agent.role] ?? agent.role}${agent.title ? ` - ${agent.title}` : ""}`}
+                  to={agentUrl(agent)}
+                  leading={
+                    <span className="relative flex h-2.5 w-2.5">
+                      <span className={`absolute inline-flex h-full w-full rounded-full ${agentStatusDot[agent.status] ?? agentStatusDotDefault}`} />
                     </span>
-                    <div className="hidden sm:flex items-center gap-3">
+                  }
+                  trailing={
+                    <div className="flex items-center gap-3">
                       {liveRunByAgent.has(agent.id) && (
                         <LiveRunIndicator
                           agentRef={agentRouteRef(agent)}
@@ -272,12 +274,12 @@ export function Agents() {
                         <StatusBadge status={agent.status} />
                       </span>
                     </div>
-                  </div>
-                }
-              />
-            );
-          })}
-        </div>
+                  }
+                />
+              ))}
+            </div>
+          )}
+        </>
       )}
 
       {effectiveView === "list" && agents && agents.length > 0 && filtered.length === 0 && (

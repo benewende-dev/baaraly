@@ -15,6 +15,8 @@ interface SidebarNavItemProps {
   textBadgeTone?: "default" | "amber";
   alert?: boolean;
   liveCount?: number;
+  /** Mode rétracté : icône seule, centré */
+  collapsed?: boolean;
 }
 
 export function SidebarNavItem({
@@ -29,8 +31,35 @@ export function SidebarNavItem({
   textBadgeTone = "default",
   alert = false,
   liveCount,
+  collapsed = false,
 }: SidebarNavItemProps) {
   const { isMobile, setSidebarOpen } = useSidebar();
+
+  if (collapsed) {
+    return (
+      <NavLink
+        to={to}
+        end={end}
+        onClick={() => { if (isMobile) setSidebarOpen(false); }}
+        className={({ isActive }) =>
+          cn(
+            "flex items-center justify-center p-2 transition-colors rounded-md w-full",
+            isActive
+              ? "bg-accent text-foreground"
+              : "text-foreground/60 hover:bg-accent/50 hover:text-foreground",
+            className,
+          )
+        }
+      >
+        <span className="relative">
+          <Icon className="h-4 w-4" />
+          {alert && (
+            <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-red-500 shadow-[0_0_0_2px_hsl(var(--background))]" />
+          )}
+        </span>
+      </NavLink>
+    );
+  }
 
   return (
     <NavLink
