@@ -5,18 +5,20 @@ import { instanceSettingsApi } from "@/api/instanceSettings";
 import { useBreadcrumbs } from "../context/BreadcrumbContext";
 import { queryKeys } from "../lib/queryKeys";
 import { cn } from "../lib/utils";
+import { useLanguage } from "../context/LanguageContext";
 
 export function InstanceGeneralSettings() {
   const { setBreadcrumbs } = useBreadcrumbs();
   const queryClient = useQueryClient();
+  const { language, setLanguage, t } = useLanguage();
   const [actionError, setActionError] = useState<string | null>(null);
 
   useEffect(() => {
     setBreadcrumbs([
-      { label: "Instance Settings" },
-      { label: "General" },
+      { label: t("Instance Settings") },
+      { label: t("General") },
     ]);
-  }, [setBreadcrumbs]);
+  }, [setBreadcrumbs, t]);
 
   const generalQuery = useQuery({
     queryKey: queryKeys.instance.generalSettings,
@@ -31,12 +33,12 @@ export function InstanceGeneralSettings() {
       await queryClient.invalidateQueries({ queryKey: queryKeys.instance.generalSettings });
     },
     onError: (error) => {
-      setActionError(error instanceof Error ? error.message : "Failed to update general settings.");
+      setActionError(error instanceof Error ? error.message : t("Failed to update general settings."));
     },
   });
 
   if (generalQuery.isLoading) {
-    return <div className="text-sm text-muted-foreground">Loading general settings...</div>;
+    return <div className="text-sm text-muted-foreground">{t("Loading general settings...")}</div>;
   }
 
   if (generalQuery.error) {
@@ -44,7 +46,7 @@ export function InstanceGeneralSettings() {
       <div className="text-sm text-destructive">
         {generalQuery.error instanceof Error
           ? generalQuery.error.message
-          : "Failed to load general settings."}
+          : t("Failed to load general settings.")}
       </div>
     );
   }
@@ -56,10 +58,10 @@ export function InstanceGeneralSettings() {
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <SlidersHorizontal className="h-5 w-5 text-muted-foreground" />
-          <h1 className="text-lg font-semibold">General</h1>
+          <h1 className="text-lg font-semibold">{t("General")}</h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Configure instance-wide defaults that affect how operator-visible logs are displayed.
+          {t("Configure instance-wide defaults that affect how operator-visible logs are displayed.")}
         </p>
       </div>
 
@@ -72,11 +74,9 @@ export function InstanceGeneralSettings() {
       <section className="rounded-xl border border-border bg-card p-5">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1.5">
-            <h2 className="text-sm font-semibold">Censor username in logs</h2>
+            <h2 className="text-sm font-semibold">{t("Censor username in logs")}</h2>
             <p className="max-w-2xl text-sm text-muted-foreground">
-              Hide the username segment in home-directory paths and similar operator-visible log output. Standalone
-              username mentions outside of paths are not yet masked in the live transcript view. This is off by
-              default.
+              {t("Hide the username segment in home-directory paths and similar operator-visible log output. Standalone username mentions outside of paths are not yet masked in the live transcript view. This is off by default.")}
             </p>
           </div>
           <button
@@ -97,6 +97,62 @@ export function InstanceGeneralSettings() {
               )}
             />
           </button>
+        </div>
+      </section>
+
+      {/* Langue / Language toggle */}
+      <section className="rounded-xl border border-border bg-card p-5">
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+          <div>
+            <p style={{ fontSize: "14px", fontWeight: 600, marginBottom: 2 }}>
+              {t("Langue / Language")}
+            </p>
+            <p style={{ color: "rgba(128,128,128,0.8)", fontSize: "13px" }}>
+              {t("Choisir la langue de l'interface")}
+            </p>
+          </div>
+          <div style={{
+            display: "flex",
+            background: "var(--muted)",
+            borderRadius: "10px",
+            padding: "3px",
+            gap: "2px",
+          }}>
+            <button
+              type="button"
+              onClick={() => setLanguage("fr")}
+              style={{
+                padding: "6px 16px",
+                borderRadius: "8px",
+                border: "none",
+                cursor: "pointer",
+                background: language === "fr" ? "#0071E3" : "transparent",
+                color: language === "fr" ? "#FFF" : "rgba(128,128,128,0.8)",
+                fontSize: "14px",
+                fontWeight: 600,
+                transition: "all 200ms ease",
+              }}
+            >
+              FR
+            </button>
+            <button
+              type="button"
+              onClick={() => setLanguage("en")}
+              style={{
+                padding: "6px 16px",
+                borderRadius: "8px",
+                border: "none",
+                cursor: "pointer",
+                background: language === "en" ? "#0071E3" : "transparent",
+                color: language === "en" ? "#FFF" : "rgba(128,128,128,0.8)",
+                fontSize: "14px",
+                fontWeight: 600,
+                transition: "all 200ms ease",
+              }}
+            >
+              EN
+            </button>
+          </div>
         </div>
       </section>
     </div>

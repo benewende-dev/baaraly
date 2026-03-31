@@ -21,6 +21,7 @@ import { SidebarNavItem } from "./SidebarNavItem";
 import { SidebarProjects } from "./SidebarProjects";
 import { SidebarAgents } from "./SidebarAgents";
 import { useDialog } from "../context/DialogContext";
+import { useLanguage } from "../context/LanguageContext";
 import { useCompany } from "../context/CompanyContext";
 import { useSidebar } from "../context/SidebarContext";
 import { heartbeatsApi } from "../api/heartbeats";
@@ -35,6 +36,7 @@ export function Sidebar() {
   const { openNewIssue } = useDialog();
   const { selectedCompanyId, selectedCompany } = useCompany();
   const { sidebarCollapsed, toggleSidebarCollapsed, isMobile } = useSidebar();
+  const { t } = useLanguage();
   const inboxBadge = useInboxBadge(selectedCompanyId);
   const { data: liveRuns } = useQuery({
     queryKey: queryKeys.liveRuns(selectedCompanyId!),
@@ -75,7 +77,7 @@ export function Sidebar() {
               />
             )}
             <span className="flex-1 text-sm font-bold text-foreground truncate pl-1">
-              {selectedCompany?.name ?? "Select company"}
+              {selectedCompany?.name ?? t("Select company")}
             </span>
             <Button
               variant="ghost"
@@ -96,7 +98,7 @@ export function Sidebar() {
                 size="icon-sm"
                 className="text-muted-foreground shrink-0"
                 onClick={toggleSidebarCollapsed}
-                aria-label={collapsed ? "Étendre la barre latérale" : "Réduire la barre latérale"}
+                aria-label={collapsed ? t("Expand sidebar") : t("Collapse sidebar")}
               >
                 {collapsed
                   ? <PanelLeftOpen className="h-4 w-4" />
@@ -105,7 +107,7 @@ export function Sidebar() {
               </Button>
             </TooltipTrigger>
             <TooltipContent side="right">
-              {collapsed ? "Étendre" : "Réduire"}
+              {collapsed ? t("Expand") : t("Collapse")}
             </TooltipContent>
           </Tooltip>
         )}
@@ -127,7 +129,7 @@ export function Sidebar() {
                   <SquarePen className="h-4 w-4 shrink-0" />
                 </button>
               </TooltipTrigger>
-              <TooltipContent side="right">Nouvelle tâche</TooltipContent>
+              <TooltipContent side="right">{t("New task")}</TooltipContent>
             </Tooltip>
           ) : (
             <button
@@ -135,14 +137,14 @@ export function Sidebar() {
               className="flex items-center gap-2.5 px-3 py-2 text-[13px] font-medium text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors"
             >
               <SquarePen className="h-4 w-4 shrink-0" />
-              <span className="truncate">Nouvelle tâche</span>
+              <span className="truncate">{t("New task")}</span>
             </button>
           )}
-          <CollapsibleNavItem collapsed={collapsed} to="/dashboard" label="Tableau de bord" icon={LayoutDashboard} liveCount={liveRunCount} />
+          <CollapsibleNavItem collapsed={collapsed} to="/dashboard" label={t("Dashboard")} icon={LayoutDashboard} liveCount={liveRunCount} />
           <CollapsibleNavItem
             collapsed={collapsed}
             to="/inbox"
-            label="Inbox"
+            label={t("Inbox")}
             icon={Inbox}
             badge={inboxBadge.inbox}
             badgeTone={inboxBadge.failedRuns > 0 ? "danger" : "default"}
@@ -163,14 +165,14 @@ export function Sidebar() {
           /* Mode rétracté : icônes seulement, groupées */
           <div className="flex flex-col gap-0.5">
             {[
-              { to: "/issues", label: "Tâches", icon: CircleDot },
-              { to: "/routines", label: "Routines", icon: Repeat },
-              { to: "/goals", label: "Objectifs", icon: Target },
-              { to: "/org", label: "Org", icon: Network },
-              { to: "/skills", label: "Compétences", icon: Boxes },
-              { to: "/costs", label: "Coûts", icon: DollarSign },
-              { to: "/activity", label: "Activité", icon: History },
-              { to: "/company/settings", label: "Paramètres", icon: Settings },
+              { to: "/issues", label: t("Issues"), icon: CircleDot },
+              { to: "/routines", label: t("Routines"), icon: Repeat },
+              { to: "/goals", label: t("Goals"), icon: Target },
+              { to: "/org", label: t("Org Chart"), icon: Network },
+              { to: "/skills", label: t("Skills"), icon: Boxes },
+              { to: "/costs", label: t("Costs"), icon: DollarSign },
+              { to: "/activity", label: t("Activity"), icon: History },
+              { to: "/company/settings", label: t("Settings"), icon: Settings },
             ].map(({ to, label, icon: Icon }) => (
               <Tooltip key={to}>
                 <TooltipTrigger asChild>
@@ -182,22 +184,22 @@ export function Sidebar() {
           </div>
         ) : (
           <>
-            <SidebarSection label="Travail">
-              <SidebarNavItem to="/issues" label="Tâches" icon={CircleDot} />
-              <SidebarNavItem to="/routines" label="Routines" icon={Repeat} textBadge="Beta" textBadgeTone="amber" />
-              <SidebarNavItem to="/goals" label="Objectifs" icon={Target} />
+            <SidebarSection label={t("Work")}>
+              <SidebarNavItem to="/issues" label={t("Issues")} icon={CircleDot} />
+              <SidebarNavItem to="/routines" label={t("Routines")} icon={Repeat} textBadge="Beta" textBadgeTone="amber" />
+              <SidebarNavItem to="/goals" label={t("Goals")} icon={Target} />
             </SidebarSection>
 
             <SidebarProjects />
 
             <SidebarAgents />
 
-            <SidebarSection label="Organisation">
-              <SidebarNavItem to="/org" label="Org" icon={Network} />
-              <SidebarNavItem to="/skills" label="Compétences" icon={Boxes} />
-              <SidebarNavItem to="/costs" label="Coûts" icon={DollarSign} />
-              <SidebarNavItem to="/activity" label="Activité" icon={History} />
-              <SidebarNavItem to="/company/settings" label="Paramètres" icon={Settings} />
+            <SidebarSection label={t("Organization")}>
+              <SidebarNavItem to="/org" label={t("Org Chart")} icon={Network} />
+              <SidebarNavItem to="/skills" label={t("Skills")} icon={Boxes} />
+              <SidebarNavItem to="/costs" label={t("Costs")} icon={DollarSign} />
+              <SidebarNavItem to="/activity" label={t("Activity")} icon={History} />
+              <SidebarNavItem to="/company/settings" label={t("Settings")} icon={Settings} />
             </SidebarSection>
 
             <PluginSlotOutlet

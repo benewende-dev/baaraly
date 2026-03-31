@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink, useLocation } from "@/lib/router";
 import { Home, Bot, MessageCircle, ClipboardList, Settings } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
 interface MobileBottomNavProps {
   visible: boolean;
@@ -15,13 +16,14 @@ interface NavItem {
 
 export function MobileBottomNav({ visible }: MobileBottomNavProps) {
   const location = useLocation();
+  const { t } = useLanguage();
 
   const items: NavItem[] = [
-    { to: "/dashboard", label: "Accueil", icon: Home },
-    { to: "/agents/all", label: "Agents", icon: Bot, matchPrefix: "/agents" },
-    { to: "/inbox", label: "Messages", icon: MessageCircle, matchPrefix: "/inbox" },
-    { to: "/issues", label: "Tâches", icon: ClipboardList, matchPrefix: "/issues" },
-    { to: "/company/settings", label: "Paramètres", icon: Settings, matchPrefix: "/company" },
+    { to: "/dashboard", label: t("Home"), icon: Home },
+    { to: "/agents/all", label: t("Agents"), icon: Bot, matchPrefix: "/agents" },
+    { to: "/inbox", label: t("Messages"), icon: MessageCircle, matchPrefix: "/inbox" },
+    { to: "/issues", label: t("Tasks"), icon: ClipboardList, matchPrefix: "/issues" },
+    { to: "/company/settings", label: t("Settings"), icon: Settings, matchPrefix: "/company" },
   ];
 
   return (
@@ -43,7 +45,7 @@ export function MobileBottomNav({ visible }: MobileBottomNavProps) {
         transition: "transform 200ms ease",
       }}
       className="md:hidden"
-      aria-label="Navigation mobile"
+      aria-label={t("Mobile navigation")}
     >
       {items.map((item) => {
         const isActive = item.matchPrefix
