@@ -552,6 +552,288 @@ export const translations: Record<string, Record<Language, string>> = {
     en: "Failed to recruit agent. Please try again."
   },
   "Templates": { fr: "Modèles", en: "Templates" },
+
+  // ── Costs page ──────────────────────────────────────────────────────────
+  "Inference spend, platform fees, credits, and live quota windows.": {
+    fr: "Dépenses d'inférence, frais de plateforme, crédits et quotas en temps réel.",
+    en: "Inference spend, platform fees, credits, and live quota windows."
+  },
+  "Month to Date": { fr: "Mois en cours", en: "Month to Date" },
+  "Last 7 Days": { fr: "7 derniers jours", en: "Last 7 Days" },
+  "Last 30 Days": { fr: "30 derniers jours", en: "Last 30 Days" },
+  "Year to Date": { fr: "Année en cours", en: "Year to Date" },
+  "All Time": { fr: "Tout le temps", en: "All Time" },
+  "Custom": { fr: "Personnalisé", en: "Custom" },
+  "to": { fr: "au", en: "to" },
+  "Inference spend": { fr: "Dépenses d'inférence", en: "Inference spend" },
+  "tokens across request-scoped events": {
+    fr: "tokens sur les événements de requête",
+    en: "tokens across request-scoped events"
+  },
+  "Budget": { fr: "Budget", en: "Budget" },
+  "No monthly cap configured": { fr: "Aucun plafond mensuel configuré", en: "No monthly cap configured" },
+  "agents paused": { fr: "agents en pause", en: "agents paused" },
+  "projects paused": { fr: "projets en pause", en: "projects paused" },
+  "Finance net": { fr: "Finance net", en: "Finance net" },
+  "debits": { fr: "débits", en: "debits" },
+  "Finance events": { fr: "Événements financiers", en: "Finance events" },
+  "estimated in range": { fr: "estimé dans la période", en: "estimated in range" },
+  "Overview": { fr: "Vue d'ensemble", en: "Overview" },
+  "Budgets": { fr: "Budgets", en: "Budgets" },
+  "Providers": { fr: "Fournisseurs", en: "Providers" },
+  "Billers": { fr: "Facturiers", en: "Billers" },
+  "Finance": { fr: "Finance", en: "Finance" },
+  "Select a start and end date to load data.": {
+    fr: "Sélectionnez une date de début et de fin pour charger les données.",
+    en: "Select a start and end date to load data."
+  },
+  "Finance ledger": { fr: "Grand livre financier", en: "Finance ledger" },
+  "Account-level charges that do not map to a single inference request.": {
+    fr: "Charges au niveau du compte qui ne correspondent pas à une seule requête d'inférence.",
+    en: "Account-level charges that do not map to a single inference request."
+  },
+  "Debits": { fr: "Débits", en: "Debits" },
+  "Refunds, offsets, and credit returns": {
+    fr: "Remboursements, compensations et retours de crédits",
+    en: "Refunds, offsets, and credit returns"
+  },
+  "Net": { fr: "Net", en: "Net" },
+  "Debit minus credit for the selected period": {
+    fr: "Débit moins crédit pour la période sélectionnée",
+    en: "Debit minus credit for the selected period"
+  },
+  "Estimated": { fr: "Estimé", en: "Estimated" },
+  "Estimated debits that are not yet invoice-authoritative": {
+    fr: "Débits estimés non encore validés par facture",
+    en: "Estimated debits that are not yet invoice-authoritative"
+  },
+  "Inference ledger": { fr: "Grand livre d'inférence", en: "Inference ledger" },
+  "Request-scoped inference spend for the selected period.": {
+    fr: "Dépenses d'inférence par requête pour la période sélectionnée.",
+    en: "Request-scoped inference spend for the selected period."
+  },
+  "usage": { fr: "utilisation", en: "usage" },
+  "% of monthly budget consumed in this range.": {
+    fr: "% du budget mensuel consommé sur cette période.",
+    en: "% of monthly budget consumed in this range."
+  },
+  "By agent": { fr: "Par agent", en: "By agent" },
+  "What each agent consumed in the selected period.": {
+    fr: "Ce que chaque agent a consommé sur la période sélectionnée.",
+    en: "What each agent consumed in the selected period."
+  },
+  "No cost events yet.": { fr: "Aucun événement de coût pour l'instant.", en: "No cost events yet." },
+  "By project": { fr: "Par projet", en: "By project" },
+  "Run costs attributed through project-linked issues.": {
+    fr: "Coûts d'exécution attribués via les tâches liées aux projets.",
+    en: "Run costs attributed through project-linked issues."
+  },
+  "No project-attributed run costs yet.": {
+    fr: "Aucun coût d'exécution attribué à un projet pour l'instant.",
+    en: "No project-attributed run costs yet."
+  },
+  "Unattributed": { fr: "Non attribué", en: "Unattributed" },
+  "No finance events yet. Add account-level charges once biller invoices or credits land.": {
+    fr: "Aucun événement financier. Ajoutez des charges au niveau du compte lorsque les factures ou crédits arrivent.",
+    en: "No finance events yet. Add account-level charges once biller invoices or credits land."
+  },
+  "Budget control plane": { fr: "Plan de contrôle budgétaire", en: "Budget control plane" },
+  "Hard-stop spend limits for agents and projects. Provider subscription quota stays separate and appears under Providers.": {
+    fr: "Limites de dépenses strictes pour les agents et projets. Les quotas d'abonnement fournisseur restent séparés et apparaissent sous Fournisseurs.",
+    en: "Hard-stop spend limits for agents and projects. Provider subscription quota stays separate and appears under Providers."
+  },
+  "Active incidents": { fr: "Incidents actifs", en: "Active incidents" },
+  "Open soft or hard threshold crossings": {
+    fr: "Dépassements de seuils souples ou stricts en cours",
+    en: "Open soft or hard threshold crossings"
+  },
+  "Pending approvals": { fr: "Approbations en attente", en: "Pending approvals" },
+  "Budget override approvals awaiting board action": {
+    fr: "Approbations de dérogation de budget en attente d'action du conseil",
+    en: "Budget override approvals awaiting board action"
+  },
+  "Paused agents": { fr: "Agents en pause", en: "Paused agents" },
+  "Agent heartbeats blocked by budget": {
+    fr: "Heartbeats d'agents bloqués par le budget",
+    en: "Agent heartbeats blocked by budget"
+  },
+  "Paused projects": { fr: "Projets en pause", en: "Paused projects" },
+  "Project execution blocked by budget": {
+    fr: "Exécution de projet bloquée par le budget",
+    en: "Project execution blocked by budget"
+  },
+  "Resolve hard stops here by raising the budget or explicitly keeping the scope paused.": {
+    fr: "Résolvez les arrêts ici en augmentant le budget ou en gardant explicitement la portée en pause.",
+    en: "Resolve hard stops here by raising the budget or explicitly keeping the scope paused."
+  },
+  "company budgets": { fr: "Budgets entreprise", en: "company budgets" },
+  "agent budgets": { fr: "Budgets agents", en: "agent budgets" },
+  "project budgets": { fr: "Budgets projets", en: "project budgets" },
+  "Company-wide monthly policy.": { fr: "Politique mensuelle à l'échelle de l'entreprise.", en: "Company-wide monthly policy." },
+  "Recurring monthly spend policies for individual agents.": {
+    fr: "Politiques de dépenses mensuelles récurrentes pour les agents individuels.",
+    en: "Recurring monthly spend policies for individual agents."
+  },
+  "Lifetime spend policies for execution-bound projects.": {
+    fr: "Politiques de dépenses à vie pour les projets liés à l'exécution.",
+    en: "Lifetime spend policies for execution-bound projects."
+  },
+  "No budget policies yet. Set agent and project budgets from their detail pages, or use the existing company monthly budget control.": {
+    fr: "Aucune politique budgétaire. Définissez les budgets agents et projets depuis leurs pages de détail, ou utilisez le contrôle budgétaire mensuel de l'entreprise.",
+    en: "No budget policies yet. Set agent and project budgets from their detail pages, or use the existing company monthly budget control."
+  },
+  "No cost events in this period.": { fr: "Aucun événement de coût sur cette période.", en: "No cost events in this period." },
+  "No billable events in this period.": { fr: "Aucun événement facturable sur cette période.", en: "No billable events in this period." },
+  "All providers": { fr: "Tous les fournisseurs", en: "All providers" },
+  "All billers": { fr: "Tous les facturiers", en: "All billers" },
+  "By biller": { fr: "Par facturier", en: "By biller" },
+  "Account-level financial events grouped by who charged or credited them.": {
+    fr: "Événements financiers au niveau du compte regroupés par facturier.",
+    en: "Account-level financial events grouped by who charged or credited them."
+  },
+  "No finance events yet.": { fr: "Aucun événement financier pour l'instant.", en: "No finance events yet." },
+  "total event": { fr: "événement total", en: "total event" },
+  "total events": { fr: "événements totaux", en: "total events" },
+  "in range": { fr: "dans la période", en: "in range" },
+  "in": { fr: "ent.", en: "in" },
+  "out": { fr: "sort.", en: "out" },
+  "api": { fr: "api", en: "api" },
+  "subscription": { fr: "abonnement", en: "subscription" },
+  "tok": { fr: "tok", en: "tok" },
+  "of": { fr: "de", en: "of" },
+
+  // ── Inbox page ──────────────────────────────────────────────────────────
+  "Mine": { fr: "Les miennes", en: "Mine" },
+  "Recent": { fr: "Récent", en: "Recent" },
+  "Unread": { fr: "Non lu", en: "Unread" },
+  "Mark all as read": { fr: "Tout marquer comme lu", en: "Mark all as read" },
+  "Marking…": { fr: "Marquage…", en: "Marking…" },
+  "All categories": { fr: "Toutes les catégories", en: "All categories" },
+  "My recent issues": { fr: "Mes tâches récentes", en: "My recent issues" },
+  "Join requests": { fr: "Demandes d'adhésion", en: "Join requests" },
+  "Failed runs": { fr: "Exécutions échouées", en: "Failed runs" },
+  "All approval statuses": { fr: "Tous les statuts d'approbation", en: "All approval statuses" },
+  "Needs action": { fr: "Action requise", en: "Needs action" },
+  "Resolved": { fr: "Résolu", en: "Resolved" },
+  "Inbox zero.": { fr: "Boîte de réception vide.", en: "Inbox zero." },
+  "No new inbox items.": { fr: "Aucun nouvel élément.", en: "No new inbox items." },
+  "No recent inbox items.": { fr: "Aucun élément récent.", en: "No recent inbox items." },
+  "No inbox items match these filters.": {
+    fr: "Aucun élément ne correspond à ces filtres.",
+    en: "No inbox items match these filters."
+  },
+  "Alerts": { fr: "Alertes", en: "Alerts" },
+  "Approve": { fr: "Approuver", en: "Approve" },
+  "Reject": { fr: "Rejeter", en: "Reject" },
+  "Retrying…": { fr: "Nouvelle tentative…", en: "Retrying…" },
+  "Failed run": { fr: "Exécution échouée", en: "Failed run" },
+  "requested by": { fr: "demandé par", en: "requested by" },
+  "updated": { fr: "mis à jour", en: "updated" },
+  "commented": { fr: "commenté", en: "commented" },
+  "Human join request": { fr: "Demande d'adhésion humaine", en: "Human join request" },
+  "Agent join request": { fr: "Demande d'adhésion d'agent", en: "Agent join request" },
+  "requested": { fr: "demandé", en: "requested" },
+  "from IP": { fr: "depuis IP", en: "from IP" },
+  "adapter:": { fr: "adaptateur :", en: "adapter:" },
+  "agent has errors": { fr: "agent a des erreurs", en: "agent has errors" },
+  "agents have errors": { fr: "agents ont des erreurs", en: "agents have errors" },
+  "Budget at": { fr: "Budget à", en: "Budget at" },
+  "utilization this month": { fr: "d'utilisation ce mois-ci", en: "utilization this month" },
+
+  // ── OrgChart page ─────────────────────────────────────────────────────
+  "Import company": { fr: "Importer l'entreprise", en: "Import company" },
+  "Export company": { fr: "Exporter l'entreprise", en: "Export company" },
+  "Fit": { fr: "Ajuster", en: "Fit" },
+
+  // ── CompanySkills page ────────────────────────────────────────────────
+  "available": { fr: "disponible(s)", en: "available" },
+  "Scan project workspaces for skills": {
+    fr: "Scanner les espaces de travail pour les compétences",
+    en: "Scan project workspaces for skills"
+  },
+  "Filter skills": { fr: "Filtrer les compétences", en: "Filter skills" },
+  "Paste path, GitHub URL, or skills.sh command": {
+    fr: "Collez un chemin, URL GitHub, ou commande skills.sh",
+    en: "Paste path, GitHub URL, or skills.sh command"
+  },
+  "Skill name": { fr: "Nom de la compétence", en: "Skill name" },
+  "optional-shortname": { fr: "alias-optionnel", en: "optional-shortname" },
+  "Short description": { fr: "Description courte", en: "Short description" },
+  "Create skill": { fr: "Créer une compétence", en: "Create skill" },
+  "Select a skill to inspect its files.": {
+    fr: "Sélectionnez une compétence pour inspecter ses fichiers.",
+    en: "Select a skill to inspect its files."
+  },
+  "Source": { fr: "Source", en: "Source" },
+  "Pin": { fr: "Épingle", en: "Pin" },
+  "untracked": { fr: "non suivi", en: "untracked" },
+  "tracking": { fr: "suivi de", en: "tracking" },
+  "Check for updates": { fr: "Vérifier les mises à jour", en: "Check for updates" },
+  "Install update": { fr: "Installer la mise à jour", en: "Install update" },
+  "Up to date": { fr: "À jour", en: "Up to date" },
+  "Key": { fr: "Clé", en: "Key" },
+  "Mode": { fr: "Mode", en: "Mode" },
+  "Editable": { fr: "Modifiable", en: "Editable" },
+  "Read only": { fr: "Lecture seule", en: "Read only" },
+  "Used by": { fr: "Utilisé par", en: "Used by" },
+  "No agents attached": { fr: "Aucun agent attaché", en: "No agents attached" },
+  "Code": { fr: "Code", en: "Code" },
+  "Select a file to inspect.": { fr: "Sélectionnez un fichier à inspecter.", en: "Select a file to inspect." },
+  "No skills match this filter.": { fr: "Aucune compétence ne correspond à ce filtre.", en: "No skills match this filter." },
+  "Add a skill source": { fr: "Ajouter une source de compétence", en: "Add a skill source" },
+  "Paste a local path, GitHub URL, or skills.sh command into the field first.": {
+    fr: "Collez d'abord un chemin local, URL GitHub ou commande skills.sh dans le champ.",
+    en: "Paste a local path, GitHub URL, or skills.sh command into the field first."
+  },
+  "Browse skills.sh": { fr: "Parcourir skills.sh", en: "Browse skills.sh" },
+  "Find install commands and paste one here.": {
+    fr: "Trouvez les commandes d'installation et collez-en une ici.",
+    en: "Find install commands and paste one here."
+  },
+  "Search GitHub": { fr: "Rechercher sur GitHub", en: "Search GitHub" },
+  "Look for repositories with SKILL.md, then paste the repo URL here.": {
+    fr: "Cherchez des dépôts avec SKILL.md, puis collez l'URL du dépôt ici.",
+    en: "Look for repositories with SKILL.md, then paste the repo URL here."
+  },
+  "Stop editing": { fr: "Arrêter l'édition", en: "Stop editing" },
+  "Copied path to workspace": { fr: "Chemin copié dans le presse-papiers", en: "Copied path to workspace" },
+  "Detail": { fr: "Détail", en: "Detail" },
+  "found": { fr: "trouvé(s)", en: "found" },
+  "imported": { fr: "importé(s)", en: "imported" },
+  "conflicts": { fr: "conflits", en: "conflicts" },
+  "skipped": { fr: "ignoré(s)", en: "skipped" },
+  "Enabled": { fr: "Activé", en: "Enabled" },
+  "Archived": { fr: "Archivé", en: "Archived" },
+  "Agent": { fr: "Agent", en: "Agent" },
+
+  // ── Missing keys from CompanySkills toasts ─────────────────────────────
+  "Skills imported": { fr: "Compétences importées", en: "Skills imported" },
+  "Import warnings": { fr: "Avertissements d'import", en: "Import warnings" },
+  "Skill import failed": { fr: "Échec de l'import de compétence", en: "Skill import failed" },
+  "Failed to import skill source.": { fr: "Échec de l'import de la source de compétence.", en: "Failed to import skill source." },
+  "Skill created": { fr: "Compétence créée", en: "Skill created" },
+  "is now editable in the Baaraly workspace.": {
+    fr: "est maintenant modifiable dans l'espace de travail Baaraly.",
+    en: "is now editable in the Baaraly workspace."
+  },
+  "Skill creation failed": { fr: "Échec de la création de compétence", en: "Skill creation failed" },
+  "Failed to create skill.": { fr: "Échec de la création de la compétence.", en: "Failed to create skill." },
+  "Scanning project workspaces for skills...": {
+    fr: "Analyse des espaces de travail pour les compétences...",
+    en: "Scanning project workspaces for skills..."
+  },
+  "Refreshing skills list...": { fr: "Actualisation de la liste des compétences...", en: "Refreshing skills list..." },
+  "Project skill scan complete": { fr: "Analyse des compétences terminée", en: "Project skill scan complete" },
+  "Skill conflicts found": { fr: "Conflits de compétences détectés", en: "Skill conflicts found" },
+  "Scan warnings": { fr: "Avertissements d'analyse", en: "Scan warnings" },
+  "Project skill scan failed": { fr: "Échec de l'analyse des compétences", en: "Project skill scan failed" },
+  "Failed to scan project workspaces.": { fr: "Échec de l'analyse des espaces de travail.", en: "Failed to scan project workspaces." },
+  "Skill saved": { fr: "Compétence sauvegardée", en: "Skill saved" },
+  "Save failed": { fr: "Échec de la sauvegarde", en: "Save failed" },
+  "Failed to save skill file.": { fr: "Échec de la sauvegarde du fichier de compétence.", en: "Failed to save skill file." },
+  "Skill updated": { fr: "Compétence mise à jour", en: "Skill updated" },
+  "Update failed": { fr: "Échec de la mise à jour", en: "Update failed" },
+  "Failed to install skill update.": { fr: "Échec de l'installation de la mise à jour.", en: "Failed to install skill update." },
 };
 
 /** Renvoie la traduction pour la clé donnée dans la langue choisie.
