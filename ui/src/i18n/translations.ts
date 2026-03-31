@@ -275,7 +275,6 @@ export const translations: Record<string, Record<Language, string>> = {
     fr: "L'import et l'export ont été déplacés vers des pages dédiées accessibles depuis le",
     en: "Import and export have moved to dedicated pages accessible from the"
   },
-  "Org Chart": { fr: "Organigramme", en: "Org Chart" },
   "header.": { fr: "en-tête.", en: "header." },
   "Export": { fr: "Exporter", en: "Export" },
   "Import": { fr: "Importer", en: "Import" },
@@ -385,12 +384,9 @@ export const translations: Record<string, Record<Language, string>> = {
   "Skip": { fr: "Passer", en: "Skip" },
 
   // ── Generic status ─────────────────────────────────────────────────────────
-  "Active": { fr: "Actif", en: "Active" },
   "Inactive": { fr: "Inactif", en: "Inactive" },
-  "Enabled": { fr: "Activé", en: "Enabled" },
   "Disabled": { fr: "Désactivé", en: "Disabled" },
   "Pending": { fr: "En attente", en: "Pending" },
-  "Archived": { fr: "Archivé", en: "Archived" },
   "Draft": { fr: "Brouillon", en: "Draft" },
   "Published": { fr: "Publié", en: "Published" },
 
@@ -438,7 +434,6 @@ export const translations: Record<string, Record<Language, string>> = {
   "All types": { fr: "Tous les types", en: "All types" },
 
   // ── Agents — LiveRunIndicator ───────────────────────────────────────────────
-  "Live": { fr: "En direct", en: "Live" },
 
   // ── NotFound ────────────────────────────────────────────────────────────────
   "No company matches the prefix": { fr: "Aucune entreprise ne correspond au préfixe", en: "No company matches the prefix" },
@@ -489,14 +484,9 @@ export const translations: Record<string, Record<Language, string>> = {
     en: "After creation, Baaraly takes you directly to the trigger configuration."
   },
   "Creating...": { fr: "Création...", en: "Creating..." },
-  "Create routine": { fr: "Créer une routine", en: "Create routine" },
   "Failed to create routine": { fr: "Échec de la création de la routine", en: "Failed to create routine" },
   "Failed to load routines": { fr: "Échec du chargement des routines", en: "Failed to load routines" },
-  "Name": { fr: "Nom", en: "Name" },
-  "Agent": { fr: "Agent", en: "Agent" },
   "Last run": { fr: "Dernière exécution", en: "Last run" },
-  "Enabled": { fr: "Activé", en: "Enabled" },
-  "Archived": { fr: "Archivée", en: "Archived" },
   "Paused": { fr: "En pause", en: "Paused" },
   "Yes": { fr: "Oui", en: "Yes" },
   "No": { fr: "Non", en: "No" },
@@ -504,7 +494,6 @@ export const translations: Record<string, Record<Language, string>> = {
   "Run now": { fr: "Exécuter maintenant", en: "Run now" },
   "Pause": { fr: "Mettre en pause", en: "Pause" },
   "Activate": { fr: "Activer", en: "Activate" },
-  "Never": { fr: "Jamais", en: "Never" },
   "Advanced delivery settings": { fr: "Paramètres avancés de livraison", en: "Advanced delivery settings" },
   "Keep policy controls secondary to the work definition.": {
     fr: "Gardez les contrôles de politique secondaires par rapport à la définition du travail.",
@@ -523,6 +512,46 @@ export const translations: Record<string, Record<Language, string>> = {
     fr: "L'import et l'export ont été déplacés vers des pages dédiées accessibles depuis l'en-tête de l'organigramme.",
     en: "Import and export have moved to dedicated pages accessible from the Org Chart header."
   },
+
+  // ── Phase 4B — Credits & Monetization ─────────────────────────────────────
+  "Credits": { fr: "Crédits", en: "Credits" },
+  "Credits exhausted": { fr: "Crédits épuisés", en: "Credits exhausted" },
+  "Running low": { fr: "Bientôt épuisé", en: "Running low" },
+  "credits remaining": { fr: "crédits restants", en: "credits remaining" },
+  "Credits exhausted — Recharge to continue": {
+    fr: "Crédits épuisés — Rechargez pour continuer",
+    en: "Credits exhausted — Recharge to continue"
+  },
+  "Recharge": { fr: "Recharger", en: "Recharge" },
+  "Recharge my credits": { fr: "Recharger mes crédits", en: "Recharge my credits" },
+  "Choose a pack and payment method": {
+    fr: "Choisissez un pack et un moyen de paiement",
+    en: "Choose a pack and payment method"
+  },
+  "credits": { fr: "crédits", en: "credits" },
+  "Payment method": { fr: "Moyen de paiement", en: "Payment method" },
+  "Secure payment": { fr: "Paiement sécurisé", en: "Secure payment" },
+  "Processing...": { fr: "Traitement en cours...", en: "Processing..." },
+  "Confirm payment": { fr: "Confirmer le paiement", en: "Confirm payment" },
+  "Payment failed. Please try again.": {
+    fr: "Le paiement a échoué. Veuillez réessayer.",
+    en: "Payment failed. Please try again."
+  },
+  "Recharge successful!": { fr: "Recharge réussie !", en: "Recharge successful!" },
+
+  // ── Phase 4B — Template Gallery ───────────────────────────────────────────
+  "Choose your first agent": { fr: "Choisissez votre premier agent", en: "Choose your first agent" },
+  "Each agent is specialized for your activity.": {
+    fr: "Chaque agent est spécialisé pour votre activité.",
+    en: "Each agent is specialized for your activity."
+  },
+  "Recruit": { fr: "Recruter", en: "Recruit" },
+  "Recruiting...": { fr: "Recrutement...", en: "Recruiting..." },
+  "Failed to recruit agent. Please try again.": {
+    fr: "Échec du recrutement. Veuillez réessayer.",
+    en: "Failed to recruit agent. Please try again."
+  },
+  "Templates": { fr: "Modèles", en: "Templates" },
 };
 
 /** Renvoie la traduction pour la clé donnée dans la langue choisie.

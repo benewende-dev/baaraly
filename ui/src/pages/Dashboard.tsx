@@ -22,6 +22,7 @@ import { timeAgo } from "../lib/timeAgo";
 import { formatCents } from "../lib/utils";
 import { Bot, CircleDot, DollarSign, ShieldCheck, LayoutDashboard, PauseCircle } from "lucide-react";
 import { ActiveAgentsPanel } from "../components/ActiveAgentsPanel";
+import { CreditBalance } from "../components/CreditBalance";
 import { ChartCard, RunActivityChart, PriorityChart, IssueStatusChart, SuccessRateChart } from "../components/ActivityCharts";
 import { PageSkeleton } from "../components/PageSkeleton";
 import type { Agent, Issue } from "@paperclipai/shared";
@@ -208,7 +209,10 @@ export function Dashboard() {
         </div>
       )}
 
-      <ActiveAgentsPanel companyId={selectedCompanyId!} />
+      <div className="grid md:grid-cols-[1fr_280px] gap-4">
+        <ActiveAgentsPanel companyId={selectedCompanyId!} />
+        <CreditBalance companyId={selectedCompanyId!} />
+      </div>
 
       {data && (
         <>
