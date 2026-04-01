@@ -857,6 +857,11 @@ export function AgentDetail() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500" />
               </span>
               <span className="text-[11px] font-medium text-blue-600 dark:text-blue-400">Live</span>
+              {isPendingApproval && (
+                <span className="shrink-0 rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-medium text-amber-500">
+                  {t("en attente")}
+                </span>
+              )}
             </Link>
           )}
 
