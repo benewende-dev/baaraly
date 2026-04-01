@@ -4,6 +4,7 @@ import { useNavigate } from "@/lib/router";
 import { agentsApi } from "../api/agents";
 import { useCompany } from "../context/CompanyContext";
 import { useLanguage } from "../context/LanguageContext";
+import { useToast } from "../context/ToastContext";
 import { BAARALY_AGENTS } from "@paperclipai/shared/baaraly-agents";
 import type { BaaralyAgentDefinition } from "@paperclipai/shared/baaraly-agents";
 import { queryKeys } from "../lib/queryKeys";
@@ -11,6 +12,7 @@ import { queryKeys } from "../lib/queryKeys";
 export function TemplateGallery() {
   const { selectedCompanyId } = useCompany();
   const { t } = useLanguage();
+  const { pushToast } = useToast();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [recruitingAgent, setRecruitingAgent] = useState<string | null>(null);
@@ -36,12 +38,16 @@ export function TemplateGallery() {
         },
       });
     },
-    onSuccess: (data) => {
+    onSuccess: (_data, agent) => {
       if (selectedCompanyId) {
         queryClient.invalidateQueries({ queryKey: queryKeys.agents.list(selectedCompanyId) });
       }
-      const agentId = data.agent.urlKey ?? data.agent.id;
-      navigate(`/agents/${agentId}`);
+      pushToast({
+        tone: "success",
+        title: `${agent.name} ${t("a été ajouté à ton équipe")}`,
+        body: t("On s'occupe du reste 👍"),
+      });
+      navigate("/dashboard");
     },
     onSettled: () => {
       setRecruitingAgent(null);
@@ -56,9 +62,9 @@ export function TemplateGallery() {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2">
-        <h2 className="text-xl font-bold">{t("Choose your first agent")}</h2>
+        <h2 className="text-xl font-bold">{t("Choisis ton premier assistant")}</h2>
         <p className="text-sm text-muted-foreground">
-          {t("Each agent is specialized for your activity.")}
+          {t("Ils travaillent pour toi automatiquement")}
         </p>
       </div>
 
@@ -80,6 +86,18 @@ export function TemplateGallery() {
               >
                 {agent.emoji}
               </div>
+
+              {/* Badges */}
+              {agent.name === "Aminata" && (
+                <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-500 mb-2">
+                  {t("Recommandé")}
+                </span>
+              )}
+              {agent.name === "Ibrahim" && (
+                <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-500 mb-2">
+                  Business
+                </span>
+              )}
 
               {/* Name */}
               <p className="text-lg font-bold mb-1">{agent.name}</p>
@@ -111,13 +129,13 @@ export function TemplateGallery() {
               <button
                 onClick={() => handleRecruit(agent)}
                 disabled={isRecruiting || hireMutation.isPending}
-                className="w-full py-3 rounded-xl text-white font-semibold text-sm transition-all disabled:opacity-50 hover:opacity-90"
+                className="w-full min-h-[48px] py-3 rounded-xl text-white font-semibold text-sm transition-all disabled:opacity-50 hover:opacity-90"
                 style={{ backgroundColor: agent.color }}
-                title={`${t("Recruit")} ${agent.name}`}
+                title={`${t("Ajouter")} ${agent.name}`}
               >
                 {isRecruiting
-                  ? t("Recruiting...")
-                  : `${t("Recruit")} ${agent.name}`}
+                  ? t("Recrutement...")
+                  : `${t("Ajouter")} ${agent.name}`}
               </button>
             </div>
           );
@@ -126,7 +144,7 @@ export function TemplateGallery() {
 
       {hireMutation.isError && (
         <p className="text-sm text-red-500 text-center">
-          {t("Failed to recruit agent. Please try again.")}
+          {t("Échec du recrutement. Réessaie.")}
         </p>
       )}
     </div>

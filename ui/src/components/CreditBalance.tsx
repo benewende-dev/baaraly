@@ -6,9 +6,10 @@ import { RechargeModal } from "./RechargeModal";
 
 interface CreditBalanceProps {
   companyId: string;
+  compact?: boolean;
 }
 
-export function CreditBalance({ companyId }: CreditBalanceProps) {
+export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
   const { t } = useLanguage();
   const [showRecharge, setShowRecharge] = useState(false);
 
@@ -24,6 +25,32 @@ export function CreditBalance({ companyId }: CreditBalanceProps) {
   const isEmpty = credits === 0;
 
   const progressPercent = Math.min(100, (credits / 500) * 100);
+
+  if (compact) {
+    return (
+      <>
+        <button
+          onClick={() => setShowRecharge(true)}
+          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors hover:bg-accent/50 ${
+            isEmpty
+              ? "border-red-500/30 bg-red-500/5 text-red-500"
+              : isLow
+                ? "border-orange-500/30 bg-orange-500/5 text-orange-500"
+                : "border-border bg-card"
+          }`}
+        >
+          <span>💰</span>
+          <span>{fcfa.toLocaleString("fr-FR")} FCFA</span>
+        </button>
+        <RechargeModal
+          open={showRecharge}
+          onOpenChange={setShowRecharge}
+          companyId={companyId}
+          onSuccess={() => refetch()}
+        />
+      </>
+    );
+  }
 
   return (
     <>

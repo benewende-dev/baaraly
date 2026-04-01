@@ -222,8 +222,8 @@ export function Agents() {
       {agents && agents.length === 0 && (
         <EmptyState
           icon={Bot}
-          message={t("Create your first agent to get started.")}
-          action={t("New Agent")}
+          message={t("Ils travaillent pendant que tu dors \uD83D\uDCA1")}
+          action={t("Cr\u00e9er mon premier agent")}
           onAction={openNewAgent}
         />
       )}

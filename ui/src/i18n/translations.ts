@@ -834,6 +834,78 @@ export const translations: Record<string, Record<Language, string>> = {
   "Skill updated": { fr: "Compétence mise à jour", en: "Skill updated" },
   "Update failed": { fr: "Échec de la mise à jour", en: "Update failed" },
   "Failed to install skill update.": { fr: "Échec de l'installation de la mise à jour.", en: "Failed to install skill update." },
+
+  // ── Phase 4C — Dashboard simplifié ─────────────────────────────────────
+  "Bonjour": { fr: "Bonjour", en: "Hello" },
+  "Que veux-tu faire aujourd'hui ?": {
+    fr: "Que veux-tu faire aujourd'hui ?",
+    en: "What do you want to do today?"
+  },
+  "Gérer ma boutique": { fr: "Gérer ma boutique", en: "Manage my shop" },
+  "Trouver des clients": { fr: "Trouver des clients", en: "Find customers" },
+  "Voir mes finances": { fr: "Voir mes finances", en: "View my finances" },
+  "Tes agents": { fr: "Tes agents", en: "Your agents" },
+  "Tu n'as pas encore d'agent": {
+    fr: "Tu n'as pas encore d'agent",
+    en: "You don't have any agent yet"
+  },
+  "Choisir un agent": { fr: "Choisir un agent", en: "Choose an agent" },
+  "Ouvrir": { fr: "Ouvrir", en: "Open" },
+  "Lancer un agent": { fr: "Lancer un agent", en: "Launch an agent" },
+  "Bienvenue sur Baaraly ! Configure ton premier assistant.": {
+    fr: "Bienvenue sur Baaraly ! Configure ton premier assistant.",
+    en: "Welcome to Baaraly! Set up your first assistant."
+  },
+  "Commencer": { fr: "Commencer", en: "Get Started" },
+  "Sélectionne une entreprise pour commencer.": {
+    fr: "Sélectionne une entreprise pour commencer.",
+    en: "Select a company to get started."
+  },
+
+  // ── Phase 4C — Agents page ─────────────────────────────────────────────
+  "Ils travaillent pendant que tu dors 💡": {
+    fr: "Ils travaillent pendant que tu dors 💡",
+    en: "They work while you sleep 💡"
+  },
+  "Créer mon premier agent": { fr: "Créer mon premier agent", en: "Create my first agent" },
+
+  // ── Phase 4C — Template Gallery ────────────────────────────────────────
+  "Choisis ton premier assistant": {
+    fr: "Choisis ton premier assistant",
+    en: "Choose your first assistant"
+  },
+  "Ils travaillent pour toi automatiquement": {
+    fr: "Ils travaillent pour toi automatiquement",
+    en: "They work for you automatically"
+  },
+  "Recommandé": { fr: "Recommandé", en: "Recommended" },
+  "Ajouter": { fr: "Ajouter", en: "Add" },
+  "Recrutement...": { fr: "Recrutement...", en: "Recruiting..." },
+  "a été ajouté à ton équipe": {
+    fr: "a été ajouté à ton équipe",
+    en: "has been added to your team"
+  },
+  "On s'occupe du reste 👍": {
+    fr: "On s'occupe du reste 👍",
+    en: "We'll take care of the rest 👍"
+  },
+  "Échec du recrutement. Réessaie.": {
+    fr: "Échec du recrutement. Réessaie.",
+    en: "Recruitment failed. Try again."
+  },
+
+  // ── Phase 4C — Onboarding 3 étapes ─────────────────────────────────────
+  "Quel est ton activité ?": { fr: "Quel est ton activité ?", en: "What's your business?" },
+  "On adapte tout pour toi": { fr: "On adapte tout pour toi", en: "We'll adapt everything for you" },
+  "Où es-tu basé ?": { fr: "Où es-tu basé ?", en: "Where are you based?" },
+  "Pour adapter les prix et les services": {
+    fr: "Pour adapter les prix et les services",
+    en: "To adapt prices and services"
+  },
+  "Retour": { fr: "Retour", en: "Back" },
+  "Ton assistant est prêt": { fr: "Ton assistant est prêt", en: "Your assistant is ready" },
+  "Erreur": { fr: "Erreur", en: "Error" },
+  "Une erreur est survenue": { fr: "Une erreur est survenue", en: "An error occurred" },
 };
 
 /** Renvoie la traduction pour la clé donnée dans la langue choisie.
