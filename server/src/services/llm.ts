@@ -9,6 +9,40 @@ import { logger } from "../middleware/logger.js";
 import { getFallbackModel } from "./aiRouter.js";
 
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
+const MAX_TOKENS_HARD_LIMIT = 4096;
+
+// ── Simple in-memory cache (TÂCHE 7) ──────────────────────────────
+const CACHE_MAX_SIZE = 128;
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+interface CacheEntry {
+  result: GenerateResponseOutput;
+  expiresAt: number;
+}
+
+const responseCache = new Map<string, CacheEntry>();
+
+function cacheKey(model: string, messages: LLMMessage[]): string {
+  return `${model}::${JSON.stringify(messages)}`;
+}
+
+function getCached(key: string): GenerateResponseOutput | null {
+  const entry = responseCache.get(key);
+  if (!entry) return null;
+  if (Date.now() > entry.expiresAt) {
+    responseCache.delete(key);
+    return null;
+  }
+  return entry.result;
+}
+
+function setCache(key: string, result: GenerateResponseOutput) {
+  if (responseCache.size >= CACHE_MAX_SIZE) {
+    const oldest = responseCache.keys().next().value;
+    if (oldest !== undefined) responseCache.delete(oldest);
+  }
+  responseCache.set(key, { result, expiresAt: Date.now() + CACHE_TTL_MS });
+}
 
 export interface LLMTool {
   type: "function";
@@ -137,6 +171,9 @@ async function callOpenRouter(
  * Automatically falls back to a cheaper model on error.
  */
 export async function generateResponse(input: GenerateResponseInput): Promise<GenerateResponseOutput> {
+  // Enforce hard token limit (TÂCHE 7)
+  const safeMaxTokens = Math.min(input.maxTokens ?? 2048, MAX_TOKENS_HARD_LIMIT);
+
   const messages: LLMMessage[] = [];
 
   if (input.systemPrompt) {
@@ -149,6 +186,14 @@ export async function generateResponse(input: GenerateResponseInput): Promise<Ge
     messages.push({ role: "user", content: input.prompt });
   }
 
+  // Check cache (TÂCHE 7)
+  const key = cacheKey(input.model, messages);
+  const cached = getCached(key);
+  if (cached) {
+    logger.info({ model: input.model, cache: "hit" }, "LLM cache hit");
+    return cached;
+  }
+
   let currentModel = input.model;
   let fallbackUsed = false;
 
@@ -157,7 +202,7 @@ export async function generateResponse(input: GenerateResponseInput): Promise<Ge
     try {
       const { response, durationMs } = await callOpenRouter(currentModel, messages, {
         tools: input.tools,
-        maxTokens: input.maxTokens,
+        maxTokens: safeMaxTokens,
         temperature: input.temperature,
       });
 
@@ -181,15 +226,22 @@ export async function generateResponse(input: GenerateResponseInput): Promise<Ge
         "LLM response received",
       );
 
-      return {
+      const output: GenerateResponseOutput = {
         content,
         model: response.model ?? currentModel,
         toolCalls,
         usage: { inputTokens, outputTokens, totalTokens },
         durationMs,
-        costUsd: null, // OpenRouter may provide this in the future
+        costUsd: null,
         fallbackUsed,
       };
+
+      // Store in cache (TÂCHE 7)
+      if (!input.tools || input.tools.length === 0) {
+        setCache(key, output);
+      }
+
+      return output;
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       logger.warn({ model: currentModel, error: message, attempt }, "LLM call failed");
@@ -233,4 +285,14 @@ export async function generateText(
     durationMs: result.durationMs,
     model: result.model,
   };
+}
+
+// TÂCHE 8 — Viral Loop signature
+export const BAARALY_SIGNATURE = "\n\n---\nEnvoyé avec Baaraly \uD83E\uDD16";
+
+/**
+ * Append Baaraly viral signature to outgoing text.
+ */
+export function withSignature(text: string): string {
+  return text + BAARALY_SIGNATURE;
 }

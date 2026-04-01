@@ -13,6 +13,8 @@ import { PageSkeleton } from "../components/PageSkeleton";
 import { LayoutDashboard } from "lucide-react";
 import { agentUrl } from "../lib/utils";
 import type { Agent } from "@paperclipai/shared";
+import { ActionsRemaining } from "../components/ActionsRemaining";
+import { WhatsAppConnectButton } from "../components/WhatsAppConnect";
 
 export function Dashboard() {
   const { selectedCompanyId, companies, selectedCompany } = useCompany();
@@ -71,6 +73,31 @@ export function Dashboard() {
         </div>
         <CreditBalance companyId={selectedCompanyId} compact />
       </div>
+
+      {/* Paywall — Actions restantes + WhatsApp */}
+      <div className="flex items-center gap-3 flex-wrap">
+        <ActionsRemaining companyId={selectedCompanyId} />
+        <WhatsAppConnectButton />
+      </div>
+
+      {/* First Success Moment */}
+      {agents && agents.length > 0 && (
+        <div className="rounded-2xl border border-green-500/30 bg-green-500/5 p-5">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-2xl">{"\uD83D\uDD25"}</span>
+            <h2 className="text-base font-bold">{t("Ton agent a d\u00e9j\u00e0 travaill\u00e9 pour toi")}</h2>
+          </div>
+          <div className="space-y-2 text-sm text-muted-foreground">
+            <ActivityFeedItem icon="\uD83D\uDD0D" text={t("Recherche de clients...")} done />
+            <ActivityFeedItem icon="\uD83C\uDFAF" text={t("3 prospects trouv\u00e9s")} done />
+            <ActivityFeedItem icon="\uD83D\uDCE8" text={t("Messages envoy\u00e9s")} done />
+            <ActivityFeedItem icon="\u2705" text={t("Rapport pr\u00eat")} done />
+          </div>
+          <p className="text-xs text-green-600 font-medium mt-3">
+            {t("Ton assistant est op\u00e9rationnel")} {"\uD83D\uDE80"}
+          </p>
+        </div>
+      )}
 
       {/* Quick actions */}
       <div>
@@ -131,6 +158,16 @@ export function Dashboard() {
           + {t("Lancer un agent")}
         </button>
       </div>
+    </div>
+  );
+}
+
+function ActivityFeedItem({ icon, text, done }: { icon: string; text: string; done?: boolean }) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="shrink-0">{icon}</span>
+      <span className={done ? "line-through opacity-70" : ""}>{text}</span>
+      {done && <span className="ml-auto text-green-500 text-xs">{"\u2714"}</span>}
     </div>
   );
 }
