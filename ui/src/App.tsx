@@ -40,6 +40,7 @@ import { OrgChart } from "./pages/OrgChart";
 import { NewAgent } from "./pages/NewAgent";
 import { AgentTemplates } from "./pages/AgentTemplates";
 import { BaaralyOnboarding } from "./pages/BaaralyOnboarding";
+import { Landing } from "./pages/Landing";
 import { AuthPage } from "./pages/Auth";
 import { BoardClaimPage } from "./pages/BoardClaim";
 import { CliAuthPage } from "./pages/CliAuth";
@@ -252,9 +253,9 @@ function CompanyRootRedirect() {
         hasCompanies: false,
       })
     ) {
-      return <Navigate to="/onboarding" replace />;
+      return <Navigate to="/landing" replace />;
     }
-    return <NoCompaniesStartPage />;
+    return <Navigate to="/landing" replace />;
   }
 
   return <Navigate to={`/${targetCompany.issuePrefix}/dashboard`} replace />;
@@ -271,15 +272,7 @@ function UnprefixedBoardRedirect() {
 
   const targetCompany = selectedCompany ?? companies[0] ?? null;
   if (!targetCompany) {
-    if (
-      shouldRedirectCompanylessRouteToOnboarding({
-        pathname: location.pathname,
-        hasCompanies: false,
-      })
-    ) {
-      return <Navigate to="/onboarding" replace />;
-    }
-    return <NoCompaniesStartPage />;
+    return <Navigate to="/landing" replace />;
   }
 
   return (
@@ -291,22 +284,7 @@ function UnprefixedBoardRedirect() {
 }
 
 function NoCompaniesStartPage() {
-  const { openOnboarding } = useDialog();
-  const { t } = useLanguage();
-
-  return (
-    <div className="mx-auto max-w-xl py-10">
-      <div className="rounded-lg border border-border bg-card p-6">
-        <h1 className="text-xl font-semibold">{t("Create your first company")}</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {t("Get started by creating a company.")}
-        </p>
-        <div className="mt-4">
-          <Button onClick={() => openOnboarding()}>{t("New Company")}</Button>
-        </div>
-      </div>
-    </div>
-  );
+  return <Navigate to="/landing" replace />;
 }
 
 export function App() {
@@ -317,6 +295,7 @@ export function App() {
         <Route path="board-claim/:token" element={<BoardClaimPage />} />
         <Route path="cli-auth/:id" element={<CliAuthPage />} />
         <Route path="invite/:token" element={<InviteLandingPage />} />
+        <Route path="landing" element={<Landing />} />
 
         <Route element={<CloudAccessGate />}>
           <Route index element={<CompanyRootRedirect />} />
