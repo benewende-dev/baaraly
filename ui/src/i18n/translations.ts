@@ -1093,15 +1093,12 @@ export const translations: Record<string, Record<Language, string>> = {
   "Multi WhatsApp": { fr: "Multi WhatsApp", en: "Multi WhatsApp" },
   "Rapports avancés": { fr: "Rapports avancés", en: "Advanced reports" },
   "Prioritaire": { fr: "Prioritaire", en: "Priority" },
-  "30 agents": { fr: "30 agents", en: "30 agents" },
-  "200 prospects/jour": { fr: "200 prospects/jour", en: "200 prospects/day" },
   "API access": { fr: "API access", en: "API access" },
   "Multi-entreprise": { fr: "Multi-entreprise", en: "Multi-company" },
   "Support dédié": { fr: "Support dédié", en: "Dedicated support" },
-  "5 prospects/jour, 1 agent, WhatsApp inclus. Sans carte bancaire.": {
-    fr: "5 prospects/jour, 1 agent, WhatsApp inclus. Sans carte bancaire.",
-    en: "5 prospects/day, 1 agent, WhatsApp included. No credit card."
-  },
+  "Sans carte bancaire": { fr: "Sans carte bancaire", en: "No credit card" },
+  "jours gratuits": { fr: "jours gratuits", en: "free days" },
+  "agent": { fr: "agent", en: "agent" },
 };
 
 /** Renvoie la traduction pour la clé donnée dans la langue choisie.

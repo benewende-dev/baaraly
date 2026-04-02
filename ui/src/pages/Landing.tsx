@@ -2,13 +2,18 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "@/lib/router";
 import { useLanguage } from "../context/LanguageContext";
 import { ThemeLangToggle } from "../components/ThemeLangToggle";
-import { BAARALY_BILLING_PLANS, formatPriceFromEur, AGENT_CATEGORIES, BAARALY_AGENTS } from "@paperclipai/shared/baaraly-agents";
+import { BAARALY_BILLING_PLANS, formatPriceFromEur, AGENT_CATEGORIES, BAARALY_AGENTS, getBillingPlan } from "@paperclipai/shared/baaraly-agents";
 
 export function Landing() {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [chatStep, setChatStep] = useState(0);
+
+  // Get trial plan for dynamic values
+  const trialPlan = getBillingPlan("trial");
+  const trialDays = trialPlan.trialDays ?? 7;
+  const trialProspects = trialPlan.maxProspectsPerDay;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -66,7 +71,7 @@ export function Landing() {
           <div className="text-center lg:text-left">
             <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold bg-primary/10 text-primary mb-6 animate-pulse-glow">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              {t("7 jours gratuits")} 🎁
+              {trialDays} {t("jours gratuits")} 🎁
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
               <span className="text-gradient">{t("Un agent IA")}</span>
@@ -92,7 +97,7 @@ export function Landing() {
               </button>
             </div>
             <p className="text-xs text-muted-foreground mt-4">
-              {t("7 jours gratuits · 5 prospects/jour · Sans carte bancaire")}
+              {trialDays} {t("jours gratuits")} · {trialProspects} {t("prospects/jour")} · {t("Sans carte bancaire")}
             </p>
           </div>
 
@@ -264,10 +269,10 @@ export function Landing() {
           <div className="rounded-[22px] bg-background p-8 sm:p-12 text-center">
             <span className="text-sm font-semibold text-primary uppercase tracking-wider">{t("Essai gratuit")}</span>
             <h2 className="text-4xl sm:text-5xl font-extrabold mt-4 mb-2">
-              7 <span className="text-gradient">{t("jours gratuits")}</span>
+              {trialDays} <span className="text-gradient">{t("jours gratuits")}</span>
             </h2>
             <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-              {t("5 prospects/jour, 1 agent, WhatsApp inclus. Sans carte bancaire.")}
+              {trialProspects} {t("prospects/jour, 1 agent, WhatsApp inclus. Sans carte bancaire.")}
             </p>
             <button
               onClick={() => navigate("/welcome")}
@@ -380,10 +385,10 @@ export function Landing() {
             const isTrial = plan.id === "trial";
             const price = formatPriceFromEur(plan.priceEur, undefined);
             const features = isTrial 
-              ? [t("1 agent"), t("5 prospects/jour"), t("WhatsApp inclus"), t("Support email")]
+              ? [`${plan.maxAgents} ${t("agent")}`, `${plan.maxProspectsPerDay} ${t("prospects/jour")}`, t("WhatsApp inclus"), t("Support email")]
               : isPro
-                ? [t("10 agents"), t("50 prospects/jour"), t("Multi WhatsApp"), t("Rapports avancés"), t("Prioritaire")]
-                : [t("30 agents"), t("200 prospects/jour"), t("API access"), t("Multi-entreprise"), t("Support dédié")];
+                ? [`${plan.maxAgents} ${t("agents")}`, `${plan.maxProspectsPerDay} ${t("prospects/jour")}`, t("Multi WhatsApp"), t("Rapports avancés"), t("Prioritaire")]
+                : [`${plan.maxAgents} ${t("agents")}`, `${plan.maxProspectsPerDay} ${t("prospects/jour")}`, t("API access"), t("Multi-entreprise"), t("Support dédié")];
             return (
               <div
                 key={plan.id}
@@ -404,7 +409,7 @@ export function Landing() {
                 <div className="mt-4 mb-6">
                   <span className="text-4xl font-extrabold">{price}</span>
                   <span className={`text-sm ml-1 ${isPro ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                    {isTrial ? t("7 jours") : "€/mois"}
+                    {isTrial ? `${plan.trialDays ?? 7} ${t("jours")}` : "€/mois"}
                   </span>
                 </div>
                 <ul className="space-y-3 mb-6">
@@ -472,7 +477,7 @@ export function Landing() {
             },
             {
               q: t("Puis-je essayer gratuitement ?"),
-              a: t("Oui ! 7 jours gratuits sans carte bancaire pour tester Baaraly."),
+              a: t("Oui !") + ` ${trialDays} ${t("jours gratuits")} ${t("sans carte bancaire pour tester Baaraly")}.`,
             },
           ].map((faq, i) => (
             <FaqItem
