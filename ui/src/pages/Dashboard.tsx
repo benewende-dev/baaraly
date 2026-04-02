@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Link, useNavigate } from "@/lib/router";
 import { useQuery } from "@tanstack/react-query";
 import { agentsApi } from "../api/agents";
@@ -16,6 +16,12 @@ import type { Agent } from "@paperclipai/shared";
 import { ActionsRemaining } from "../components/ActionsRemaining";
 import { WhatsAppConnectButton } from "../components/WhatsAppConnect";
 
+interface WaNumber {
+  code: string;
+  number: string;
+  verified?: boolean;
+}
+
 export function Dashboard() {
   const { selectedCompanyId, companies, selectedCompany } = useCompany();
   const { setBreadcrumbs } = useBreadcrumbs();
@@ -27,6 +33,23 @@ export function Dashboard() {
     queryFn: () => agentsApi.list(selectedCompanyId!),
     enabled: !!selectedCompanyId,
   });
+
+  const waNumbers = useMemo<WaNumber[]>(() => {
+    if (!agents) return [];
+    const all: WaNumber[] = [];
+    for (const agent of agents) {
+      const meta = (agent.metadata ?? {}) as Record<string, unknown>;
+      const nums = meta.whatsappNumbers as WaNumber[] | undefined;
+      if (nums && Array.isArray(nums)) {
+        for (const n of nums) {
+          if (!all.find((x) => x.code === n.code && x.number === n.number)) {
+            all.push(n);
+          }
+        }
+      }
+    }
+    return all;
+  }, [agents]);
 
   useEffect(() => {
     setBreadcrumbs([{ label: t("Dashboard") }]);
@@ -85,8 +108,30 @@ export function Dashboard() {
       {/* Paywall — Actions restantes + WhatsApp */}
       <div className="flex items-center gap-3 flex-wrap">
         <ActionsRemaining companyId={selectedCompanyId} />
-        <WhatsAppConnectButton />
+        {waNumbers.length > 0 ? (
+          <div className="flex items-center gap-2 rounded-xl border border-green-500/30 bg-green-500/5 px-4 py-2.5">
+            <span className="text-sm">📱</span>
+            <div>
+              <p className="text-xs font-semibold text-green-600">{t("WhatsApp connecté")}</p>
+              <p className="text-[10px] text-muted-foreground">
+                {waNumbers.map((n) => `${n.code} ${n.number}`).join(", ")}
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                const el = document.getElementById("wa-connect");
+                el?.click();
+              }}
+              className="ml-2 text-xs text-primary hover:underline"
+            >
+              + {t("Ajouter")}
+            </button>
+          </div>
+        ) : (
+          <WhatsAppConnectButton />
+        )}
       </div>
+      <div id="wa-connect" className="hidden"><WhatsAppConnectButton /></div>
 
       {/* First Success Moment / Welcome */}
       {agents && agents.length > 0 && (

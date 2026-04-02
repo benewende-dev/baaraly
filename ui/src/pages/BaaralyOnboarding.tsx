@@ -38,6 +38,21 @@ const COUNTRIES = [
   { id: "mr", flag: "🇲🇷", label: "Mauritanie" },
 ];
 
+const WHATSAPP_COUNTRIES = [
+  { code: "+226", flag: "🇧🇫", name: "Burkina Faso" },
+  { code: "+223", flag: "🇲🇱", name: "Mali" },
+  { code: "+221", flag: "🇸🇳", name: "Sénégal" },
+  { code: "+225", flag: "🇨🇮", name: "Côte d'Ivoire" },
+  { code: "+227", flag: "🇳🇪", name: "Niger" },
+  { code: "+229", flag: "🇧🇯", name: "Bénin" },
+  { code: "+228", flag: "🇹🇬", name: "Togo" },
+  { code: "+233", flag: "🇬🇭", name: "Ghana" },
+  { code: "+234", flag: "🇳🇬", name: "Nigeria" },
+  { code: "+237", flag: "🇨🇲", name: "Cameroun" },
+  { code: "+241", flag: "🇬🇦", name: "Gabon" },
+  { code: "+224", flag: "🇬🇳", name: "Guinée" },
+];
+
 export function BaaralyOnboarding() {
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -60,6 +75,11 @@ export function BaaralyOnboarding() {
 
   // Step 4 - Agent choice
   const [selectedAgent, setSelectedAgent] = useState<BaaralyAgentDefinition | null>(null);
+
+  // WhatsApp phone
+  const [waPhone, setWaPhone] = useState("");
+  const [waCountry, setWaCountry] = useState(WHATSAPP_COUNTRIES[0]);
+  const [showWaCountryPicker, setShowWaCountryPicker] = useState(false);
 
   // Loading state
   const [loading, setLoading] = useState(false);
@@ -107,6 +127,10 @@ export function BaaralyOnboarding() {
           businessType: businessType,
           country: country,
           companyMission: companyMission.trim() || undefined,
+          // WhatsApp number
+          whatsappNumbers: waPhone.trim().length >= 6
+            ? [{ code: waCountry.code, number: waPhone.trim(), verified: false }]
+            : undefined,
         },
       });
 
@@ -115,7 +139,9 @@ export function BaaralyOnboarding() {
       pushToast({
         tone: "success",
         title: `${t("Tout est prêt !")} 🚀`,
-        body: `${selectedAgent.name} ${t("est prêt à travailler pour")} ${finalCompanyName}`,
+        body: waPhone.trim().length >= 6
+          ? `${selectedAgent.name} ${t("est prêt. WhatsApp connecté :")} ${waCountry.code} ${waPhone.trim()}`
+          : `${selectedAgent.name} ${t("est prêt à travailler pour")} ${finalCompanyName}`,
       });
 
       const companyPrefix = company.issuePrefix;
@@ -420,6 +446,61 @@ export function BaaralyOnboarding() {
                   <p className="text-xs text-muted-foreground">{t("Assistant")}</p>
                   <p className="font-semibold">{selectedAgent.name}</p>
                 </div>
+              </div>
+
+              {/* WhatsApp number */}
+              <div className="pt-2 border-t border-border">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center">
+                    <span className="text-lg">📱</span>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">{t("WhatsApp")} <span className="text-xs text-muted-foreground">({t("optionnel")})</span></p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setShowWaCountryPicker(!showWaCountryPicker)}
+                      className="inline-flex items-center gap-1 rounded-lg border border-border bg-muted px-2.5 py-2 text-sm hover:bg-accent transition-colors"
+                    >
+                      <span>{waCountry.flag}</span>
+                      <span>{waCountry.code}</span>
+                      <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                    {showWaCountryPicker && (
+                      <div className="absolute top-full left-0 mt-1 z-50 w-56 max-h-52 overflow-y-auto rounded-xl border border-border bg-popover shadow-lg">
+                        {WHATSAPP_COUNTRIES.map((c) => (
+                          <button
+                            key={c.code}
+                            type="button"
+                            onClick={() => { setWaCountry(c); setShowWaCountryPicker(false); }}
+                            className={`w-full flex items-center gap-3 px-3 py-2 text-left text-sm transition-colors hover:bg-accent ${
+                              waCountry.code === c.code ? "bg-accent font-medium" : ""
+                            }`}
+                          >
+                            <span className="text-base">{c.flag}</span>
+                            <span className="flex-1">{c.name}</span>
+                            <span className="text-muted-foreground">{c.code}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <input
+                    type="tel"
+                    value={waPhone}
+                    onChange={(e) => setWaPhone(e.target.value.replace(/\D/g, ""))}
+                    placeholder="70 00 00 00"
+                    className="flex-1 h-10 px-3 rounded-lg border border-border bg-background text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
+                  />
+                </div>
+                {waPhone.trim().length >= 6 && (
+                  <p className="text-xs text-green-600 mt-2 flex items-center gap-1">
+                    ✔ {waCountry.code} {waPhone.trim()}
+                  </p>
+                )}
               </div>
             </div>
 
