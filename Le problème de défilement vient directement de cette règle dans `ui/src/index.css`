@@ -1,0 +1,5 @@
+body {
+  /* ... */
+  height: 100%;
+  overflow: hidden; /* 👈 C'est ce qui bloque le scroll sur toute la page */
+}

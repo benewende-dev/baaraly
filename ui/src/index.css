@@ -124,8 +124,9 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    height: 100%;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-y: auto;
+    background-image: radial-gradient(ellipse at top, color-mix(in oklab, var(--primary) 10%, transparent), transparent 60%);
   }
   h1,
   h2,
@@ -767,4 +768,20 @@ a.baaraly-project-mention-chip {
 [class*="_toolbarButtonDropdownContainer_"],
 [class*="_toolbarNodeKindSelectContainer_"] {
   z-index: 81 !important;
+}
+
+/* Landing page visual enhancements */
+@layer utilities {
+  .glass-panel {
+    @apply bg-background/60 backdrop-blur-xl border border-border/50 shadow-lg;
+  }
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/80 to-muted-foreground;
+  }
+  .glow-border {
+    box-shadow: 0 0 0 1px var(--border), 0 0 20px -4px color-mix(in oklab, var(--primary) 40%, transparent);
+  }
+  .hover-lift {
+    @apply transition-transform duration-300 ease-out hover:-translate-y-1;
+  }
 }
