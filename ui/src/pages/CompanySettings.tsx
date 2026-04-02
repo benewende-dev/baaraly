@@ -419,17 +419,45 @@ export function CompanySettings() {
         </div>
       </div>
 
-      {/* Invites */}
-      <div className="space-y-4">
-        <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          {t("Invites")}
+      {/* Options avancées */}
+      <details className="group space-y-4">
+        <summary className="flex items-center gap-2 cursor-pointer list-none">
+          <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide group-hover:text-foreground transition-colors">
+            {t("Options avancées")}
+          </div>
+          <svg className="h-3 w-3 text-muted-foreground transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </summary>
+
+        {/* Import / Export */}
+        <div className="rounded-md border border-border px-4 py-4">
+          <p className="text-sm text-muted-foreground">
+            {t("Import and export have moved to dedicated pages accessible from the Org Chart header.")}
+          </p>
+          <div className="mt-3 flex items-center gap-2">
+            <Button size="sm" variant="outline" asChild>
+              <a href="/company/export">
+                <Download className="mr-1.5 h-3.5 w-3.5" />
+                {t("Export")}
+              </a>
+            </Button>
+            <Button size="sm" variant="outline" asChild>
+              <a href="/company/import">
+                <Upload className="mr-1.5 h-3.5 w-3.5" />
+                {t("Import")}
+              </a>
+            </Button>
+          </div>
         </div>
+
+        {/* Invites (OpenClaw) */}
         <div className="space-y-3 rounded-md border border-border px-4 py-4">
           <div className="flex items-center gap-1.5">
             <span className="text-xs text-muted-foreground">
-              {t("Generate an OpenClaw agent invite snippet.")}
+              {t("Générer un snippet d'invitation pour un agent OpenClaw.")}
             </span>
-            <HintIcon text="Creates a short-lived OpenClaw agent invite and renders a copy-ready prompt." />
+            <HintIcon text="Crée une invitation temporaire pour connecter un agent CLI externe (OpenClaw, Claude, Codex) à votre instance." />
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <Button
@@ -489,33 +517,7 @@ export function CompanySettings() {
             </div>
           )}
         </div>
-      </div>
-
-      {/* Import / Export */}
-      <div className="space-y-4">
-        <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          {t("Company Packages")}
-        </div>
-        <div className="rounded-md border border-border px-4 py-4">
-          <p className="text-sm text-muted-foreground">
-            {t("Import and export have moved to dedicated pages accessible from the Org Chart header.")}
-          </p>
-          <div className="mt-3 flex items-center gap-2">
-            <Button size="sm" variant="outline" asChild>
-              <a href="/company/export">
-                <Download className="mr-1.5 h-3.5 w-3.5" />
-                {t("Export")}
-              </a>
-            </Button>
-            <Button size="sm" variant="outline" asChild>
-              <a href="/company/import">
-                <Upload className="mr-1.5 h-3.5 w-3.5" />
-                {t("Import")}
-              </a>
-            </Button>
-          </div>
-        </div>
-      </div>
+       </details>
 
       {/* Danger Zone */}
       <div className="space-y-4">
