@@ -314,6 +314,141 @@ export function Landing() {
         </div>
       </section>
 
+      {/* ── TARIFS ── */}
+      <section
+        id="pricing"
+        data-animate
+        className="relative z-10 px-5 py-24 max-w-4xl mx-auto"
+      >
+        <div className={`text-center mb-12 transition-all duration-700 ${isVisible("pricing") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <span className="text-sm font-semibold text-primary uppercase tracking-wider">{t("Tarifs")}</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
+            {t("Simple et transparent")} 💰
+          </h2>
+          <p className="text-muted-foreground mt-3">{t("Pas d'abonnement. Tu paies ce que tu consommes.")}</p>
+        </div>
+        <div className="grid sm:grid-cols-3 gap-6">
+          {[
+            {
+              name: t("Découverte"),
+              price: "0",
+              desc: t("Pour essayer Baaraly"),
+              features: [t("1 000 FCFA offerts"), t("1 agent IA"), t("Prospection WhatsApp"), t("Rapport basique")],
+              cta: t("Commencer"),
+              highlighted: false,
+            },
+            {
+              name: t("Pro"),
+              price: "5 000",
+              desc: t("Pour les entrepreneurs sérieux"),
+              features: [t("3 agents IA"), t("Prospection avancée"), t("Suivi des clients"), t("Rapports détaillés"), t("Relances automatiques")],
+              cta: t("Choisir Pro"),
+              highlighted: true,
+            },
+            {
+              name: t("Business"),
+              price: "15 000",
+              desc: t("Pour les équipes"),
+              features: [t("Agents illimités"), t("Multi-canaux"), t("CRM intégré"), t("Statistiques avancées"), t("Support prioritaire")],
+              cta: t("Choisir Business"),
+              highlighted: false,
+            },
+          ].map((plan, i) => (
+            <div
+              key={i}
+              className={`rounded-2xl p-6 transition-all duration-700 hover-lift ${
+                plan.highlighted
+                  ? "bg-gradient-to-b from-primary to-secondary text-primary-foreground shadow-xl shadow-primary/20 scale-105 border-0"
+                  : "glass-panel border-border/50"
+              } ${isVisible("pricing") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              style={{ transitionDelay: `${i * 100}ms` }}
+            >
+              {plan.highlighted && (
+                <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider mb-4">
+                  {t("Populaire")}
+                </span>
+              )}
+              <h3 className={`text-lg font-bold ${!plan.highlighted ? "" : ""}`}>{plan.name}</h3>
+              <p className={`text-xs mt-1 ${plan.highlighted ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{plan.desc}</p>
+              <div className="mt-4 mb-6">
+                <span className="text-3xl font-extrabold">{plan.price}</span>
+                <span className={`text-sm ml-1 ${plan.highlighted ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                  {t("FCFA / mois")}
+                </span>
+              </div>
+              <ul className="space-y-3 mb-6">
+                {plan.features.map((f, j) => (
+                  <li key={j} className="flex items-center gap-2 text-sm">
+                    <span className={`shrink-0 ${plan.highlighted ? "text-white" : "text-green-500"}`}>✔</span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => navigate("/welcome")}
+                className={`w-full rounded-xl py-3 text-sm font-semibold transition-all active:scale-[0.98] ${
+                  plan.highlighted
+                    ? "bg-white text-primary hover:bg-white/90"
+                    : "bg-primary text-primary-foreground hover:opacity-90"
+                }`}
+              >
+                {plan.cta}
+              </button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section
+        id="faq"
+        data-animate
+        className="relative z-10 px-5 py-24 max-w-3xl mx-auto"
+      >
+        <div className={`text-center mb-12 transition-all duration-700 ${isVisible("faq") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <span className="text-sm font-semibold text-primary uppercase tracking-wider">FAQ</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
+            {t("Questions fréquentes")} ❓
+          </h2>
+        </div>
+        <div className="space-y-4">
+          {[
+            {
+              q: t("C'est quoi Baaraly exactement ?"),
+              a: t("Baaraly est un assistant IA qui prospecte automatiquement pour toi sur WhatsApp. Il trouve des clients potentiels, les contacte et te fait un rapport."),
+            },
+            {
+              q: t("Est-ce que c'est vraiment automatique ?"),
+              a: t("Oui. Une fois configuré, ton agent travaille 24h/24 sans intervention de ta part. Tu reçois juste les résultats."),
+            },
+            {
+              q: t("Comment je paie ?"),
+              a: t("Tu recharges ton compte à partir de 1 000 FCFA. Pas d'abonnement, pas d'engagement. Tu consommes ce que tu veux."),
+            },
+            {
+              q: t("Est-ce que ça marche dans mon pays ?"),
+              a: t("Baaraly fonctionne dans toute l'Afrique de l'Ouest et Centrale : Burkina Faso, Mali, Sénégal, Côte d'Ivoire, Niger, Bénin, Togo, Ghana, Cameroun, Gabon, et plus encore."),
+            },
+            {
+              q: t("Est-ce que mes données sont en sécurité ?"),
+              a: t("Oui. Tes données sont chiffrées et ne sont jamais partagées avec des tiers. Tu gardes le contrôle total."),
+            },
+            {
+              q: t("Puis-je essayer gratuitement ?"),
+              a: t("Oui ! Tu reçois 1 000 FCFA offerts à l'inscription pour tester Baaraly sans risque."),
+            },
+          ].map((faq, i) => (
+            <FaqItem
+              key={i}
+              question={faq.q}
+              answer={faq.a}
+              delay={i * 80}
+              visible={isVisible("faq")}
+            />
+          ))}
+        </div>
+      </section>
+
       {/* ── CTA FINAL ── */}
       <section className="relative z-10 px-5 py-24 text-center">
         <div className="max-w-2xl mx-auto">
@@ -355,6 +490,29 @@ function ChatMessage({ text, time, sent, visible }: { text: string; time: string
       }`}>
         <p>{text}</p>
         <p className={`text-[9px] mt-1 ${sent ? "text-primary-foreground/60" : "text-muted-foreground"}`}>{time}</p>
+      </div>
+    </div>
+  );
+}
+
+function FaqItem({ question, answer, delay, visible }: { question: string; answer: string; delay: number; visible: boolean }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      className={`rounded-2xl border border-border bg-card/80 backdrop-blur-sm overflow-hidden transition-all duration-700 ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      }`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-accent/50 transition-colors"
+      >
+        <span className="font-semibold text-sm pr-4">{question}</span>
+        <span className={`text-lg transition-transform duration-300 shrink-0 ${open ? "rotate-45" : ""}`}>+</span>
+      </button>
+      <div className={`transition-all duration-300 ease-out ${open ? "max-h-48 opacity-100" : "max-h-0 opacity-0"} overflow-hidden`}>
+        <p className="px-6 pb-5 text-sm text-muted-foreground leading-relaxed">{answer}</p>
       </div>
     </div>
   );
