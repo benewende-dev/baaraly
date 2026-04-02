@@ -110,12 +110,39 @@ export function CreditRechargeModal({ open, onOpenChange, companyId, userCountry
   const cardProviders = providers.filter((p) => p.types.includes("card"));
   const cryptoProviders = providers.filter((p) => p.types.includes("crypto"));
 
+  /* ── Provider icon component with real branding ── */
+  function ProviderIcon({ provider, size = "md" }: { provider: PaymentProvider; size?: "sm" | "md" }) {
+    const s = size === "sm" ? "w-8 h-8 text-[10px]" : "w-10 h-10 text-xs";
+    const color = PROVIDER_COLORS[provider.id] || "#888";
+    const logos: Record<string, string> = {
+      orange_money: "OM",
+      wave: "WV",
+      moov_money: "MV",
+      mtn_momo: "MTN",
+      airtel_money: "ATL",
+      mpesa: "MP",
+      cinetpay: "CP",
+      stripe: "ST",
+      paypal: "PP",
+      crypto: "₿",
+    };
+    return (
+      <div
+        className={`${s} rounded-xl flex items-center justify-center font-black tracking-tight`}
+        style={{ backgroundColor: `${color}15`, color, border: `1.5px solid ${color}30` }}
+      >
+        {logos[provider.id] || provider.icon}
+      </div>
+    );
+  }
+
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+        <div className="max-h-[75vh] overflow-y-auto">
         {/* ═══ Step indicator ═══ */}
         {step !== "success" && (
-          <div className="px-6 pt-5 pb-3">
+          <div className="px-6 pt-5 pb-2 sticky top-0 bg-background z-10">
             <div className="flex items-center gap-3">
               {["packs", "provider", "payment"].map((s, i) => (
                 <div key={s} className="flex items-center gap-2 flex-1">
@@ -150,7 +177,7 @@ export function CreditRechargeModal({ open, onOpenChange, companyId, userCountry
           </div>
         )}
 
-        <div className="px-6 pb-6">
+        <div className="px-6 pb-6 pt-2">
           {/* ═══ PACKS STEP ═══ */}
           {step === "packs" && (
             <div className="space-y-3">
@@ -253,7 +280,7 @@ export function CreditRechargeModal({ open, onOpenChange, companyId, userCountry
                           className="w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-transform group-hover:scale-110"
                           style={{ backgroundColor: `${PROVIDER_COLORS[p.id] || "#888"}12` }}
                         >
-                          {p.icon}
+                          <ProviderIcon provider={p} />
                         </div>
                         <span className="text-[10px] font-semibold text-center leading-tight">{p.name}</span>
                       </button>
@@ -291,7 +318,7 @@ export function CreditRechargeModal({ open, onOpenChange, companyId, userCountry
                           className="w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-transform group-hover:scale-110"
                           style={{ backgroundColor: `${PROVIDER_COLORS[p.id] || "#888"}12` }}
                         >
-                          {p.icon}
+                          <ProviderIcon provider={p} />
                         </div>
                         <span className="text-[10px] font-semibold text-center leading-tight">{p.name}</span>
                       </button>
@@ -329,7 +356,7 @@ export function CreditRechargeModal({ open, onOpenChange, companyId, userCountry
                           className="w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-transform group-hover:scale-110"
                           style={{ backgroundColor: `${PROVIDER_COLORS[p.id] || "#888"}12` }}
                         >
-                          {p.icon}
+                          <ProviderIcon provider={p} />
                         </div>
                         <span className="text-[10px] font-semibold text-center leading-tight">{p.name}</span>
                       </button>
@@ -417,28 +444,26 @@ export function CreditRechargeModal({ open, onOpenChange, companyId, userCountry
               {/* Card form */}
               {selectedProvider.types.includes("card") && (
                 <div className="space-y-3">
-                  {/* Card preview */}
+                  {/* Compact card preview */}
                   <div
-                    className="rounded-2xl p-4 text-white relative overflow-hidden"
+                    className="rounded-xl p-3 text-white relative overflow-hidden"
                     style={{
-                      background: `linear-gradient(135deg, ${PROVIDER_COLORS[selectedProvider.id] || "#333"}, ${PROVIDER_COLORS[selectedProvider.id] || "#333"}88)`,
+                      background: `linear-gradient(135deg, ${PROVIDER_COLORS[selectedProvider.id] || "#333"}, ${PROVIDER_COLORS[selectedProvider.id] || "#333"}aa)`,
                     }}
                   >
-                    <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-white/5 -mr-10 -mt-10" />
-                    <div className="absolute bottom-0 left-0 w-20 h-20 rounded-full bg-white/5 -ml-6 -mb-6" />
-                    <p className="text-[10px] font-medium opacity-70 mb-4 uppercase">{selectedProvider.name}</p>
-                    <p className="font-mono text-sm tracking-widest mb-3">
+                    <div className="absolute top-0 right-0 w-24 h-24 rounded-full bg-white/5 -mr-8 -mt-8" />
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">{selectedProvider.name}</span>
+                      <span className="text-[10px] opacity-50">
+                        {selectedProvider.id === "stripe" ? "VISA" : selectedProvider.id === "paypal" ? "MC" : "CB"}
+                      </span>
+                    </div>
+                    <p className="font-mono text-xs tracking-[0.25em] mb-2">
                       {cardNumber || "•••• •••• •••• ••••"}
                     </p>
-                    <div className="flex justify-between text-[10px]">
-                      <div>
-                        <p className="opacity-50 uppercase">{t("Titulaire")}</p>
-                        <p className="font-medium">{cardName || "NOM PRÉNOM"}</p>
-                      </div>
-                      <div>
-                        <p className="opacity-50 uppercase">{t("Expire")}</p>
-                        <p className="font-medium">{cardExpiry || "MM/AA"}</p>
-                      </div>
+                    <div className="flex justify-between text-[9px] opacity-70">
+                      <span>{cardName || "NOM"}</span>
+                      <span>{cardExpiry || "MM/AA"}</span>
                     </div>
                   </div>
 
@@ -561,6 +586,7 @@ export function CreditRechargeModal({ open, onOpenChange, companyId, userCountry
               </button>
             </div>
           )}
+        </div>
         </div>
       </DialogContent>
     </Dialog>

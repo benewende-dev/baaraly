@@ -19,6 +19,7 @@ interface AgentDetailModalProps {
   isHiring: boolean;
   onRecruit: () => void;
   onOpen: () => void;
+  onUpgrade: () => void;
 }
 
 export function AgentDetailModal({
@@ -32,6 +33,7 @@ export function AgentDetailModal({
   isHiring,
   onRecruit,
   onOpen,
+  onUpgrade,
 }: AgentDetailModalProps) {
   const { t } = useLanguage();
   if (!agent) return null;
@@ -176,7 +178,7 @@ export function AgentDetailModal({
                 🔒 {agent.tier === 2 ? t("Forfait Pro requis") : t("Forfait Max requis")}
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                {t("Passez à un forfait supérieur pour débloquer cet agent")}
+                {t("Cliquez sur le bouton ci-dessous pour débloquer cet agent")}
               </p>
             </div>
           )}
@@ -193,10 +195,13 @@ export function AgentDetailModal({
             </button>
           ) : isLocked ? (
             <button
-              disabled
-              className="w-full py-3 rounded-xl text-sm font-semibold border border-border text-muted-foreground cursor-not-allowed"
+              onClick={() => { onUpgrade(); onOpenChange(false); }}
+              className="w-full py-3 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98]"
+              style={{
+                background: `linear-gradient(135deg, ${agent.tier === 2 ? "#0071E3" : "#BF5AF2"}, ${agent.tier === 2 ? "#5E5CE6" : "#FF375F"})`,
+              }}
             >
-              🔒 {agent.tier === 2 ? "Pro" : "Max"} {t("requis")}
+              🔒 {t("Passer à")} {agent.tier === 2 ? "Pro" : "Max"} {t("pour débloquer")}
             </button>
           ) : (
             <button

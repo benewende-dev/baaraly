@@ -498,6 +498,7 @@ export function Dashboard() {
         isHiring={hireMutation.isPending}
         onRecruit={() => { if (selectedAgent) handleRecruit(selectedAgent); }}
         onOpen={() => { if (selectedAgent) { const inst = installedMap.get(selectedAgent.name); if (inst) navigate(agentUrl(inst)); } }}
+        onUpgrade={() => { setSelectedAgent(null); setShowCheckout(true); }}
       />
     </div>
   );
