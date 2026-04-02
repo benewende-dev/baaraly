@@ -16,6 +16,7 @@ import { agentUrl } from "../lib/utils";
 import type { Agent } from "@paperclipai/shared";
 import { ActionsRemaining } from "../components/ActionsRemaining";
 import { WhatsAppConnectButton } from "../components/WhatsAppConnect";
+import { CheckoutModal } from "../components/CheckoutModal";
 import {
   BAARALY_AGENTS,
   AGENT_CATEGORIES,
@@ -82,6 +83,7 @@ export function Dashboard() {
   const [activeCategory, setActiveCategory] = useState<AgentCategory | "all">("all");
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [recruitingAgent, setRecruitingAgent] = useState<string | null>(null);
+  const [showCheckout, setShowCheckout] = useState(false);
 
   const { data: agents, isLoading } = useQuery({
     queryKey: queryKeys.agents.list(selectedCompanyId!),
@@ -264,7 +266,7 @@ export function Dashboard() {
     <div className="space-y-6 pb-28 max-w-4xl mx-auto">
       {/* ── Plan banner ── */}
       {planInfo && (
-        <PlanBanner planInfo={planInfo} t={t} />
+        <PlanBanner planInfo={planInfo} t={t} onUpgrade={() => setShowCheckout(true)} />
       )}
 
       {/* ── Header ── */}
@@ -468,6 +470,17 @@ export function Dashboard() {
           {t("Échec du recrutement. Réessaie.")}
         </p>
       )}
+
+      {/* ── Checkout modal ── */}
+      {selectedCompanyId && (
+        <CheckoutModal
+          open={showCheckout}
+          onOpenChange={setShowCheckout}
+          companyId={selectedCompanyId}
+          currentPlan={planInfo?.billingPlan}
+          userCountry={planInfo?.userCountry}
+        />
+      )}
     </div>
   );
 }
@@ -475,7 +488,7 @@ export function Dashboard() {
 /* ═══════════════════════════════════════════
    Plan Banner
    ═══════════════════════════════════════════ */
-function PlanBanner({ planInfo, t }: { planInfo: any; t: (s: string) => string }) {
+function PlanBanner({ planInfo, t, onUpgrade }: { planInfo: any; t: (s: string) => string; onUpgrade: () => void }) {
   const { plan, billingPlan, daysRemaining, isTrialActive, installedCount, remainingSlots, userCountry } = planInfo;
 
   const proPrice = formatPriceFromEur(49, userCountry);
@@ -517,11 +530,17 @@ function PlanBanner({ planInfo, t }: { planInfo: any; t: (s: string) => string }
         {billingPlan !== "max" && (
           <div className="flex gap-2">
             {billingPlan === "trial" && (
-              <button className="rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-all hover:opacity-90 active:scale-[0.98] whitespace-nowrap">
+              <button
+                onClick={onUpgrade}
+                className="rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-all hover:opacity-90 active:scale-[0.98] whitespace-nowrap"
+              >
                 Pro — {proPrice}
               </button>
             )}
-            <button className={`rounded-xl border px-4 py-2 text-xs font-semibold transition-all hover:bg-muted/50 whitespace-nowrap ${billingPlan === "pro" ? "border-purple-500/30 text-purple-600" : "border-border"}`}>
+            <button
+              onClick={onUpgrade}
+              className={`rounded-xl border px-4 py-2 text-xs font-semibold transition-all hover:bg-muted/50 whitespace-nowrap ${billingPlan === "pro" ? "border-purple-500/30 text-purple-600" : "border-border"}`}
+            >
               Max — {maxPrice}
             </button>
           </div>
