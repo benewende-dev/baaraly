@@ -10,6 +10,13 @@ import {
 } from "./ui/dialog";
 
 const COUNTRIES = [
+  // Europe francophone
+  { code: "+33", flag: "🇫🇷", name: "France" },
+  { code: "+32", flag: "🇧🇪", name: "Belgique" },
+  { code: "+41", flag: "🇨🇭", name: "Suisse" },
+  { code: "+352", flag: "🇱🇺", name: "Luxembourg" },
+  { code: "+377", flag: "🇲🇨", name: "Monaco" },
+  // Afrique de l'Ouest
   { code: "+226", flag: "🇧🇫", name: "Burkina Faso" },
   { code: "+229", flag: "🇧🇯", name: "Bénin" },
   { code: "+223", flag: "🇲🇱", name: "Mali" },
@@ -17,17 +24,21 @@ const COUNTRIES = [
   { code: "+225", flag: "🇨🇮", name: "Côte d'Ivoire" },
   { code: "+227", flag: "🇳🇪", name: "Niger" },
   { code: "+228", flag: "🇹🇬", name: "Togo" },
-  { code: "+233", flag: "🇬🇭", name: "Ghana" },
-  { code: "+234", flag: "🇳🇬", name: "Nigeria" },
-  { code: "+241", flag: "🇬🇦", name: "Gabon" },
+  { code: "+224", flag: "🇬🇳", name: "Guinée" },
+  { code: "+245", flag: "🇬🇼", name: "Guinée-Bissau" },
+  // Afrique Centrale
   { code: "+237", flag: "🇨🇲", name: "Cameroun" },
+  { code: "+241", flag: "🇬🇦", name: "Gabon" },
   { code: "+235", flag: "🇹🇩", name: "Tchad" },
   { code: "+236", flag: "🇨🇫", name: "Centrafrique" },
   { code: "+240", flag: "🇬🇶", name: "Guinée Équatoriale" },
-  { code: "+245", flag: "🇬🇼", name: "Guinée-Bissau" },
-  { code: "+224", flag: "🇬🇳", name: "Guinée" },
+  { code: "+243", flag: "🇨🇩", name: "RD Congo" },
+  { code: "+242", flag: "🇨🇬", name: "Congo" },
+  // Afrique de l'Est & autres
   { code: "+230", flag: "🇲🇺", name: "Maurice" },
   { code: "+222", flag: "🇲🇷", name: "Mauritanie" },
+  { code: "+233", flag: "🇬🇭", name: "Ghana" },
+  { code: "+234", flag: "🇳🇬", name: "Nigeria" },
 ];
 
 interface WhatsAppConnectProps {
