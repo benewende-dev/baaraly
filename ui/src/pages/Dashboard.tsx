@@ -510,8 +510,10 @@ export function Dashboard() {
 function PlanBanner({ planInfo, t, onUpgrade }: { planInfo: any; t: (s: string) => string; onUpgrade: () => void }) {
   const { plan, billingPlan, daysRemaining, isTrialActive, installedCount, remainingSlots, userCountry } = planInfo;
 
-  const proPrice = formatPriceFromEur(49, userCountry);
-  const maxPrice = formatPriceFromEur(149, userCountry);
+  const proPlan = getBillingPlan("pro");
+  const maxPlan = getBillingPlan("max");
+  const proPrice = formatPriceFromEur(proPlan.priceEur, userCountry);
+  const maxPrice = formatPriceFromEur(maxPlan.priceEur, userCountry);
 
   const bannerConfig: Record<string, { bg: string; border: string; icon: string; title: string }> = {
     trial: { bg: "from-amber-500/5 to-orange-500/5", border: "border-amber-500/30", icon: "🎁", title: "Essai gratuit" },
