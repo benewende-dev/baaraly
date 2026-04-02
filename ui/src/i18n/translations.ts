@@ -1057,6 +1057,51 @@ export const translations: Record<string, Record<Language, string>> = {
     en: "Recharge to continue"
   },
   "Recharger": { fr: "Recharger", en: "Recharge" },
+
+  // ── Landing Page ──────────────────────────────────────────────────────
+  "30 agents IA pour tous vos besoins": { fr: "30 agents IA pour tous vos besoins", en: "30 AI agents for all your needs" },
+  "8 catégories · 3 niveaux · Votre arme secrète": { fr: "8 catégories · 3 niveaux · Votre arme secrète", en: "8 categories · 3 tiers · Your secret weapon" },
+  "Nos agents": { fr: "Nos agents", en: "Our agents" },
+  "Tech": { fr: "Tech", en: "Tech" },
+  "Marketing": { fr: "Marketing", en: "Marketing" },
+  "Trading": { fr: "Trading", en: "Trading" },
+  "Crypto": { fr: "Crypto", en: "Crypto" },
+  "Divertissement": { fr: "Divertissement", en: "Entertainment" },
+  "Commerce": { fr: "Commerce", en: "Commerce" },
+  "Juridique": { fr: "Juridique", en: "Legal" },
+  "agents": { fr: "agents", en: "agents" },
+  "Voir tous les agents": { fr: "Voir tous les agents", en: "View all agents" },
+  "3 forfaits selon vos besoins": { fr: "3 forfaits selon vos besoins", en: "3 plans for your needs" },
+  "Devise auto-detectée · Paiement local · Sans engagement": { fr: "Devise auto-detectée · Paiement local · Sans engagement", en: "Auto-detected currency · Local payment · No commitment" },
+  "Trial": { fr: "Trial", en: "Trial" },
+  "Pro": { fr: "Pro", en: "Pro" },
+  "Max": { fr: "Max", en: "Max" },
+  "Pour découvrir": { fr: "Pour découvrir", en: "To discover" },
+  "Pour commencer": { fr: "Pour commencer", en: "To get started" },
+  "Pour scale": { fr: "Pour scale", en: "To scale" },
+  "Choisir": { fr: "Choisir", en: "Choose" },
+  "Paiement local : Orange Money, Wave, MTN, Moov, M-Pesa, Stripe, PayPal, Crypto": {
+    fr: "Paiement local : Orange Money, Wave, MTN, Moov, M-Pesa, Stripe, PayPal, Crypto",
+    en: "Local payment: Orange Money, Wave, MTN, Moov, M-Pesa, Stripe, PayPal, Crypto"
+  },
+  "1 agent": { fr: "1 agent", en: "1 agent" },
+  "5 prospects/jour": { fr: "5 prospects/jour", en: "5 prospects/day" },
+  "WhatsApp inclus": { fr: "WhatsApp inclus", en: "WhatsApp included" },
+  "Support email": { fr: "Support email", en: "Email support" },
+  "10 agents": { fr: "10 agents", en: "10 agents" },
+  "50 prospects/jour": { fr: "50 prospects/jour", en: "50 prospects/day" },
+  "Multi WhatsApp": { fr: "Multi WhatsApp", en: "Multi WhatsApp" },
+  "Rapports avancés": { fr: "Rapports avancés", en: "Advanced reports" },
+  "Prioritaire": { fr: "Prioritaire", en: "Priority" },
+  "30 agents": { fr: "30 agents", en: "30 agents" },
+  "200 prospects/jour": { fr: "200 prospects/jour", en: "200 prospects/day" },
+  "API access": { fr: "API access", en: "API access" },
+  "Multi-entreprise": { fr: "Multi-entreprise", en: "Multi-company" },
+  "Support dédié": { fr: "Support dédié", en: "Dedicated support" },
+  "5 prospects/jour, 1 agent, WhatsApp inclus. Sans carte bancaire.": {
+    fr: "5 prospects/jour, 1 agent, WhatsApp inclus. Sans carte bancaire.",
+    en: "5 prospects/day, 1 agent, WhatsApp included. No credit card."
+  },
 };
 
 /** Renvoie la traduction pour la clé donnée dans la langue choisie.

@@ -266,7 +266,7 @@ export function Landing() {
               7 <span className="text-gradient">{t("jours gratuits")}</span>
             </h2>
             <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-              {t("5 prospects par jour, 1 entreprise. Sans carte bancaire. Ensuite 49$/mois tout inclus.")}
+              {t("5 prospects/jour, 1 agent, WhatsApp inclus. Sans carte bancaire.")}
             </p>
             <button
               onClick={() => navigate("/welcome")}
@@ -275,6 +275,53 @@ export function Landing() {
               {t("Commencer maintenant")} 🚀
             </button>
           </div>
+        </div>
+      </section>
+
+      {/* ── LES 30 AGENTS ── */}
+      <section
+        id="agents"
+        data-animate
+        className="relative z-10 px-5 py-24 max-w-4xl mx-auto"
+      >
+        <div className={`text-center mb-12 transition-all duration-700 ${isVisible("agents") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <span className="text-sm font-semibold text-secondary uppercase tracking-wider">{t("Nos agents")}</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
+            {t("30 agents IA pour tous vos besoins")} 🤖
+          </h2>
+          <p className="text-muted-foreground mt-3">{t("8 catégories · 3 niveaux · Votre arme secrète")}</p>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {[
+            { cat: "Tech", icon: "💻", agents: 5 },
+            { cat: "Marketing", icon: "📢", agents: 4 },
+            { cat: "Finance", icon: "💰", agents: 4 },
+            { cat: "Trading", icon: "📈", agents: 4 },
+            { cat: "Crypto", icon: "₿", agents: 3 },
+            { cat: "Divertissement", icon: "🎭", agents: 4 },
+            { cat: "Commerce", icon: "🛒", agents: 4 },
+            { cat: "Juridique", icon: "⚖️", agents: 2 },
+          ].map((item, i) => (
+            <div
+              key={i}
+              className={`glass-panel rounded-2xl p-5 text-center transition-all duration-700 hover-lift ${
+                isVisible("agents") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
+              style={{ transitionDelay: `${i * 80}ms` }}
+            >
+              <span className="text-3xl block mb-2">{item.icon}</span>
+              <p className="font-bold text-sm">{item.cat}</p>
+              <p className="text-xs text-muted-foreground">{item.agents} agents</p>
+            </div>
+          ))}
+        </div>
+        <div className="text-center mt-8">
+          <button
+            onClick={() => navigate("/welcome")}
+            className="rounded-xl px-6 py-3 text-sm font-semibold border-2 border-primary/30 transition-all hover:bg-primary/10"
+          >
+            {t("Voir tous les agents")} →
+          </button>
         </div>
       </section>
 
@@ -327,57 +374,66 @@ export function Landing() {
         <div className={`text-center mb-12 transition-all duration-700 ${isVisible("pricing") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="text-sm font-semibold text-primary uppercase tracking-wider">{t("Tarifs")}</span>
           <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
-            {t("Simple et transparent")} 💰
+            {t("3 forfaits selon vos besoins")} 💰
           </h2>
-          <p className="text-muted-foreground mt-3">{t("7 jours gratuits, puis un seul plan tout inclus.")}</p>
+          <p className="text-muted-foreground mt-3">{t("Devise auto-detectée · Paiement local · Sans engagement")}</p>
         </div>
-        <div className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+        <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
           {[
             {
-              name: t("Essai gratuit"),
+              name: t("Trial"),
               price: "0",
               period: t("7 jours"),
-              desc: t("Pour tester sans risque"),
-              features: [t("5 prospects par jour"), t("1 entreprise"), t("Agent IA configuré"), t("WhatsApp connecté"), t("Pas de carte bancaire")],
-              cta: t("Commencer"),
-              highlighted: false,
+              desc: t("Pour découvrir"),
+              highlight: false,
+              tier: "standard",
+              features: [t("1 agent"), t("5 prospects/jour"), t("WhatsApp inclus"), t("Support email")],
             },
             {
               name: t("Pro"),
               price: "49",
-              period: t("$ / mois"),
-              desc: t("Pour les entrepreneurs sérieux"),
-              features: [t("30 prospects par jour"), t("Jusqu'à 10 entreprises"), t("Agents IA illimités"), t("WhatsApp multi-numéros"), t("Rapports détaillés"), t("Relances automatiques"), t("Support prioritaire")],
-              cta: t("Passer à Pro"),
-              highlighted: true,
+              period: "€/mois",
+              desc: t("Pour commencer"),
+              highlight: true,
+              tier: "avance",
+              features: [t("10 agents"), t("50 prospects/jour"), t("Multi WhatsApp"), t("Rapports avancés"), t("Prioritaire")],
+            },
+            {
+              name: t("Max"),
+              price: "149",
+              period: "€/mois",
+              desc: t("Pour scale"),
+              highlight: false,
+              tier: "expert",
+              features: [t("30 agents"), t("200 prospects/jour"), t("API access"), t("Multi-entreprise"), t("Support dédié")],
             },
           ].map((plan, i) => (
             <div
               key={i}
               className={`rounded-2xl p-6 transition-all duration-700 hover-lift ${
-                plan.highlighted
-                  ? "bg-gradient-to-b from-primary to-secondary text-primary-foreground shadow-xl shadow-primary/20 scale-105 border-0"
+                plan.highlight
+                  ? "bg-gradient-to-b from-primary to-secondary text-primary-foreground shadow-xl shadow-primary/20 border-2 border-primary"
                   : "glass-panel border-border/50"
               } ${isVisible("pricing") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
               style={{ transitionDelay: `${i * 100}ms` }}
             >
-              {plan.highlighted && (
+              {plan.highlight && (
                 <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider mb-4">
                   {t("Populaire")}
                 </span>
               )}
               <h3 className="text-lg font-bold">{plan.name}</h3>
-              <p className={`text-xs mt-1 ${plan.highlighted ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{plan.desc}</p>
+              <p className={`text-xs mt-1 ${plan.highlight ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{plan.desc}</p>
               <div className="mt-4 mb-6">
                 <span className="text-4xl font-extrabold">{plan.price}</span>
-                <span className={`text-sm ml-1 ${plan.highlighted ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                <span className={`text-sm ml-1 ${plan.highlight ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
                   {plan.period}
                 </span>
               </div>
               <ul className="space-y-3 mb-6">
                 {plan.features.map((f, j) => (
                   <li key={j} className="flex items-center gap-2 text-sm">
-                    <span className={`shrink-0 ${plan.highlighted ? "text-white" : "text-green-500"}`}>✔</span>
+                    <span className={`shrink-0 ${plan.highlight ? "text-white" : "text-green-500"}`}>✔</span>
                     {f}
                   </li>
                 ))}
@@ -385,15 +441,20 @@ export function Landing() {
               <button
                 onClick={() => navigate("/welcome")}
                 className={`w-full rounded-xl py-3 text-sm font-semibold transition-all active:scale-[0.98] ${
-                  plan.highlighted
+                  plan.highlight
                     ? "bg-white text-primary hover:bg-white/90"
                     : "bg-primary text-primary-foreground hover:opacity-90"
                 }`}
               >
-                {plan.cta}
+                {t("Choisir")} {plan.name}
               </button>
             </div>
           ))}
+        </div>
+        <div className="text-center mt-8">
+          <p className="text-xs text-muted-foreground">
+            💳 {t("Paiement local : Orange Money, Wave, MTN, Moov, M-Pesa, Stripe, PayPal, Crypto")}
+          </p>
         </div>
       </section>
 
