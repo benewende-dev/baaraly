@@ -961,6 +961,102 @@ export const translations: Record<string, Record<Language, string>> = {
   "Échec de la sauvegarde": { fr: "Échec de la sauvegarde", en: "Save failed" },
   "Impossible de sauvegarder l'agent": { fr: "Impossible de sauvegarder l'agent", en: "Could not save agent" },
   "Supprimer": { fr: "Supprimer", en: "Delete" },
+
+  // ── Baaraly Dashboard ─────────────────────────────────────────────────
+  "Essai gratuit": { fr: "Essai gratuit", en: "Free Trial" },
+  "Il reste": { fr: "Il reste", en: "You have" },
+  "jours": { fr: "jours", en: "days left" },
+  "Limite": { fr: "Limite", en: "Limit" },
+  "prospects/jour": { fr: "prospects/jour", en: "prospects/day" },
+  "Passer à Pro": { fr: "Passer à Pro", en: "Go Pro" },
+  "agent actif": { fr: "agent actif", en: "active agent" },
+  "agents actifs": { fr: "agents actifs", en: "active agents" },
+  "Tes assistants travaillent pour toi. Résultats livrés sur WhatsApp.": {
+    fr: "Tes assistants travaillent pour toi. Résultats livrés sur WhatsApp.",
+    en: "Your assistants work for you. Results delivered on WhatsApp."
+  },
+  "Catalogue d'agents": { fr: "Catalogue d'agents", en: "Agent Catalog" },
+  "agents disponibles": { fr: "agents disponibles", en: "agents available" },
+  "Populaire": { fr: "Populaire", en: "Popular" },
+  "Installer": { fr: "Installer", en: "Install" },
+  "a rejoint ton équipe": { fr: "a rejoint ton équipe", en: "joined your team" },
+  "Il est prêt à travailler pour toi": {
+    fr: "Il est prêt à travailler pour toi",
+    en: "Ready to work for you"
+  },
+  "Tu ne trouves pas ton agent ?": {
+    fr: "Tu ne trouves pas ton agent ?",
+    en: "Can't find your agent?"
+  },
+  "Propose-nous un nouvel agent et on le construira pour toi": {
+    fr: "Propose-nous un nouvel agent et on le construira pour toi",
+    en: "Suggest a new agent and we'll build it for you"
+  },
+  "Suggérer un agent": { fr: "Suggérer un agent", en: "Suggest an agent" },
+  "Nom de l'agent (ex: Agent RH)": {
+    fr: "Nom de l'agent (ex: Agent RH)",
+    en: "Agent name (e.g. HR Agent)"
+  },
+  "Que devrait faire cet agent ?": {
+    fr: "Que devrait faire cet agent ?",
+    en: "What should this agent do?"
+  },
+  "Suggestion envoyée !": { fr: "Suggestion envoyée !", en: "Suggestion sent!" },
+  "Merci pour ta proposition": { fr: "Merci pour ta proposition", en: "Thanks for your suggestion" },
+
+  // ── Baaraly Onboarding ────────────────────────────────────────────────
+  "Connecter WhatsApp": { fr: "Connecter WhatsApp", en: "Connect WhatsApp" },
+  "Numéro WhatsApp": { fr: "Numéro WhatsApp", en: "WhatsApp Number" },
+  "Confirmer le numéro": { fr: "Confirmer le numéro", en: "Confirm number" },
+  "Ton numéro est connecté !": {
+    fr: "Ton numéro est connecté !",
+    en: "Your number is connected!"
+  },
+  "Reçois les notifications de tes agents sur WhatsApp": {
+    fr: "Reçois les notifications de tes agents sur WhatsApp",
+    en: "Receive agent notifications on WhatsApp"
+  },
+
+  // ── Baaraly Company Settings ──────────────────────────────────────────
+  "Zone de danger": { fr: "Zone de danger", en: "Danger Zone" },
+  "Archiver l'entreprise": { fr: "Archiver l'entreprise", en: "Archive company" },
+  "Cache l'entreprise de la barre latérale. Les données sont conservées.": {
+    fr: "Cache l'entreprise de la barre latérale. Les données sont conservées.",
+    en: "Hides the company from the sidebar. Data is preserved."
+  },
+  "Échec de l'archivage": { fr: "Échec de l'archivage", en: "Failed to archive" },
+  "Supprimer définitivement": { fr: "Supprimer définitivement", en: "Delete permanently" },
+  "Supprime l'entreprise, tous les agents, et toutes les données associées. Cette action est irréversible.": {
+    fr: "Supprime l'entreprise, tous les agents, et toutes les données associées. Cette action est irréversible.",
+    en: "Deletes the company, all agents, and all associated data. This action is irreversible."
+  },
+  "Suppression...": { fr: "Suppression...", en: "Deleting..." },
+  "Pour confirmer, tapez le nom de l'entreprise": {
+    fr: "Pour confirmer, tapez le nom de l'entreprise",
+    en: "To confirm, type the company name"
+  },
+  "Nom incorrect": { fr: "Nom incorrect", en: "Incorrect name" },
+  "La suppression a été annulée": {
+    fr: "La suppression a été annulée",
+    en: "Deletion was cancelled"
+  },
+  "Entreprise supprimée": { fr: "Entreprise supprimée", en: "Company deleted" },
+  "L'entreprise a été supprimée définitivement": {
+    fr: "L'entreprise a été supprimée définitivement",
+    en: "The company has been permanently deleted"
+  },
+  "Échec de la suppression": { fr: "Échec de la suppression", en: "Failed to delete" },
+
+  // ── Baaraly Credits ───────────────────────────────────────────────────
+  "Solde": { fr: "Solde", en: "Balance" },
+  "Solde épuisé": { fr: "Solde épuisé", en: "Balance exhausted" },
+  "Solde bas": { fr: "Solde bas", en: "Low balance" },
+  "crédits restants": { fr: "crédits restants", en: "credits remaining" },
+  "Rechargez pour continuer": {
+    fr: "Rechargez pour continuer",
+    en: "Recharge to continue"
+  },
+  "Recharger": { fr: "Recharger", en: "Recharge" },
 };
 
 /** Renvoie la traduction pour la clé donnée dans la langue choisie.

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { BookOpen, Moon, Settings, Sun } from "lucide-react";
+import { BookOpen, Moon, Settings, Sun, Globe } from "lucide-react";
 import { Link, Outlet, useLocation, useNavigate, useParams } from "@/lib/router";
 import { CompanyRail } from "./CompanyRail";
 import { Sidebar } from "./Sidebar";
@@ -60,7 +60,7 @@ export function Layout() {
     setSelectedCompanyId,
   } = useCompany();
   const { theme, toggleTheme } = useTheme();
-  const { t } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
   const { companyPrefix } = useParams<{ companyPrefix: string }>();
   const navigate = useNavigate();
   const location = useLocation();
@@ -338,6 +338,22 @@ export function Layout() {
                 >
                   {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                 </Button>
+                <div className="flex items-center rounded-full bg-muted p-0.5 ml-1">
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("fr")}
+                    className={`px-1.5 py-0.5 rounded-full text-[10px] font-semibold transition-all ${language === "fr" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}
+                  >
+                    FR
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("en")}
+                    className={`px-1.5 py-0.5 rounded-full text-[10px] font-semibold transition-all ${language === "en" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}
+                  >
+                    EN
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -396,6 +412,22 @@ export function Layout() {
                 >
                   {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                 </Button>
+                <div className="flex items-center rounded-full bg-muted p-0.5 ml-1">
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("fr")}
+                    className={`px-1.5 py-0.5 rounded-full text-[10px] font-semibold transition-all ${language === "fr" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}
+                  >
+                    FR
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("en")}
+                    className={`px-1.5 py-0.5 rounded-full text-[10px] font-semibold transition-all ${language === "en" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}
+                  >
+                    EN
+                  </button>
+                </div>
               </div>
             </div>
           </div>

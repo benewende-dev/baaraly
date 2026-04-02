@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "@/lib/router";
 import { useLanguage } from "../context/LanguageContext";
+import { ThemeLangToggle } from "../components/ThemeLangToggle";
 
 export function Landing() {
   const navigate = useNavigate();
@@ -47,12 +48,15 @@ export function Landing() {
         <span className="text-xl font-extrabold tracking-tight">
           Baaraly <span className="text-gradient">AI</span>
         </span>
-        <button
-          onClick={() => navigate("/welcome")}
-          className="rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:shadow-lg hover:shadow-primary/25 active:scale-[0.97]"
-        >
-          {t("Connexion")}
-        </button>
+        <div className="flex items-center gap-3">
+          <ThemeLangToggle compact />
+          <button
+            onClick={() => navigate("/welcome")}
+            className="rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:shadow-lg hover:shadow-primary/25 active:scale-[0.97]"
+          >
+            {t("Connexion")}
+          </button>
+        </div>
       </nav>
 
       {/* ── HERO ── */}
