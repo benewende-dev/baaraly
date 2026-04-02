@@ -28,6 +28,9 @@ const CATEGORY_GRADIENTS: Record<AgentCategory, string> = {
   tech: "from-blue-500/10 to-cyan-500/10",
   marketing: "from-purple-500/10 to-pink-500/10",
   finance: "from-emerald-500/10 to-teal-500/10",
+  trading: "from-sky-500/10 to-blue-500/10",
+  crypto: "from-amber-500/10 to-yellow-500/10",
+  divertissement: "from-rose-500/10 to-pink-500/10",
   commerce: "from-amber-500/10 to-orange-500/10",
   juridique: "from-indigo-500/10 to-violet-500/10",
 };
@@ -36,6 +39,9 @@ const CATEGORY_BORDER: Record<AgentCategory, string> = {
   tech: "border-blue-500/20 hover:border-blue-500/40",
   marketing: "border-purple-500/20 hover:border-purple-500/40",
   finance: "border-emerald-500/20 hover:border-emerald-500/40",
+  trading: "border-sky-500/20 hover:border-sky-500/40",
+  crypto: "border-amber-500/20 hover:border-amber-500/40",
+  divertissement: "border-rose-500/20 hover:border-rose-500/40",
   commerce: "border-amber-500/20 hover:border-amber-500/40",
   juridique: "border-indigo-500/20 hover:border-indigo-500/40",
 };
@@ -168,6 +174,9 @@ export function Dashboard() {
       tech: [],
       marketing: [],
       finance: [],
+      trading: [],
+      crypto: [],
+      divertissement: [],
       commerce: [],
       juridique: [],
     };
