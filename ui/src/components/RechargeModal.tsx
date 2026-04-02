@@ -9,19 +9,28 @@ import {
   DialogTitle,
   DialogDescription,
 } from "./ui/dialog";
-import { BAARALY_RECHARGE_PACKS, BAARALY_PAYMENT_METHODS } from "@paperclipai/shared/baaraly-agents";
+import {
+  BAARALY_RECHARGE_PACKS,
+  getPaymentProvidersForCountry,
+  formatPriceFromEur,
+  type PaymentProvider,
+} from "@paperclipai/shared/baaraly-agents";
 
 interface RechargeModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   companyId: string;
   onSuccess?: () => void;
+  /** User country code for currency/payment detection */
+  userCountry?: string;
 }
 
-export function RechargeModal({ open, onOpenChange, companyId, onSuccess }: RechargeModalProps) {
+export function RechargeModal({ open, onOpenChange, companyId, onSuccess, userCountry }: RechargeModalProps) {
   const { t } = useLanguage();
   const [selectedPack, setSelectedPack] = useState<string>("standard");
   const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
+
+  const providers = getPaymentProvidersForCountry(userCountry);
 
   const rechargeMutation = useMutation({
     mutationFn: () => {
@@ -45,11 +54,12 @@ export function RechargeModal({ open, onOpenChange, companyId, onSuccess }: Rech
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{t("Recharge my credits")}</DialogTitle>
-          <DialogDescription>{t("Choose a pack and payment method")}</DialogDescription>
+          <DialogTitle>{t("Recharger mes crédits")}</DialogTitle>
+          <DialogDescription>{t("Choisissez un pack et un moyen de paiement")}</DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-3 mt-2">
+        {/* Packs */}
+        <div className="space-y-2 mt-2">
           {BAARALY_RECHARGE_PACKS.map((pack) => {
             const isSelected = selectedPack === pack.id;
             const borderColor = pack.badgeColor ?? "transparent";
@@ -57,13 +67,12 @@ export function RechargeModal({ open, onOpenChange, companyId, onSuccess }: Rech
               <button
                 key={pack.id}
                 onClick={() => setSelectedPack(pack.id)}
-                className={`w-full text-left rounded-xl border-2 p-4 transition-all ${
+                className={`w-full text-left rounded-xl border-2 p-3 transition-all ${
                   isSelected
                     ? "ring-2 ring-offset-1 ring-offset-background"
                     : "border-border hover:border-muted-foreground/30"
                 }`}
                 style={isSelected ? { borderColor } : undefined}
-                title={`${pack.name} - ${pack.fcfa.toLocaleString("fr-FR")} FCFA`}
               >
                 <div className="flex items-center justify-between">
                   <div>
@@ -71,24 +80,22 @@ export function RechargeModal({ open, onOpenChange, companyId, onSuccess }: Rech
                       <span className="font-semibold text-sm">{pack.name}</span>
                       {pack.badge && (
                         <span
-                          className="text-xs font-medium px-2 py-0.5 rounded-full"
+                          className="text-[10px] font-medium px-2 py-0.5 rounded-full"
                           style={{
                             color: pack.badgeColor ?? "inherit",
-                            backgroundColor: pack.badgeColor
-                              ? `${pack.badgeColor}15`
-                              : "var(--muted)",
+                            backgroundColor: pack.badgeColor ? `${pack.badgeColor}15` : "var(--muted)",
                           }}
                         >
                           {pack.badge}
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {pack.credits.toLocaleString("fr-FR")} {t("credits")}
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {pack.credits.toLocaleString("fr-FR")} {t("crédits")}
                     </p>
                   </div>
-                  <span className="text-lg font-bold">
-                    {pack.fcfa.toLocaleString("fr-FR")} FCFA
+                  <span className="text-base font-bold">
+                    {formatPriceFromEur(pack.fcfa / 655.96, userCountry)}
                   </span>
                 </div>
               </button>
@@ -96,48 +103,45 @@ export function RechargeModal({ open, onOpenChange, companyId, onSuccess }: Rech
           })}
         </div>
 
+        {/* Payment providers */}
         <div className="mt-4">
-          <p className="text-sm font-medium mb-3">{t("Payment method")}</p>
+          <p className="text-sm font-medium mb-2">{t("Moyen de paiement")}</p>
           <div className="grid grid-cols-2 gap-2">
-            {BAARALY_PAYMENT_METHODS.map((method) => (
+            {providers.map((provider) => (
               <button
-                key={method.id}
-                onClick={() => setSelectedPayment(method.id)}
-                className={`rounded-lg border-2 p-3 text-sm font-medium text-left transition-all ${
-                  selectedPayment === method.id
-                    ? "border-[#0071E3] bg-[#0071E3]/5"
+                key={provider.id}
+                onClick={() => setSelectedPayment(provider.id)}
+                className={`rounded-xl border-2 p-3 text-left transition-all ${
+                  selectedPayment === provider.id
+                    ? "border-primary bg-primary/5"
                     : "border-border hover:border-muted-foreground/30"
                 }`}
-                title={method.label}
               >
-                {method.label}
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{provider.icon}</span>
+                  <span className="text-xs font-medium">{provider.name}</span>
+                </div>
               </button>
             ))}
           </div>
-          <p className="text-xs text-muted-foreground text-center mt-3">
-            {t("Secure payment")} 🔒
+          <p className="text-xs text-muted-foreground text-center mt-2">
+            🔒 {t("Paiement sécurisé")}
           </p>
         </div>
 
-        <div className="mt-4">
+        {/* Submit */}
+        <div className="mt-3">
           <button
             onClick={() => rechargeMutation.mutate()}
             disabled={!selectedPayment || rechargeMutation.isPending}
             className="w-full py-3 px-4 rounded-xl text-sm font-semibold text-white transition-all disabled:opacity-50"
             style={{ backgroundColor: "#0071E3" }}
           >
-            {rechargeMutation.isPending
-              ? t("Processing...")
-              : t("Confirm payment")}
+            {rechargeMutation.isPending ? t("Traitement en cours...") : t("Confirmer le paiement")}
           </button>
           {rechargeMutation.isError && (
             <p className="text-xs text-red-500 text-center mt-2">
-              {t("Payment failed. Please try again.")}
-            </p>
-          )}
-          {rechargeMutation.isSuccess && (
-            <p className="text-xs text-green-500 text-center mt-2">
-              {t("Recharge successful!")}
+              {t("Le paiement a échoué. Veuillez réessayer.")}
             </p>
           )}
         </div>

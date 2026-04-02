@@ -88,6 +88,20 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
     return DEFAULT_CURRENCY;
   }, [selectedCompany, agents]);
 
+  const userCountry = useMemo(() => {
+    if (agents && agents.length > 0) {
+      for (const agent of agents) {
+        const meta = (agent.metadata ?? {}) as Record<string, unknown>;
+        if (meta.country) return meta.country as string;
+      }
+    }
+    if (selectedCompany) {
+      const meta = (selectedCompany as any).metadata as Record<string, unknown> | undefined;
+      if (meta?.country) return meta.country as string;
+    }
+    return undefined;
+  }, [selectedCompany, agents]);
+
   const credits = creditData?.balance ?? 0;
   const balance = credits * 10;
   const isLow = credits > 0 && credits < 100;
@@ -114,7 +128,7 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
           <span>💰</span>
           <span>{formattedBalance}</span>
         </button>
-        <RechargeModal
+        <RechargeModal userCountry={userCountry}
           open={showRecharge}
           onOpenChange={setShowRecharge}
           companyId={companyId}
@@ -189,7 +203,7 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
         </button>
       </div>
 
-      <RechargeModal
+      <RechargeModal userCountry={userCountry}
         open={showRecharge}
         onOpenChange={setShowRecharge}
         companyId={companyId}

@@ -916,13 +916,44 @@ export const BAARALY_RECHARGE_PACKS = [
   { id: "business", name: "Business", fcfa: 25_000, credits: 4_000, badge: "Business", badgeColor: "#BF5AF2" },
 ] as const;
 
-/** Payment methods (mock) */
-export const BAARALY_PAYMENT_METHODS = [
-  { id: "orange_money", label: "Payer avec Orange Money", icon: "orange" },
-  { id: "wave", label: "Payer avec Wave", icon: "wave" },
-  { id: "moov_money", label: "Payer avec Moov Money", icon: "moov" },
-  { id: "card", label: "Carte bancaire", icon: "card" },
-] as const;
+/** Payment providers */
+export interface PaymentProvider {
+  id: string;
+  name: string;
+  icon: string;
+  /** Region where this provider is available */
+  regions: string[];
+  /** Payment types supported */
+  types: ("mobile_money" | "card" | "bank_transfer" | "crypto")[];
+  /** Provider is enabled (keys configured) */
+  enabled: boolean;
+}
+
+export const BAARALY_PAYMENT_PROVIDERS: PaymentProvider[] = [
+  // Mobile Money — Afrique
+  { id: "orange_money", name: "Orange Money", icon: "🟠", regions: ["sn", "ml", "ci", "bf", "ne", "bj", "tg", "cm", "gn"], types: ["mobile_money"], enabled: true },
+  { id: "wave", name: "Wave", icon: "🌊", regions: ["sn", "ci", "ml", "bf", "ug"], types: ["mobile_money"], enabled: true },
+  { id: "moov_money", name: "Moov Money", icon: "🔵", regions: ["ci", "bj", "tg", "bf", "ne", "sn"], types: ["mobile_money"], enabled: true },
+  { id: "mtn_momo", name: "MTN Mobile Money", icon: "🟡", regions: ["gh", "ng", "cm", "ci", "ug"], types: ["mobile_money"], enabled: true },
+  { id: "airtel_money", name: "Airtel Money", icon: "🔴", regions: ["gh", "ng", "ug", "cd", "cg"], types: ["mobile_money"], enabled: true },
+  { id: "mpesa", name: "M-Pesa", icon: "💚", regions: ["gh", "ug", "cd"], types: ["mobile_money"], enabled: true },
+  
+  // Payment Gateways — International
+  { id: "cinetpay", name: "CinetPay", icon: "💳", regions: ["bf", "ml", "sn", "ci", "ne", "bj", "tg", "cm", "ga", "gn", "cd", "cg"], types: ["mobile_money", "card"], enabled: true },
+  { id: "stripe", name: "Stripe", icon: "💜", regions: ["fr", "be", "ch", "lu", "mc", "us", "ca", "gb"], types: ["card"], enabled: true },
+  { id: "paypal", name: "PayPal", icon: "🅿️", regions: ["fr", "be", "ch", "lu", "mc", "us", "ca", "gb"], types: ["card"], enabled: true },
+  
+  // Crypto
+  { id: "crypto", name: "Crypto (USDT/BTC)", icon: "₿", regions: ["*"], types: ["crypto"], enabled: true },
+];
+
+/** Get available payment providers for a country */
+export function getPaymentProvidersForCountry(country?: string): PaymentProvider[] {
+  if (!country) return BAARALY_PAYMENT_PROVIDERS.filter((p) => p.enabled);
+  return BAARALY_PAYMENT_PROVIDERS.filter(
+    (p) => p.enabled && (p.regions.includes("*") || p.regions.includes(country))
+  );
+}
 
 /* ═══════════════════════════════════════════
    BILLING PLANS + CURRENCY
