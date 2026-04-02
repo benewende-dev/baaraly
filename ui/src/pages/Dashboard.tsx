@@ -58,20 +58,28 @@ export function Dashboard() {
   const findAgent = (name: string) => agents?.find((a) => a.name === name);
 
   const quickActions = [
-    { emoji: "\uD83D\uDECD\uFE0F", label: t("Gérer ma boutique"), sub: "Aminata", agent: findAgent("Aminata") },
-    { emoji: "\uD83D\uDCF1", label: t("Trouver des clients"), sub: "Mariama", agent: findAgent("Mariama") },
-    { emoji: "\uD83D\uDCCA", label: t("Voir mes finances"), sub: "Ibrahim", agent: findAgent("Ibrahim") },
+    { emoji: "🛍️", label: t("Gérer ma boutique"), sub: "Aminata", agent: findAgent("Aminata") },
+    { emoji: "📱", label: t("Trouver des clients"), sub: "Mariama", agent: findAgent("Mariama") },
+    { emoji: "📊", label: t("Voir mes finances"), sub: "Ibrahim", agent: findAgent("Ibrahim") },
   ];
 
   return (
     <div className="space-y-8 pb-28 max-w-2xl mx-auto">
-      {/* Header : Bonjour + CreditBalance */}
+      {/* Header : Bonjour + CreditBalance + Lancer un agent */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">{t("Bonjour")} \uD83D\uDC4B</h1>
+          <h1 className="text-2xl font-bold">{t("Bonjour")} 👋</h1>
           <p className="text-sm text-muted-foreground mt-1">{selectedCompany?.name}</p>
         </div>
-        <CreditBalance companyId={selectedCompanyId} compact />
+        <div className="flex items-center gap-3">
+          <CreditBalance companyId={selectedCompanyId} compact />
+          <button
+            onClick={() => navigate("/agents/templates")}
+            className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90 active:scale-[0.98] whitespace-nowrap"
+          >
+            + {t("Lancer un agent")}
+          </button>
+        </div>
       </div>
 
       {/* Paywall — Actions restantes + WhatsApp */}
@@ -84,17 +92,17 @@ export function Dashboard() {
       {agents && agents.length > 0 && (
         <div className="rounded-2xl border border-green-500/30 bg-green-500/5 p-5">
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-2xl">{"\uD83D\uDD25"}</span>
+            <span className="text-2xl">{"🔥"}</span>
             <h2 className="text-base font-bold">{t("Ton agent a d\u00e9j\u00e0 travaill\u00e9 pour toi")}</h2>
           </div>
           <div className="space-y-2 text-sm text-muted-foreground">
-            <ActivityFeedItem icon="\uD83D\uDD0D" text={t("Recherche de clients...")} done />
-            <ActivityFeedItem icon="\uD83C\uDFAF" text={t("3 prospects trouv\u00e9s")} done />
-            <ActivityFeedItem icon="\uD83D\uDCE8" text={t("Messages envoy\u00e9s")} done />
-            <ActivityFeedItem icon="\u2705" text={t("Rapport pr\u00eat")} done />
+            <ActivityFeedItem icon="🔍" text={t("Recherche de clients...")} done />
+            <ActivityFeedItem icon="🎯" text={t("3 prospects trouvés")} done />
+            <ActivityFeedItem icon="📨" text={t("Messages envoyés")} done />
+            <ActivityFeedItem icon="✅" text={t("Rapport prêt")} done />
           </div>
           <p className="text-xs text-green-600 font-medium mt-3">
-            {t("Ton assistant est op\u00e9rationnel")} {"\uD83D\uDE80"}
+            {t("Ton assistant est opérationnel")} {"🚀"}
           </p>
         </div>
       )}
@@ -149,15 +157,6 @@ export function Dashboard() {
         )}
       </div>
 
-      {/* Sticky CTA */}
-      <div className="fixed bottom-6 left-0 right-0 flex justify-center z-40 pointer-events-none px-4">
-        <button
-          onClick={() => navigate("/agents/templates")}
-          className="pointer-events-auto inline-flex items-center gap-2 rounded-2xl bg-primary px-6 min-h-[52px] text-sm font-bold text-primary-foreground shadow-lg transition-all hover:opacity-90 active:scale-[0.97]"
-        >
-          + {t("Lancer un agent")}
-        </button>
-      </div>
     </div>
   );
 }
@@ -167,7 +166,7 @@ function ActivityFeedItem({ icon, text, done }: { icon: string; text: string; do
     <div className="flex items-center gap-2">
       <span className="shrink-0">{icon}</span>
       <span className={done ? "line-through opacity-70" : ""}>{text}</span>
-      {done && <span className="ml-auto text-green-500 text-xs">{"\u2714"}</span>}
+      {done && <span className="ml-auto text-green-500 text-xs">{"✔"}</span>}
     </div>
   );
 }
@@ -175,7 +174,7 @@ function ActivityFeedItem({ icon, text, done }: { icon: string; text: string; do
 function DashboardAgentCard({ agent }: { agent: Agent }) {
   const { t } = useLanguage();
   const meta = (agent.metadata ?? {}) as Record<string, unknown>;
-  const emoji = (meta.emoji as string) ?? "\uD83E\uDD16";
+  const emoji = (meta.emoji as string) ?? "🤖";
 
   return (
     <Link

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLanguage } from "../context/LanguageContext";
+import { ChevronDown } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -7,6 +8,27 @@ import {
   DialogTitle,
   DialogDescription,
 } from "./ui/dialog";
+
+const COUNTRIES = [
+  { code: "+226", flag: "🇧🇫", name: "Burkina Faso" },
+  { code: "+229", flag: "🇧🇯", name: "Bénin" },
+  { code: "+223", flag: "🇲🇱", name: "Mali" },
+  { code: "+221", flag: "🇸🇳", name: "Sénégal" },
+  { code: "+225", flag: "🇨🇮", name: "Côte d'Ivoire" },
+  { code: "+227", flag: "🇳🇪", name: "Niger" },
+  { code: "+228", flag: "🇹🇬", name: "Togo" },
+  { code: "+233", flag: "🇬🇭", name: "Ghana" },
+  { code: "+234", flag: "🇳🇬", name: "Nigeria" },
+  { code: "+241", flag: "🇬🇦", name: "Gabon" },
+  { code: "+237", flag: "🇨🇲", name: "Cameroun" },
+  { code: "+235", flag: "🇹🇩", name: "Tchad" },
+  { code: "+236", flag: "🇨🇫", name: "Centrafrique" },
+  { code: "+240", flag: "🇬🇶", name: "Guinée Équatoriale" },
+  { code: "+245", flag: "🇬🇼", name: "Guinée-Bissau" },
+  { code: "+224", flag: "🇬🇳", name: "Guinée" },
+  { code: "+230", flag: "🇲🇺", name: "Maurice" },
+  { code: "+222", flag: "🇲🇷", name: "Mauritanie" },
+];
 
 interface WhatsAppConnectProps {
   open: boolean;
@@ -17,6 +39,8 @@ export function WhatsAppConnect({ open, onOpenChange }: WhatsAppConnectProps) {
   const { t } = useLanguage();
   const [phone, setPhone] = useState("");
   const [step, setStep] = useState<"input" | "confirm" | "connected">("input");
+  const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
+  const [showCountryPicker, setShowCountryPicker] = useState(false);
 
   function handleSubmit() {
     if (phone.trim().length >= 8) {
@@ -33,6 +57,8 @@ export function WhatsAppConnect({ open, onOpenChange }: WhatsAppConnectProps) {
     setTimeout(() => {
       setStep("input");
       setPhone("");
+      setSelectedCountry(COUNTRIES[0]);
+      setShowCountryPicker(false);
     }, 300);
   }
 
@@ -41,13 +67,13 @@ export function WhatsAppConnect({ open, onOpenChange }: WhatsAppConnectProps) {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <span className="text-2xl">{"\uD83D\uDCF1"}</span>
+            <span className="text-2xl">{"📱"}</span>
             {t("Connecter WhatsApp")}
           </DialogTitle>
           <DialogDescription>
             {step === "connected"
-              ? t("Ton num\u00e9ro est connect\u00e9 !")
-              : t("Re\u00e7ois les notifications de tes agents sur WhatsApp")}
+              ? t("Ton numéro est connecté !")
+              : t("Reçois les notifications de tes agents sur WhatsApp")}
           </DialogDescription>
         </DialogHeader>
 
@@ -55,12 +81,43 @@ export function WhatsAppConnect({ open, onOpenChange }: WhatsAppConnectProps) {
           <div className="space-y-4 mt-2">
             <div>
               <label className="text-sm font-medium mb-1.5 block">
-                {t("Num\u00e9ro WhatsApp")}
+                {t("Numéro WhatsApp")}
               </label>
               <div className="flex gap-2">
-                <span className="inline-flex items-center rounded-lg border border-border bg-muted px-3 text-sm text-muted-foreground">
-                  +226
-                </span>
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setShowCountryPicker(!showCountryPicker)}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-muted px-3 text-sm text-muted-foreground hover:bg-accent transition-colors"
+                  >
+                    <span>{selectedCountry.flag}</span>
+                    <span>{selectedCountry.code}</span>
+                    <ChevronDown className="h-3.5 w-3.5" />
+                  </button>
+                  {showCountryPicker && (
+                    <div className="absolute top-full left-0 mt-1 z-50 w-64 max-h-64 overflow-y-auto rounded-xl border border-border bg-popover shadow-lg">
+                      {COUNTRIES.map((c) => (
+                        <button
+                          key={c.code}
+                          type="button"
+                          onClick={() => {
+                            setSelectedCountry(c);
+                            setShowCountryPicker(false);
+                          }}
+                          className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors hover:bg-accent ${
+                            selectedCountry.code === c.code
+                              ? "bg-accent font-medium"
+                              : ""
+                          }`}
+                        >
+                          <span className="text-lg">{c.flag}</span>
+                          <span className="flex-1">{c.name}</span>
+                          <span className="text-muted-foreground">{c.code}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <input
                   type="tel"
                   value={phone}
@@ -84,9 +141,9 @@ export function WhatsAppConnect({ open, onOpenChange }: WhatsAppConnectProps) {
         {step === "confirm" && (
           <div className="space-y-4 mt-2 text-center">
             <p className="text-sm text-muted-foreground">
-              {t("Confirmer le num\u00e9ro")} :
+              {t("Confirmer le numéro")} :
             </p>
-            <p className="text-lg font-bold">+226 {phone}</p>
+            <p className="text-lg font-bold">{selectedCountry.code} {phone}</p>
             <div className="flex gap-2">
               <button
                 onClick={() => setStep("input")}
@@ -108,13 +165,13 @@ export function WhatsAppConnect({ open, onOpenChange }: WhatsAppConnectProps) {
         {step === "connected" && (
           <div className="space-y-4 mt-2 text-center">
             <div className="w-16 h-16 rounded-full bg-green-500/10 flex items-center justify-center mx-auto">
-              <span className="text-3xl">{"\u2705"}</span>
+              <span className="text-3xl">{"✅"}</span>
             </div>
             <p className="text-sm font-semibold text-green-600">
-              WhatsApp {t("connect\u00e9")}
+              WhatsApp {t("connecté")}
             </p>
             <p className="text-xs text-muted-foreground">
-              +226 {phone}
+              {selectedCountry.code} {phone}
             </p>
             <button
               onClick={handleClose}
@@ -143,7 +200,7 @@ export function WhatsAppConnectButton() {
         onClick={() => setOpen(true)}
         className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition-all hover:shadow-md hover:border-green-500/30 active:scale-[0.98]"
       >
-        <span className="text-lg">{"\uD83D\uDCF1"}</span>
+        <span className="text-lg">{"📱"}</span>
         {t("Connecter WhatsApp")}
       </button>
       <WhatsAppConnect open={open} onOpenChange={setOpen} />

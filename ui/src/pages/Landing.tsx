@@ -1,14 +1,12 @@
 import { useNavigate } from "@/lib/router";
 import { useLanguage } from "../context/LanguageContext";
 
-const HERO_GRADIENT = "linear-gradient(135deg, #0071E3 0%, #00C853 100%)";
-
 export function Landing() {
   const navigate = useNavigate();
   const { t } = useLanguage();
 
   return (
-    <div className="min-h-[100dvh] bg-background text-foreground overflow-x-hidden">
+    <div className="bg-background text-foreground">
       {/* ── NAV ── */}
       <nav className="flex items-center justify-between px-5 py-4 max-w-4xl mx-auto">
         <span className="text-xl font-extrabold tracking-tight">
@@ -24,10 +22,7 @@ export function Landing() {
 
       {/* ── HERO ── */}
       <section className="px-5 pt-12 pb-16 text-center max-w-2xl mx-auto">
-        <div
-          className="inline-block rounded-full px-4 py-1.5 text-xs font-semibold text-white mb-6"
-          style={{ background: HERO_GRADIENT }}
-        >
+        <div className="inline-block rounded-full px-4 py-1.5 text-xs font-semibold bg-primary/10 text-primary mb-6">
           {t("1 000 FCFA offerts à l'inscription")} 🎁
         </div>
         <h1 className="text-3xl sm:text-5xl font-extrabold leading-tight mb-5">
@@ -39,8 +34,7 @@ export function Landing() {
         </p>
         <button
           onClick={() => navigate("/welcome")}
-          className="rounded-2xl px-8 py-4 text-base font-bold text-white shadow-xl transition hover:opacity-90 active:scale-[0.97]"
-          style={{ background: HERO_GRADIENT }}
+          className="rounded-2xl px-8 py-4 text-base font-bold text-primary-foreground shadow-xl transition hover:opacity-90 active:scale-[0.97] bg-gradient-to-r from-primary to-secondary"
         >
           {t("Tester gratuitement")} →
         </button>
@@ -115,10 +109,7 @@ export function Landing() {
 
       {/* ── OFFRE ── */}
       <section className="px-5 py-16 max-w-lg mx-auto">
-        <div
-          className="rounded-3xl p-8 text-center text-white"
-          style={{ background: HERO_GRADIENT }}
-        >
+        <div className="rounded-3xl p-8 text-center bg-gradient-to-r from-primary to-secondary text-primary-foreground">
           <p className="text-sm font-semibold opacity-90 mb-2">{t("Offre de lancement")}</p>
           <h2 className="text-3xl font-extrabold mb-2">1 000 FCFA {t("offerts")}</h2>
           <p className="text-sm opacity-90 mb-6">
@@ -126,8 +117,7 @@ export function Landing() {
           </p>
           <button
             onClick={() => navigate("/welcome")}
-            className="rounded-2xl bg-white px-8 py-3.5 text-base font-bold shadow-lg transition hover:opacity-90 active:scale-[0.97]"
-            style={{ color: "#0071E3" }}
+            className="rounded-2xl bg-background px-8 py-3.5 text-base font-bold text-foreground shadow-lg transition hover:opacity-90 active:scale-[0.97]"
           >
             {t("Commencer maintenant")} 🚀
           </button>
@@ -168,8 +158,7 @@ export function Landing() {
         </p>
         <button
           onClick={() => navigate("/welcome")}
-          className="rounded-2xl px-8 py-4 text-base font-bold text-white shadow-xl transition hover:opacity-90 active:scale-[0.97]"
-          style={{ background: HERO_GRADIENT }}
+          className="rounded-2xl px-8 py-4 text-base font-bold text-primary-foreground shadow-xl transition hover:opacity-90 active:scale-[0.97] bg-gradient-to-r from-primary to-secondary"
         >
           {t("Essayer maintenant")} →
         </button>
