@@ -43,6 +43,10 @@ export function companyService(db: Db) {
     requireBoardApprovalForNewAgents: companies.requireBoardApprovalForNewAgents,
     brandColor: companies.brandColor,
     logoAssetId: companyLogos.assetId,
+    billingPlan: companies.billingPlan,
+    trialEndsAt: companies.trialEndsAt,
+    dailyProspectLimit: companies.dailyProspectLimit,
+    maxCompanies: companies.maxCompanies,
     createdAt: companies.createdAt,
     updatedAt: companies.updatedAt,
   };
@@ -133,9 +137,18 @@ export function companyService(db: Db) {
     while (suffix < 10000) {
       const candidate = `${base}${suffixForAttempt(suffix)}`;
       try {
+        const trialEndsAt = new Date();
+        trialEndsAt.setUTCDate(trialEndsAt.getUTCDate() + 7);
         const rows = await db
           .insert(companies)
-          .values({ ...data, issuePrefix: candidate })
+          .values({
+            ...data,
+            issuePrefix: candidate,
+            billingPlan: "trial",
+            trialEndsAt,
+            dailyProspectLimit: 5,
+            maxCompanies: 1,
+          })
           .returning();
         return rows[0];
       } catch (error) {

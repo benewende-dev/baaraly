@@ -17,6 +17,11 @@ export const companies = pgTable(
       .notNull()
       .default(true),
     brandColor: text("brand_color"),
+    // Trial & billing
+    billingPlan: text("billing_plan").notNull().default("trial"),
+    trialEndsAt: timestamp("trial_ends_at", { withTimezone: true }),
+    dailyProspectLimit: integer("daily_prospect_limit").notNull().default(5),
+    maxCompanies: integer("max_companies").notNull().default(1),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },

@@ -20,6 +20,10 @@ export const updateCompanySchema = createCompanySchema
     requireBoardApprovalForNewAgents: z.boolean().optional(),
     brandColor: brandColorSchema,
     logoAssetId: logoAssetIdSchema,
+    billingPlan: z.enum(["trial", "pro"]).optional(),
+    trialEndsAt: z.string().datetime().optional().nullable(),
+    dailyProspectLimit: z.number().int().positive().optional(),
+    maxCompanies: z.number().int().positive().optional(),
   });
 
 export type UpdateCompany = z.infer<typeof updateCompanySchema>;

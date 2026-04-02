@@ -51,6 +51,18 @@ export function Dashboard() {
     return all;
   }, [agents]);
 
+  const trialInfo = useMemo(() => {
+    if (!selectedCompany) return null;
+    const billingPlan = (selectedCompany as any).billingPlan ?? "trial";
+    const trialEndsAt = (selectedCompany as any).trialEndsAt as Date | null;
+    const dailyLimit = (selectedCompany as any).dailyProspectLimit ?? 5;
+    if (billingPlan !== "trial" || !trialEndsAt) return null;
+    const now = new Date();
+    const ends = new Date(trialEndsAt);
+    const daysRemaining = Math.max(0, Math.ceil((ends.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)));
+    return { active: now < ends, daysRemaining, dailyLimit };
+  }, [selectedCompany]);
+
   useEffect(() => {
     setBreadcrumbs([{ label: t("Dashboard") }]);
   }, [setBreadcrumbs, t]);
@@ -88,6 +100,21 @@ export function Dashboard() {
 
   return (
     <div className="space-y-8 pb-28 max-w-2xl mx-auto">
+      {/* Trial banner */}
+      {trialInfo && trialInfo.active && (
+        <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4 flex items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold text-amber-600">{t("Essai gratuit")} 🎁</p>
+            <p className="text-xs text-muted-foreground">
+              {t("Il reste")} {trialInfo.daysRemaining} {t("jours")} · {t("Limite")}: {trialInfo.dailyLimit} {t("prospects/jour")}
+            </p>
+          </div>
+          <button className="rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-all hover:opacity-90 active:scale-[0.98] whitespace-nowrap">
+            {t("Passer à Pro")} — 49$
+          </button>
+        </div>
+      )}
+
       {/* Header : Bonjour + CreditBalance + Lancer un agent */}
       <div className="flex items-start justify-between gap-4">
         <div>

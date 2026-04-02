@@ -15,6 +15,10 @@ export interface Company {
   brandColor: string | null;
   logoAssetId: string | null;
   logoUrl: string | null;
+  billingPlan: string;
+  trialEndsAt: Date | null;
+  dailyProspectLimit: number;
+  maxCompanies: number;
   createdAt: Date;
   updatedAt: Date;
 }
