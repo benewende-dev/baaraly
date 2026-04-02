@@ -88,21 +88,17 @@ export function Dashboard() {
         <WhatsAppConnectButton />
       </div>
 
-      {/* First Success Moment */}
+      {/* First Success Moment / Welcome */}
       {agents && agents.length > 0 && (
         <div className="rounded-2xl border border-green-500/30 bg-green-500/5 p-5">
           <div className="flex items-center gap-3 mb-3">
             <span className="text-2xl">{"🔥"}</span>
-            <h2 className="text-base font-bold">{t("Ton agent a d\u00e9j\u00e0 travaill\u00e9 pour toi")}</h2>
+            <h2 className="text-base font-bold">{t("Ton assistant est prêt")}</h2>
           </div>
-          <div className="space-y-2 text-sm text-muted-foreground">
-            <ActivityFeedItem icon="🔍" text={t("Recherche de clients...")} done />
-            <ActivityFeedItem icon="🎯" text={t("3 prospects trouvés")} done />
-            <ActivityFeedItem icon="📨" text={t("Messages envoyés")} done />
-            <ActivityFeedItem icon="✅" text={t("Rapport prêt")} done />
-          </div>
-          <p className="text-xs text-green-600 font-medium mt-3">
-            {t("Ton assistant est opérationnel")} {"🚀"}
+          <p className="text-sm text-muted-foreground">
+            {agents.length === 1
+              ? `${agents[0].name} ${t("va commencer à travailler pour toi. Tu recevras les résultats sur WhatsApp.")}`
+              : `${agents.length} ${t("assistants sont configurés et prêts à travailler pour toi.")}`}
           </p>
         </div>
       )}
@@ -157,16 +153,6 @@ export function Dashboard() {
         )}
       </div>
 
-    </div>
-  );
-}
-
-function ActivityFeedItem({ icon, text, done }: { icon: string; text: string; done?: boolean }) {
-  return (
-    <div className="flex items-center gap-2">
-      <span className="shrink-0">{icon}</span>
-      <span className={done ? "line-through opacity-70" : ""}>{text}</span>
-      {done && <span className="ml-auto text-green-500 text-xs">{"✔"}</span>}
     </div>
   );
 }
