@@ -4024,7 +4024,7 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
             disabled={createKey.isPending}
           >
             <Plus className="h-3.5 w-3.5 mr-1" />
-            {t("Créer")}
+            {t("Create")}
           </Button>
         </div>
       </div>
