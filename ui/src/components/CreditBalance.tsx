@@ -4,7 +4,7 @@ import { creditsApi } from "../api/credits";
 import { agentsApi } from "../api/agents";
 import { useLanguage } from "../context/LanguageContext";
 import { useCompany } from "../context/CompanyContext";
-import { CheckoutModal } from "./CheckoutModal";
+import { CreditRechargeModal } from "./CreditRechargeModal";
 
 const CURRENCY_BY_COUNTRY: Record<string, { symbol: string; code: string; locale: string }> = {
   bf: { symbol: "", code: "FCFA", locale: "fr-FR" },
@@ -34,7 +34,7 @@ interface CreditBalanceProps {
 export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
   const { t } = useLanguage();
   const { selectedCompany } = useCompany();
-  const [showCheckout, setShowCheckout] = useState(false);
+  const [showRecharge, setShowRecharge] = useState(false);
 
   const { data: creditData, refetch } = useQuery({
     queryKey: ["credits", companyId],
@@ -88,7 +88,7 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
     return (
       <>
         <button
-          onClick={() => setShowCheckout(true)}
+          onClick={() => setShowRecharge(true)}
           className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors hover:bg-accent/50 ${
             isEmpty ? "border-red-500/30 bg-red-500/5 text-red-500"
             : isLow ? "border-orange-500/30 bg-orange-500/5 text-orange-500"
@@ -98,9 +98,9 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
           <span>💰</span>
           <span>{formattedBalance}</span>
         </button>
-        <CheckoutModal
-          open={showCheckout}
-          onOpenChange={setShowCheckout}
+        <CreditRechargeModal
+          open={showRecharge}
+          onOpenChange={setShowRecharge}
           companyId={companyId}
           userCountry={userCountry}
         />
@@ -146,16 +146,16 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
           <p className="text-xs text-red-500 mb-3">{t("Rechargez pour continuer")}</p>
         )}
         <button
-          onClick={() => setShowCheckout(true)}
+          onClick={() => setShowRecharge(true)}
           className="w-full py-2 px-4 rounded-lg text-sm font-semibold text-white transition-colors"
           style={{ backgroundColor: "#0071E3" }}
         >
           {t("Recharger")}
         </button>
       </div>
-      <CheckoutModal
-        open={showCheckout}
-        onOpenChange={setShowCheckout}
+      <CreditRechargeModal
+        open={showRecharge}
+        onOpenChange={setShowRecharge}
         companyId={companyId}
         userCountry={userCountry}
       />
