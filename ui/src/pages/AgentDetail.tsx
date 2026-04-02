@@ -3919,6 +3919,7 @@ function LogViewer({ run, adapterType }: { run: HeartbeatRun; adapterType: strin
 /* ---- Keys Tab ---- */
 
 function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }) {
+  const { t } = useLanguage();
   const queryClient = useQueryClient();
   const [newKeyName, setNewKeyName] = useState("");
   const [newToken, setNewToken] = useState<string | null>(null);
@@ -3963,7 +3964,7 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
       {newToken && (
         <div className="border border-yellow-300 dark:border-yellow-600/40 bg-yellow-50 dark:bg-yellow-500/5 rounded-lg p-4 space-y-2">
           <p className="text-sm font-medium text-yellow-700 dark:text-yellow-400">
-            Cl\u00e9 API cr\u00e9\u00e9e — copie-la maintenant, elle ne sera plus affich\u00e9e.
+            {t("Clé API créée — copie-la maintenant, elle ne sera plus affichée.")}
           </p>
           <div className="flex items-center gap-2">
             <code className="flex-1 bg-neutral-100 dark:bg-neutral-950 rounded px-3 py-1.5 text-xs font-mono text-green-700 dark:text-green-300 truncate">
@@ -3973,7 +3974,7 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
               variant="ghost"
               size="icon-sm"
               onClick={() => setTokenVisible((v) => !v)}
-              title={tokenVisible ? "Masquer" : "Afficher"}
+              title={tokenVisible ? t("Masquer") : t("Afficher")}
             >
               {tokenVisible ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
             </Button>
@@ -3981,11 +3982,11 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
               variant="ghost"
               size="icon-sm"
               onClick={copyToken}
-              title="Copier"
+              title={t("Copier")}
             >
               <Copy className="h-3.5 w-3.5" />
             </Button>
-            {copied && <span className="text-xs text-green-400">Copi\u00e9 !</span>}
+            {copied && <span className="text-xs text-green-400">{t("Copié !")}</span>}
           </div>
           <Button
             variant="ghost"
@@ -3993,7 +3994,7 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
             className="text-muted-foreground text-xs"
             onClick={() => setNewToken(null)}
           >
-            Fermer
+            {t("Fermer")}
           </Button>
         </div>
       )}
@@ -4002,14 +4003,14 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
       <div className="border border-border rounded-lg p-4 space-y-3">
         <h3 className="text-xs font-medium text-muted-foreground flex items-center gap-2">
           <Key className="h-3.5 w-3.5" />
-          Cr\u00e9er une cl\u00e9 API
+          {t("Créer une clé API")}
         </h3>
         <p className="text-xs text-muted-foreground">
-          Les cl\u00e9s API permettent \u00e0 cet agent de s'authentifier aupr\u00e8s du serveur Baaraly.
+          {t("Les clés API permettent à cet agent de s'authentifier auprès du serveur Baaraly.")}
         </p>
         <div className="flex items-center gap-2">
           <Input
-            placeholder="Nom de la cl\u00e9 (ex. production)"
+            placeholder={t("Nom de la clé (ex. production)")}
             value={newKeyName}
             onChange={(e) => setNewKeyName(e.target.value)}
             className="h-8 text-sm"
@@ -4023,22 +4024,22 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
             disabled={createKey.isPending}
           >
             <Plus className="h-3.5 w-3.5 mr-1" />
-            Cr\u00e9er
+            {t("Créer")}
           </Button>
         </div>
       </div>
 
       {/* Active keys */}
-      {isLoading && <p className="text-sm text-muted-foreground">Chargement des cl\u00e9s...</p>}
+      {isLoading && <p className="text-sm text-muted-foreground">{t("Chargement des clés...")}</p>}
 
       {!isLoading && activeKeys.length === 0 && !newToken && (
-        <p className="text-sm text-muted-foreground">Aucune cl\u00e9 API active.</p>
+        <p className="text-sm text-muted-foreground">{t("Aucune clé API active.")}</p>
       )}
 
       {activeKeys.length > 0 && (
         <div>
           <h3 className="text-xs font-medium text-muted-foreground mb-2">
-            Cl\u00e9s actives
+            {t("Clés actives")}
           </h3>
           <div className="border border-border rounded-lg divide-y divide-border">
             {activeKeys.map((key: AgentKey) => (
@@ -4046,7 +4047,7 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
                 <div>
                   <span className="text-sm font-medium">{key.name}</span>
                   <span className="text-xs text-muted-foreground ml-3">
-                    Cr\u00e9\u00e9e le {formatDate(key.createdAt)}
+                    {t("Créée le")} {formatDate(key.createdAt)}
                   </span>
                 </div>
                 <Button
@@ -4056,7 +4057,7 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
                   onClick={() => revokeKey.mutate(key.id)}
                   disabled={revokeKey.isPending}
                 >
-                  R\u00e9voquer
+                  {t("Révoquer")}
                 </Button>
               </div>
             ))}
@@ -4068,7 +4069,7 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
       {revokedKeys.length > 0 && (
         <div>
           <h3 className="text-xs font-medium text-muted-foreground mb-2">
-            Cl\u00e9s r\u00e9voqu\u00e9es
+            {t("Clés révoquées")}
           </h3>
           <div className="border border-border rounded-lg divide-y divide-border opacity-50">
             {revokedKeys.map((key: AgentKey) => (
@@ -4076,7 +4077,7 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
                 <div>
                   <span className="text-sm line-through">{key.name}</span>
                   <span className="text-xs text-muted-foreground ml-3">
-                    R\u00e9voqu\u00e9e le {key.revokedAt ? formatDate(key.revokedAt) : ""}
+                    {t("Révoquée le")} {key.revokedAt ? formatDate(key.revokedAt) : ""}
                   </span>
                 </div>
               </div>

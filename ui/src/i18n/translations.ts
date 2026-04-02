@@ -1099,6 +1099,30 @@ export const translations: Record<string, Record<Language, string>> = {
   "Sans carte bancaire": { fr: "Sans carte bancaire", en: "No credit card" },
   "jours gratuits": { fr: "jours gratuits", en: "free days" },
   "agent": { fr: "agent", en: "agent" },
+
+  // ═══ Agent API Keys ═══
+  "Créer une clé API": { fr: "Créer une clé API", en: "Create API key" },
+  "Les clés API permettent à cet agent de s'authentifier auprès du serveur Baaraly.": {
+    fr: "Les clés API permettent à cet agent de s'authentifier auprès du serveur Baaraly.",
+    en: "API keys allow this agent to authenticate with the Baaraly server."
+  },
+  "Nom de la clé (ex. production)": { fr: "Nom de la clé (ex. production)", en: "Key name (e.g. production)" },
+  "Chargement des clés...": { fr: "Chargement des clés...", en: "Loading keys..." },
+  "Aucune clé API active.": { fr: "Aucune clé API active.", en: "No active API key." },
+  "Clés actives": { fr: "Clés actives", en: "Active keys" },
+  "Créée le": { fr: "Créée le", en: "Created on" },
+  "Révoquer": { fr: "Révoquer", en: "Revoke" },
+  "Clés révoquées": { fr: "Clés révoquées", en: "Revoked keys" },
+  "Révoquée le": { fr: "Révoquée le", en: "Revoked on" },
+  "Clé API créée — copie-la maintenant, elle ne sera plus affichée.": {
+    fr: "Clé API créée — copie-la maintenant, elle ne sera plus affichée.",
+    en: "API key created — copy it now, it won't be shown again."
+  },
+  "Masquer": { fr: "Masquer", en: "Hide" },
+  "Afficher": { fr: "Afficher", en: "Show" },
+  "Copier": { fr: "Copier", en: "Copy" },
+  "Copié !": { fr: "Copié !", en: "Copied!" },
+  "Fermer": { fr: "Fermer", en: "Close" },
 };
 
 /** Renvoie la traduction pour la clé donnée dans la langue choisie.
