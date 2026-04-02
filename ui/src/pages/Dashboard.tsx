@@ -19,8 +19,14 @@ import { WhatsAppConnectButton } from "../components/WhatsAppConnect";
 import {
   BAARALY_AGENTS,
   AGENT_CATEGORIES,
+  getBillingPlan,
+  getAgentsForPlan,
+  getAgentsByTier,
+  formatPrice,
   type BaaralyAgentDefinition,
   type AgentCategory,
+  type AgentTier,
+  type BillingPlanId,
 } from "@paperclipai/shared/baaraly-agents";
 
 /* ─── Category gradient backgrounds ─── */
@@ -148,18 +154,37 @@ export function Dashboard() {
     return all;
   }, [agents]);
 
-  /* Trial info */
-  const trialInfo = useMemo(() => {
+  /* Plan info */
+  const planInfo = useMemo(() => {
     if (!selectedCompany) return null;
-    const billingPlan = (selectedCompany as any).billingPlan ?? "trial";
+    const billingPlan = ((selectedCompany as any).billingPlan ?? "trial") as BillingPlanId;
+    const plan = getBillingPlan(billingPlan);
     const trialEndsAt = (selectedCompany as any).trialEndsAt as Date | null;
-    const dailyLimit = (selectedCompany as any).dailyProspectLimit ?? 5;
-    if (billingPlan !== "trial" || !trialEndsAt) return null;
-    const now = new Date();
-    const ends = new Date(trialEndsAt);
-    const daysRemaining = Math.max(0, Math.ceil((ends.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)));
-    return { active: now < ends, daysRemaining, dailyLimit };
-  }, [selectedCompany]);
+    
+    let daysRemaining: number | null = null;
+    let isTrialActive = false;
+    
+    if (billingPlan === "trial" && trialEndsAt) {
+      const now = new Date();
+      const ends = new Date(trialEndsAt);
+      daysRemaining = Math.max(0, Math.ceil((ends.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)));
+      isTrialActive = now < ends;
+    }
+    
+    const availableAgents = getAgentsForPlan(billingPlan);
+    const installedCount = agents?.length ?? 0;
+    
+    return {
+      plan,
+      billingPlan,
+      daysRemaining,
+      isTrialActive,
+      availableAgents,
+      installedCount,
+      canInstallMore: installedCount < plan.maxAgents,
+      remainingSlots: plan.maxAgents - installedCount,
+    };
+  }, [selectedCompany, agents]);
 
   /* Filtered agents by category */
   const filteredAgents = useMemo(() => {
@@ -222,19 +247,9 @@ export function Dashboard() {
   /* ─── Render ─── */
   return (
     <div className="space-y-6 pb-28 max-w-4xl mx-auto">
-      {/* ── Trial banner ── */}
-      {trialInfo && trialInfo.active && (
-        <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/5 to-orange-500/5 p-4 flex items-center justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold text-amber-600">{t("Essai gratuit")} 🎁</p>
-            <p className="text-xs text-muted-foreground">
-              {t("Il reste")} {trialInfo.daysRemaining} {t("jours")} · {t("Limite")}: {trialInfo.dailyLimit} {t("prospects/jour")}
-            </p>
-          </div>
-          <button className="rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-all hover:opacity-90 active:scale-[0.98] whitespace-nowrap">
-            {t("Passer à Pro")} — 49$
-          </button>
-        </div>
+      {/* ── Plan banner ── */}
+      {planInfo && (
+        <PlanBanner planInfo={planInfo} t={t} />
       )}
 
       {/* ── Header ── */}
@@ -377,6 +392,7 @@ export function Dashboard() {
                           if (inst) navigate(agentUrl(inst));
                         }}
                         popular={POPULAR_AGENTS.includes(agent.name)}
+                        planInfo={planInfo}
                       />
                     ))}
                   </div>
@@ -400,6 +416,7 @@ export function Dashboard() {
                   if (inst) navigate(agentUrl(inst));
                 }}
                 popular={POPULAR_AGENTS.includes(agent.name)}
+                planInfo={planInfo}
               />
             ))}
           </div>
@@ -441,6 +458,83 @@ export function Dashboard() {
 }
 
 /* ═══════════════════════════════════════════
+   Plan Banner
+   ═══════════════════════════════════════════ */
+function PlanBanner({ planInfo, t }: { planInfo: any; t: (s: string) => string }) {
+  const { plan, billingPlan, daysRemaining, isTrialActive, installedCount, remainingSlots } = planInfo;
+
+  const bannerConfig: Record<string, { bg: string; border: string; icon: string; title: string }> = {
+    trial: { bg: "from-amber-500/5 to-orange-500/5", border: "border-amber-500/30", icon: "🎁", title: "Essai gratuit" },
+    pro: { bg: "from-blue-500/5 to-cyan-500/5", border: "border-blue-500/30", icon: "⚡", title: "Pro" },
+    max: { bg: "from-purple-500/5 to-pink-500/5", border: "border-purple-500/30", icon: "🚀", title: "Max" },
+  };
+
+  const cfg = bannerConfig[billingPlan] ?? bannerConfig.trial;
+
+  return (
+    <div className={`rounded-2xl border ${cfg.border} bg-gradient-to-r ${cfg.bg} p-4`}>
+      <div className="flex items-center justify-between gap-4 flex-wrap">
+        <div className="flex items-center gap-3">
+          <span className="text-2xl">{cfg.icon}</span>
+          <div>
+            <p className="text-sm font-bold">{cfg.title}</p>
+            {billingPlan === "trial" && isTrialActive && (
+              <p className="text-xs text-muted-foreground">
+                {t("Il reste")} {daysRemaining} {t("jours")} · {plan.maxProspectsPerDay} {t("prospects/jour")} · {plan.maxAgents} agents
+              </p>
+            )}
+            {billingPlan !== "trial" && (
+              <p className="text-xs text-muted-foreground">
+                {installedCount}/{plan.maxAgents} agents · {plan.maxProspectsPerDay} {t("prospects/jour")}
+              </p>
+            )}
+            {billingPlan === "trial" && !isTrialActive && (
+              <p className="text-xs text-red-500 font-medium">
+                {t("Essai expiré")} — {t("Passez à un forfait pour continuer")}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {billingPlan !== "max" && (
+          <div className="flex gap-2">
+            {billingPlan === "trial" && (
+              <button className="rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-all hover:opacity-90 active:scale-[0.98] whitespace-nowrap">
+                Pro — 49€
+              </button>
+            )}
+            <button className={`rounded-xl border px-4 py-2 text-xs font-semibold transition-all hover:bg-muted/50 whitespace-nowrap ${billingPlan === "pro" ? "border-purple-500/30 text-purple-600" : "border-border"}`}>
+              {billingPlan === "trial" ? "Max — 149€" : "Max — 149€"}
+            </button>
+          </div>
+        )}
+
+        {billingPlan === "max" && (
+          <span className="text-xs font-semibold text-purple-600 bg-purple-500/10 px-3 py-1 rounded-full">
+            ✨ {t("Tous les agents débloqués")}
+          </span>
+        )}
+      </div>
+
+      {/* Progress bar for agents */}
+      {billingPlan !== "max" && (
+        <div className="mt-3">
+          <div className="w-full h-1.5 rounded-full bg-muted overflow-hidden">
+            <div
+              className={`h-full rounded-full transition-all ${billingPlan === "trial" ? "bg-amber-500" : "bg-blue-500"}`}
+              style={{ width: `${Math.min(100, (installedCount / plan.maxAgents) * 100)}%` }}
+            />
+          </div>
+          <p className="text-[10px] text-muted-foreground mt-1">
+            {remainingSlots > 0 ? `${remainingSlots} ${t("agents restants")}` : t("Limite d'agents atteinte")}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
    Agent Bento Card
    ═══════════════════════════════════════════ */
 function AgentBentoCard({
@@ -451,6 +545,7 @@ function AgentBentoCard({
   onRecruit,
   onOpen,
   popular,
+  planInfo,
 }: {
   agent: BaaralyAgentDefinition;
   installed?: Agent;
@@ -459,20 +554,27 @@ function AgentBentoCard({
   onRecruit: () => void;
   onOpen: (agent: BaaralyAgentDefinition) => void;
   popular: boolean;
+  planInfo: any;
 }) {
   const { t } = useLanguage();
   const isActive = installed && installed.status === "active";
   const isPaused = installed && installed.status === "paused";
   const isInstalled = !!installed;
+  const isLocked = planInfo && !planInfo.availableAgents.find((a: BaaralyAgentDefinition) => a.name === agent.name);
+  const canInstall = planInfo?.canInstallMore && !isLocked;
+
+  const tierBadge = agent.tier === 3 ? "🏆 Expert" : agent.tier === 2 ? "⭐ Avancé" : null;
 
   return (
     <div
-      className={`group relative rounded-2xl border bg-gradient-to-br p-4 flex flex-col transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ${CATEGORY_GRADIENTS[agent.category]} ${CATEGORY_BORDER[agent.category]}`}
+      className={`group relative rounded-2xl border bg-gradient-to-br p-4 flex flex-col transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ${
+        isLocked ? "opacity-50 grayscale" : ""
+      } ${CATEGORY_GRADIENTS[agent.category]} ${CATEGORY_BORDER[agent.category]}`}
     >
-      {/* Popular badge */}
-      {popular && !isInstalled && (
-        <span className="absolute top-2 right-2 text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-600 border border-amber-500/20">
-          ⭐ {t("Populaire")}
+      {/* Tier badge */}
+      {tierBadge && (
+        <span className="absolute top-2 left-2 text-[9px] font-bold px-2 py-0.5 rounded-full bg-white/80 dark:bg-black/30 border border-border">
+          {tierBadge}
         </span>
       )}
 
@@ -518,14 +620,21 @@ function AgentBentoCard({
         >
           {t("Ouvrir")}
         </button>
+      ) : isLocked ? (
+        <button
+          className="w-full min-h-[36px] rounded-lg text-xs font-semibold transition-all border border-border text-muted-foreground cursor-not-allowed"
+          disabled
+        >
+          🔒 {agent.tier === 2 ? "Pro" : "Max"} {t("requis")}
+        </button>
       ) : (
         <button
           onClick={onRecruit}
-          disabled={isRecruiting || isHiring}
+          disabled={isRecruiting || isHiring || !canInstall}
           className="w-full min-h-[36px] rounded-lg text-white text-xs font-semibold transition-all disabled:opacity-50 hover:opacity-90"
           style={{ backgroundColor: agent.color }}
         >
-          {isRecruiting ? t("Recrutement...") : `+ ${t("Installer")}`}
+          {isRecruiting ? t("Recrutement...") : !canInstall ? t("Limite atteinte") : `+ ${t("Installer")}`}
         </button>
       )}
     </div>

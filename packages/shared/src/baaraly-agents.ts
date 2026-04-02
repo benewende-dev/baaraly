@@ -1,5 +1,7 @@
-// 20 agents Baaraly catégorisés — PME Afrique & Europe, Tech, Marketing, Finance
+// 30 agents Baaraly catégorisés — PME Afrique & Europe
 // Benewende Group SARL — infrastructure tech souveraine africaine
+
+export type AgentTier = 1 | 2 | 3;
 
 export interface BaaralyAgentDefinition {
   name: string;
@@ -7,6 +9,8 @@ export interface BaaralyAgentDefinition {
   emoji: string;
   color: string;
   category: AgentCategory;
+  /** Tier 1=Standard, 2=Avancé, 3=Expert */
+  tier: AgentTier;
   description: string;
   systemPrompt: string;
   tools: string[];
@@ -44,6 +48,7 @@ export const BAARALY_AGENTS: BaaralyAgentDefinition[] = [
     emoji: "💻",
     color: "#0071E3",
     category: "tech",
+    tier: 1,
     description:
       "Je construis des sites web, SaaS, APIs et applications. Je code, je teste, je déploie.",
     systemPrompt: `Tu es Axel, développeur full-stack senior. Tu maîtrises React, Next.js, Node.js, Python, PostgreSQL, Docker, et les architectures modernes.
@@ -74,6 +79,7 @@ Tu proposes toujours la solution la plus simple et efficace.`,
     emoji: "⚙️",
     color: "#30D158",
     category: "tech",
+    tier: 1,
     description:
       "Je configure tes serveurs, CI/CD, monitoring et je m'assure que tout tourne 24h/24.",
     systemPrompt: `Tu es Lina, ingénieure DevOps. Tu maîtrises Docker, Kubernetes, GitHub Actions, Terraform, AWS, GCP, et le monitoring.
@@ -103,6 +109,7 @@ Tu documentes chaque configuration.`,
     emoji: "🧪",
     color: "#FF9F0A",
     category: "tech",
+    tier: 1,
     description:
       "Je trouve les bugs avant tes utilisateurs. Tests automatiques, audits qualité et performance.",
     systemPrompt: `Tu es Nathan, ingénieur QA senior. Tu es obsessionnel sur la qualité logicielle.
@@ -132,6 +139,7 @@ Tu ne laisses rien passer.`,
     emoji: "🎨",
     color: "#BF5AF2",
     category: "tech",
+    tier: 1,
     description:
       "Je crée des interfaces belles et intuitives. Design system, prototypes et user research.",
     systemPrompt: `Tu es Zara, designer UI/UX senior. Tu conçois des interfaces centrées utilisateur.
@@ -161,6 +169,7 @@ Tu penses toujours accessibilité et inclusion.`,
     emoji: "📊",
     color: "#64D2FF",
     category: "tech",
+    tier: 1,
     description:
       "Je transforme tes données en insights. Dashboards, KPIs, analyses et rapports.",
     systemPrompt: `Tu es Kofi, data analyst et ingénieur données. Tu transformes les données brutes en décisions business.
@@ -189,6 +198,7 @@ Tu es orienté action : chaque analyse doit mener à une décision.`,
     emoji: "🔒",
     color: "#FF453A",
     category: "tech",
+    tier: 1,
     description:
       "Je protège ton business. Audits de sécurité, RGPD, pentests et conformité.",
     systemPrompt: `Tu es Rami, expert en cybersécurité et conformité. Tu protèges les entreprises contre les menaces.
@@ -221,6 +231,7 @@ Tu es paranoïaque par nature et toujours à jour sur les dernières menaces.`,
     emoji: "📱",
     color: "#BF5AF2",
     category: "marketing",
+    tier: 1,
     description:
       "Je trouve tes clients, les relance et développe ton business sur WhatsApp et les réseaux.",
     systemPrompt: `Tu es Mariama, experte en développement commercial. Tu maîtrises WhatsApp Business, Facebook, Instagram et les pratiques locales.
@@ -247,6 +258,7 @@ Tu connais les codes culturels locaux et utilises des emojis naturellement.`,
     emoji: "🚀",
     color: "#0071E3",
     category: "marketing",
+    tier: 1,
     description:
       "Je booste ta visibilité avec SEO, Google Ads, Meta Ads et stratégies de growth.",
     systemPrompt: `Tu es Camille, experte en growth marketing digital. Tu maîtrises le SEO, le paid media et les stratégies de croissance.
@@ -275,6 +287,7 @@ Tu es data-driven et orientée résultats.`,
     emoji: "✍️",
     color: "#FF9F0A",
     category: "marketing",
+    tier: 1,
     description:
       "Je crée ton contenu : articles, vidéos, newsletters et posts qui engagent ta communauté.",
     systemPrompt: `Tu es Yasmine, créatrice de contenu senior. Tu produis du contenu qui captive et convertit.
@@ -303,6 +316,7 @@ Tu as un style unique et sais adapter ton ton à chaque audience.`,
     emoji: "💬",
     color: "#FF453A",
     category: "marketing",
+    tier: 1,
     description:
       "Je réponds à tes clients à toute heure et j'escalade vers toi si besoin.",
     systemPrompt: `Tu es Aïcha, agente de support client disponible 24h/24. Tu es chaleureuse, patiente et professionnelle.
@@ -332,6 +346,7 @@ Tu ne promets jamais ce que l'entreprise ne peut pas tenir.`,
     emoji: "📊",
     color: "#0071E3",
     category: "finance",
+    tier: 2,
     description:
       "Je gère ta comptabilité selon les normes OHADA pour que tu sois toujours en règle.",
     systemPrompt: `Tu es Ibrahim, expert-comptable spécialisé SYSCOHADA (17 pays d'Afrique).
@@ -350,6 +365,7 @@ Tu maîtrises le Plan Comptable SYSCOHADA, les états financiers, la TVA locale,
     emoji: "🇪🇺",
     color: "#5E5CE6",
     category: "finance",
+    tier: 2,
     description:
       "Je gère ta comptabilité européenne : IFRS, TVA intra-communautaire, URSSAF.",
     systemPrompt: `Tu es Laurent, expert-comptable spécialisé dans les normes européennes (IFRS, PCG français, TVA intra-communautaire).
@@ -368,6 +384,7 @@ Tu maîtrises les déclarations URSSAF, la TVA à 20%, le régime micro-entrepri
     emoji: "👥",
     color: "#FF6482",
     category: "finance",
+    tier: 2,
     description:
       "Je gère tes employés : contrats, paie, congés et droit du travail.",
     systemPrompt: `Tu es Fatou, experte en ressources humaines et gestion de paie.
@@ -395,6 +412,7 @@ Tu connais les spécificités locales (code du travail, conventions collectives)
     emoji: "🚚",
     color: "#30D158",
     category: "finance",
+    tier: 2,
     description:
       "J'optimise tes livraisons, itinéraires et gestion de flotte.",
     systemPrompt: `Tu es Moussa, expert en logistique et transport pour les PME.
@@ -426,6 +444,7 @@ Tu connais les réalités du terrain africain et européen.`,
     emoji: "🛍️",
     color: "#FF9F0A",
     category: "commerce",
+    tier: 2,
     description:
       "Je gère ton stock, tes commandes et tes clients pour que ta boutique tourne même quand tu dors.",
     systemPrompt: `Tu es Aminata, assistante experte en gestion de boutique pour les PME. Tu parles en français simple et accessible.
@@ -452,6 +471,7 @@ Tu parles comme un ami commerçant, pas comme un logiciel.`,
     emoji: "🌾",
     color: "#30D158",
     category: "commerce",
+    tier: 2,
     description:
       "Je te donne les prix des marchés, la météo et les conseils pour améliorer tes récoltes.",
     systemPrompt: `Tu es Sékou, conseiller agricole pour les agriculteurs d'Afrique de l'Ouest et Centrale.
@@ -470,6 +490,7 @@ Tu donnes les prix des marchés locaux, les prévisions météo, les conseils de
     emoji: "🛒",
     color: "#5E5CE6",
     category: "commerce",
+    tier: 2,
     description:
       "Je gère ta boutique en ligne : Shopify, Stripe, commandes et livraisons.",
     systemPrompt: `Tu es Sophie, experte en e-commerce. Tu maîtrises Shopify, WooCommerce, Stripe, et les plateformes de vente en ligne.
@@ -502,6 +523,7 @@ Tu penses toujours expérience client et conversion.`,
     emoji: "⚖️",
     color: "#64D2FF",
     category: "juridique",
+    tier: 2,
     description:
       "Je protège ton business juridiquement : RGPD, CGV, contrats et propriété intellectuelle.",
     systemPrompt: `Tu es Thomas, juriste spécialisé en droit du numérique européen et africain.
@@ -530,6 +552,7 @@ Tu cites toujours les articles de loi concernés.`,
     emoji: "🎯",
     color: "#FFD60A",
     category: "juridique",
+    tier: 2,
     description:
       "Je t'aide à définir ta stratégie : business plan, pivot, scaling et levée de fonds.",
     systemPrompt: `Tu es Djibril, stratège business et consultant en développement d'entreprise.
@@ -558,6 +581,7 @@ Tu es orienté résultats et toujours réaliste sur les chiffres.`,
     emoji: "📋",
     color: "#FF6482",
     category: "juridique",
+    tier: 2,
     description:
       "Je pilote tes projets : roadmap, sprints, coordination d'équipe et livrables.",
     systemPrompt: `Tu es Élodie, cheffe de projet et product manager senior. Tu maîtrises Scrum, Kanban et les méthodologies agiles.
@@ -590,6 +614,7 @@ Tu es organisée, proactive et toujours focalisée sur la livraison.`,
     emoji: "📈",
     color: "#0071E3",
     category: "trading",
+    tier: 3,
     description:
       "J'analyse les marchés Forex, les matières premières (or, pétrole, cacao) et je te donne des signaux de trading en temps réel.",
     systemPrompt: `Tu es Marcus, analyste financier senior spécialisé en Forex et matières premières. Tu maîtrises l'analyse technique (supports, résistances, Fibonacci, RSI, MACD) et fondamentale (taux d'intérêt, PIB, inflation).
@@ -616,6 +641,7 @@ Tu es toujours transparent sur les risques. Jamais de garantie de gains.`,
     emoji: "🌍",
     color: "#30D158",
     category: "trading",
+    tier: 3,
     description:
       "Je suis les bourses africaines (BRVM, NSX, GSE), les obligations et les actions locales pour tes investissements.",
     systemPrompt: `Tu es Amadou, spécialiste des marchés financiers africains. Tu maîtrises la BRVM (Bourse Régionale des Valeurs Mobilières), les marchés nigérians, kényans, sud-africains et l'économie africaine.
@@ -642,6 +668,7 @@ Tu connais les réalités des marchés africains et les régulations locales.`,
     emoji: "⚽",
     color: "#FF9F0A",
     category: "trading",
+    tier: 3,
     description:
       "J'analyse les matchs en direct, les statistiques et les cotes pour tes paris sportifs. Football, basketball, tennis.",
     systemPrompt: `Tu es Patrick, analyste sportif et spécialiste en paris sportifs. Tu maîtrises les statistiques, les probabilités et l'analyse des matchs de football, basketball et tennis.
@@ -668,6 +695,7 @@ Tu es toujours transparent sur les risques. Les paris comportent des risques de 
     emoji: "💼",
     color: "#5E5CE6",
     category: "trading",
+    tier: 3,
     description:
       "Je construis et gère ton portefeuille d'investissement : actions, obligations, ETF, immobilier tokenisé.",
     systemPrompt: `Tu es Vincent, gestionnaire de portefeuille certifié CFA. Tu construis des portefeuilles diversifiés adaptés au profil de risque de l'investisseur.
@@ -699,6 +727,7 @@ Tu suis la théorie moderne du portefeuille (Markowitz) et les bonnes pratiques 
     emoji: "₿",
     color: "#FF9F0A",
     category: "crypto",
+    tier: 3,
     description:
       "Je suis le marché crypto 24h/24 : Bitcoin, Ethereum, altcoins, DeFi, NFT et stratégies d'investissement.",
     systemPrompt: `Tu es Nakamoto, expert en crypto-monnaies et blockchain. Tu maîtrises Bitcoin, Ethereum, les altcoins, la DeFi, les NFT et les couches L2.
@@ -726,6 +755,7 @@ Tu es objectif et transparent sur les risques extrêmes du marché crypto.`,
     emoji: "🏦",
     color: "#BF5AF2",
     category: "crypto",
+    tier: 3,
     description:
       "Je trouve les meilleurs rendements DeFi : staking, lending, liquidity pools et yield farming sécurisés.",
     systemPrompt: `Tu es Aisha, analyste DeFi spécialisée en rendements et stratégies de yield. Tu maîtrises Aave, Compound, Uniswap, Curve, Lido et les principaux protocoles DeFi.
@@ -753,6 +783,7 @@ Tu priorises toujours la sécurité des fonds.`,
     emoji: "🔗",
     color: "#64D2FF",
     category: "crypto",
+    tier: 3,
     description:
       "Je code et audite des smart contracts Solidity, déploie sur Ethereum et les L2, et je sécurise tes protocoles.",
     systemPrompt: `Tu es Keita, développeur de smart contracts senior. Tu maîtrises Solidity, Rust (pour Solana), les standards ERC-20, ERC-721, ERC-1155 et les frameworks Hardhat/Foundry.
@@ -784,6 +815,7 @@ Tu suis les bonnes pratiques OpenZeppelin et les standards de sécurité.`,
     emoji: "🎵",
     color: "#FF453A",
     category: "divertissement",
+    tier: 3,
     description:
       "Je compose des beats, j'écris des paroles, je mixe et je t'aide à produire ta musique Afro, Hip-Hop, R&B.",
     systemPrompt: `Tu es Youssoupha, producteur musical et compositeur. Tu maîtrises la production musicale, la composition, les paroles et le mixage pour l'Afrobeat, Hip-Hop, R&B et Gospel.
@@ -812,6 +844,7 @@ Tu connais les codes culturels africains et internationaux.`,
     emoji: "🎬",
     color: "#FFD60A",
     category: "divertissement",
+    tier: 3,
     description:
       "J'écris des scénarios, je planifie des tournages et je t'aide à produire tes films, clips et courts-métrages.",
     systemPrompt: `Tu es Alain, réalisateur et scénariste. Tu maîtrises l'écriture de scénarios, la mise en scène, le storyboarding et la production audiovisuelle.
@@ -840,6 +873,7 @@ Tu es créatif et tu connais les réalités de la production africaine.`,
     emoji: "🌟",
     color: "#FF6482",
     category: "divertissement",
+    tier: 3,
     description:
       "Je gère tes réseaux sociaux, je crée du contenu viral et je développe ta communauté d'influence.",
     systemPrompt: `Tu es Femi, community manager et stratège d'influence. Tu maîtrises Instagram, TikTok, YouTube, Twitter/X, LinkedIn et les stratégies de contenu viral.
@@ -889,3 +923,87 @@ export const BAARALY_PAYMENT_METHODS = [
   { id: "moov_money", label: "Payer avec Moov Money", icon: "moov" },
   { id: "card", label: "Carte bancaire", icon: "card" },
 ] as const;
+
+/* ═══════════════════════════════════════════
+   BILLING PLANS
+   ═══════════════════════════════════════════ */
+
+export type BillingPlanId = "trial" | "pro" | "max";
+
+export interface BillingPlanDefinition {
+  id: BillingPlanId;
+  name: string;
+  description: string;
+  prices: { fcfa: number; eur: number };
+  maxAgents: number;
+  maxProspectsPerDay: number;
+  whatsappIncluded: boolean;
+  /** Which tiers of agents are available (null = all) */
+  allowedTiers: AgentTier[] | null;
+  trialDays: number | null;
+}
+
+export const BAARALY_BILLING_PLANS: BillingPlanDefinition[] = [
+  {
+    id: "trial",
+    name: "Essai gratuit",
+    description: "Découvre Baaraly pendant 7 jours",
+    prices: { fcfa: 0, eur: 0 },
+    maxAgents: 3,
+    maxProspectsPerDay: 5,
+    whatsappIncluded: true,
+    allowedTiers: [1],
+    trialDays: 7,
+  },
+  {
+    id: "pro",
+    name: "Pro",
+    description: "Pour les PME qui veulent scaler",
+    prices: { fcfa: 19_900, eur: 49 },
+    maxAgents: 10,
+    maxProspectsPerDay: 50,
+    whatsappIncluded: true,
+    allowedTiers: [1, 2],
+    trialDays: null,
+  },
+  {
+    id: "max",
+    name: "Max",
+    description: "Tous les agents, pas de limite",
+    prices: { fcfa: 59_900, eur: 149 },
+    maxAgents: 30,
+    maxProspectsPerDay: 200,
+    whatsappIncluded: true,
+    allowedTiers: [1, 2, 3],
+    trialDays: null,
+  },
+];
+
+/** Get billing plan by ID */
+export function getBillingPlan(id: BillingPlanId): BillingPlanDefinition {
+  return BAARALY_BILLING_PLANS.find((p) => p.id === id) ?? BAARALY_BILLING_PLANS[0];
+}
+
+/** Get agents available for a given plan */
+export function getAgentsForPlan(planId: BillingPlanId): BaaralyAgentDefinition[] {
+  const plan = getBillingPlan(planId);
+  if (!plan.allowedTiers) return BAARALY_AGENTS;
+  return BAARALY_AGENTS.filter((a) => plan.allowedTiers!.includes(a.tier));
+}
+
+/** Get agents grouped by tier */
+export function getAgentsByTier(): Record<AgentTier, BaaralyAgentDefinition[]> {
+  return {
+    1: BAARALY_AGENTS.filter((a) => a.tier === 1),
+    2: BAARALY_AGENTS.filter((a) => a.tier === 2),
+    3: BAARALY_AGENTS.filter((a) => a.tier === 3),
+  };
+}
+
+/** Format price based on currency */
+export function formatPrice(fcfa: number, eur: number, country?: string): string {
+  if (country && ["fr", "be", "ch", "lu", "mc", "ca"].includes(country)) {
+    return `${eur}€`;
+  }
+  return `${fcfa.toLocaleString("fr-FR")} FCFA`;
+}
