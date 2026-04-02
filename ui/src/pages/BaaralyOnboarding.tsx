@@ -6,8 +6,8 @@ import { agentsApi } from "../api/agents";
 import { useCompany } from "../context/CompanyContext";
 import { useLanguage } from "../context/LanguageContext";
 import { useToast } from "../context/ToastContext";
-import { BAARALY_AGENTS } from "@paperclipai/shared/baaraly-agents";
-import type { BaaralyAgentDefinition } from "@paperclipai/shared/baaraly-agents";
+import { BAARALY_AGENTS, AGENT_CATEGORIES } from "@paperclipai/shared/baaraly-agents";
+import type { BaaralyAgentDefinition, AgentCategory } from "@paperclipai/shared/baaraly-agents";
 import { queryKeys } from "../lib/queryKeys";
 
 const BUSINESS_TYPES = [
@@ -75,6 +75,7 @@ export function BaaralyOnboarding() {
 
   // Step 4 - Agent choice
   const [selectedAgent, setSelectedAgent] = useState<BaaralyAgentDefinition | null>(null);
+  const [agentCategory, setAgentCategory] = useState<AgentCategory | "all">("all");
 
   // WhatsApp phone
   const [waPhone, setWaPhone] = useState("");
@@ -317,58 +318,96 @@ export function BaaralyOnboarding() {
 
         {/* ========== STEP 4: Agent Choice ========== */}
         {step === 4 && (
-          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="text-center">
               <h1 className="text-2xl font-bold">{t("Choisis ton premier assistant")}</h1>
               <p className="text-sm text-muted-foreground mt-2">
-                {t("Ils travaillent pour toi automatiquement")}
+                {t("20 experts IA prêts à travailler pour toi")}
               </p>
             </div>
 
-            <div className="space-y-3">
-              {BAARALY_AGENTS.map((agent) => (
-                <button
-                  key={agent.name}
-                  onClick={() => {
-                    setSelectedAgent(agent);
-                    setStep(5);
-                  }}
-                  className={`w-full flex items-center gap-4 rounded-2xl border-2 p-5 text-left transition-all hover:shadow-lg active:scale-[0.98] ${
-                    selectedAgent?.name === agent.name
-                      ? "border-primary bg-primary/5"
-                      : "border-border hover:border-muted-foreground/30"
-                  }`}
-                >
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
-                    style={{
-                      backgroundColor: `${agent.color}20`,
-                      border: `1px solid ${agent.color}40`,
-                    }}
+            {/* Category tabs */}
+            <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
+              <button
+                onClick={() => setAgentCategory("all")}
+                className={`shrink-0 rounded-full px-4 py-2 text-xs font-semibold transition-all ${
+                  agentCategory === "all"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-accent"
+                }`}
+              >
+                {t("Tous")} ({BAARALY_AGENTS.length})
+              </button>
+              {AGENT_CATEGORIES.map((cat) => {
+                const count = BAARALY_AGENTS.filter((a) => a.category === cat.id).length;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setAgentCategory(cat.id)}
+                    className={`shrink-0 rounded-full px-4 py-2 text-xs font-semibold transition-all ${
+                      agentCategory === cat.id
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:bg-accent"
+                    }`}
                   >
-                    {agent.emoji}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm">{agent.name}</span>
-                      {agent.name === "Aminata" && (
-                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-500">
-                          {t("Recommandé")}
-                        </span>
-                      )}
-                      {agent.name === "Ibrahim" && (
-                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-500">
-                          Business
-                        </span>
-                      )}
+                    {cat.emoji} {cat.label} ({count})
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Agents grouped by category */}
+            <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-1">
+              {(agentCategory === "all"
+                ? AGENT_CATEGORIES
+                : AGENT_CATEGORIES.filter((c) => c.id === agentCategory)
+              ).map((cat) => {
+                const agents = BAARALY_AGENTS.filter((a) => a.category === cat.id);
+                if (agents.length === 0) return null;
+                return (
+                  <div key={cat.id}>
+                    <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
+                      <span>{cat.emoji}</span>
+                      {cat.label}
+                    </h3>
+                    <div className="grid gap-3">
+                      {agents.map((agent) => (
+                        <button
+                          key={agent.name}
+                          onClick={() => {
+                            setSelectedAgent(agent);
+                            setStep(5);
+                          }}
+                          className={`w-full flex items-center gap-4 rounded-2xl border-2 p-4 text-left transition-all hover:shadow-lg active:scale-[0.98] ${
+                            selectedAgent?.name === agent.name
+                              ? "border-primary bg-primary/5"
+                              : "border-border hover:border-muted-foreground/30"
+                          }`}
+                        >
+                          <div
+                            className="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0"
+                            style={{
+                              backgroundColor: `${agent.color}20`,
+                              border: `1px solid ${agent.color}40`,
+                            }}
+                          >
+                            {agent.emoji}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-sm">{agent.name}</span>
+                            </div>
+                            <p className="text-[11px] text-muted-foreground">{agent.role}</p>
+                            <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">
+                              {agent.description}
+                            </p>
+                          </div>
+                        </button>
+                      ))}
                     </div>
-                    <p className="text-xs text-muted-foreground mt-0.5">{agent.role}</p>
-                    <p className="text-xs text-muted-foreground mt-1 line-clamp-1">
-                      {agent.description}
-                    </p>
                   </div>
-                </button>
-              ))}
+                );
+              })}
             </div>
 
             <button

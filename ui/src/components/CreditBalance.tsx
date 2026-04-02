@@ -1,8 +1,46 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { creditsApi } from "../api/credits";
 import { useLanguage } from "../context/LanguageContext";
+import { useCompany } from "../context/CompanyContext";
 import { RechargeModal } from "./RechargeModal";
+
+/**
+ * Currency configuration by country code.
+ * Maps ISO country codes to their currency symbol and code.
+ */
+const CURRENCY_BY_COUNTRY: Record<string, { symbol: string; code: string; locale: string }> = {
+  // West & Central Africa (FCFA)
+  bf: { symbol: "", code: "FCFA", locale: "fr-FR" },
+  ml: { symbol: "", code: "FCFA", locale: "fr-FR" },
+  sn: { symbol: "", code: "FCFA", locale: "fr-FR" },
+  ci: { symbol: "", code: "FCFA", locale: "fr-FR" },
+  ne: { symbol: "", code: "FCFA", locale: "fr-FR" },
+  bj: { symbol: "", code: "FCFA", locale: "fr-FR" },
+  tg: { symbol: "", code: "FCFA", locale: "fr-FR" },
+  cm: { symbol: "", code: "FCFA", locale: "fr-FR" },
+  ga: { symbol: "", code: "FCFA", locale: "fr-FR" },
+  gq: { symbol: "", code: "FCFA", locale: "fr-FR" },
+  td: { symbol: "", code: "FCFA", locale: "fr-FR" },
+  cf: { symbol: "", code: "FCFA", locale: "fr-FR" },
+  cg: { symbol: "", code: "FCFA", locale: "fr-FR" },
+  cd: { symbol: "", code: "FCFA", locale: "fr-FR" },
+  gn: { symbol: "", code: "GNF", locale: "fr-FR" },
+  // Europe
+  fr: { symbol: "€", code: "EUR", locale: "fr-FR" },
+  be: { symbol: "€", code: "EUR", locale: "fr-BE" },
+  ch: { symbol: "CHF", code: "CHF", locale: "fr-CH" },
+  lu: { symbol: "€", code: "EUR", locale: "fr-LU" },
+  // Other
+  us: { symbol: "$", code: "USD", locale: "en-US" },
+  ca: { symbol: "CA$", code: "CAD", locale: "en-CA" },
+  gb: { symbol: "£", code: "GBP", locale: "en-GB" },
+};
+
+/**
+ * Default currency for companies without a specific country.
+ */
+const DEFAULT_CURRENCY = { symbol: "", code: "FCFA", locale: "fr-FR" };
 
 interface CreditBalanceProps {
   companyId: string;
@@ -11,6 +49,7 @@ interface CreditBalanceProps {
 
 export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
   const { t } = useLanguage();
+  const { selectedCompany } = useCompany();
   const [showRecharge, setShowRecharge] = useState(false);
 
   const { data: creditData, refetch } = useQuery({
@@ -19,12 +58,26 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
     enabled: !!companyId,
   });
 
+  const currency = useMemo(() => {
+    if (!selectedCompany) return DEFAULT_CURRENCY;
+    const meta = (selectedCompany as any).metadata as Record<string, unknown> | undefined;
+    const country = meta?.country as string | undefined;
+    if (country && CURRENCY_BY_COUNTRY[country]) {
+      return CURRENCY_BY_COUNTRY[country];
+    }
+    // Fallback: check agent metadata for country
+    return DEFAULT_CURRENCY;
+  }, [selectedCompany]);
+
   const credits = creditData?.balance ?? 0;
-  const fcfa = credits * 10;
+  const balance = credits * 10;
   const isLow = credits > 0 && credits < 100;
   const isEmpty = credits === 0;
-
   const progressPercent = Math.min(100, (credits / 500) * 100);
+
+  const formattedBalance = currency.code === "FCFA"
+    ? `${balance.toLocaleString(currency.locale)} ${currency.code}`
+    : `${currency.symbol}${balance.toLocaleString(currency.locale)}`;
 
   if (compact) {
     return (
@@ -40,7 +93,7 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
           }`}
         >
           <span>💰</span>
-          <span>{fcfa.toLocaleString("fr-FR")} FCFA</span>
+          <span>{formattedBalance}</span>
         </button>
         <RechargeModal
           open={showRecharge}
@@ -81,7 +134,7 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
 
         <div className="flex items-baseline gap-2 mb-1">
           <span className="text-2xl font-bold">
-            💰 {fcfa.toLocaleString("fr-FR")} FCFA
+            💰 {formattedBalance}
           </span>
         </div>
 

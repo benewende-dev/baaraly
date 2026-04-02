@@ -417,7 +417,7 @@ export function Landing() {
             },
             {
               q: t("Comment je paie ?"),
-              a: t("Tu recharges ton compte à partir de 1 000 FCFA. Pas d'abonnement, pas d'engagement. Tu consommes ce que tu veux."),
+              a: t("Tu recharges ton compte. Pas d'abonnement, pas d'engagement. Tu consommes ce que tu veux."),
             },
             {
               q: t("Est-ce que ça marche dans mon pays ?"),
@@ -429,7 +429,7 @@ export function Landing() {
             },
             {
               q: t("Puis-je essayer gratuitement ?"),
-              a: t("Oui ! Tu reçois 1 000 FCFA offerts à l'inscription pour tester Baaraly sans risque."),
+              a: t("Oui ! 7 jours gratuits sans carte bancaire pour tester Baaraly."),
             },
           ].map((faq, i) => (
             <FaqItem
