@@ -4,14 +4,9 @@ import { creditsApi } from "../api/credits";
 import { agentsApi } from "../api/agents";
 import { useLanguage } from "../context/LanguageContext";
 import { useCompany } from "../context/CompanyContext";
-import { RechargeModal } from "./RechargeModal";
+import { CheckoutModal } from "./CheckoutModal";
 
-/**
- * Currency configuration by country code.
- * Maps ISO country codes to their currency symbol and code.
- */
 const CURRENCY_BY_COUNTRY: Record<string, { symbol: string; code: string; locale: string }> = {
-  // West & Central Africa (FCFA)
   bf: { symbol: "", code: "FCFA", locale: "fr-FR" },
   ml: { symbol: "", code: "FCFA", locale: "fr-FR" },
   sn: { symbol: "", code: "FCFA", locale: "fr-FR" },
@@ -21,26 +16,14 @@ const CURRENCY_BY_COUNTRY: Record<string, { symbol: string; code: string; locale
   tg: { symbol: "", code: "FCFA", locale: "fr-FR" },
   cm: { symbol: "", code: "FCFA", locale: "fr-FR" },
   ga: { symbol: "", code: "FCFA", locale: "fr-FR" },
-  gq: { symbol: "", code: "FCFA", locale: "fr-FR" },
-  td: { symbol: "", code: "FCFA", locale: "fr-FR" },
-  cf: { symbol: "", code: "FCFA", locale: "fr-FR" },
-  cg: { symbol: "", code: "FCFA", locale: "fr-FR" },
-  cd: { symbol: "", code: "FCFA", locale: "fr-FR" },
-  gn: { symbol: "", code: "GNF", locale: "fr-FR" },
-  // Europe
   fr: { symbol: "€", code: "EUR", locale: "fr-FR" },
   be: { symbol: "€", code: "EUR", locale: "fr-BE" },
   ch: { symbol: "CHF", code: "CHF", locale: "fr-CH" },
-  lu: { symbol: "€", code: "EUR", locale: "fr-LU" },
-  // Other
+  ca: { symbol: "CA$", code: "CAD", locale: "fr-CA" },
   us: { symbol: "$", code: "USD", locale: "en-US" },
-  ca: { symbol: "CA$", code: "CAD", locale: "en-CA" },
   gb: { symbol: "£", code: "GBP", locale: "en-GB" },
 };
 
-/**
- * Default currency for companies without a specific country.
- */
 const DEFAULT_CURRENCY = { symbol: "", code: "FCFA", locale: "fr-FR" };
 
 interface CreditBalanceProps {
@@ -51,7 +34,7 @@ interface CreditBalanceProps {
 export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
   const { t } = useLanguage();
   const { selectedCompany } = useCompany();
-  const [showRecharge, setShowRecharge] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
 
   const { data: creditData, refetch } = useQuery({
     queryKey: ["credits", companyId],
@@ -59,7 +42,6 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
     enabled: !!companyId,
   });
 
-  // Fetch agents to detect country from agent metadata
   const { data: agents } = useQuery({
     queryKey: ["agents", companyId],
     queryFn: () => agentsApi.list(companyId),
@@ -67,23 +49,17 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
   });
 
   const currency = useMemo(() => {
-    // 1. Try to find country from agent metadata (set during onboarding)
     if (agents && agents.length > 0) {
       for (const agent of agents) {
         const meta = (agent.metadata ?? {}) as Record<string, unknown>;
         const country = meta.country as string | undefined;
-        if (country && CURRENCY_BY_COUNTRY[country]) {
-          return CURRENCY_BY_COUNTRY[country];
-        }
+        if (country && CURRENCY_BY_COUNTRY[country]) return CURRENCY_BY_COUNTRY[country];
       }
     }
-    // 2. Fallback: check company metadata
     if (selectedCompany) {
       const meta = (selectedCompany as any).metadata as Record<string, unknown> | undefined;
       const country = meta?.country as string | undefined;
-      if (country && CURRENCY_BY_COUNTRY[country]) {
-        return CURRENCY_BY_COUNTRY[country];
-      }
+      if (country && CURRENCY_BY_COUNTRY[country]) return CURRENCY_BY_COUNTRY[country];
     }
     return DEFAULT_CURRENCY;
   }, [selectedCompany, agents]);
@@ -95,16 +71,12 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
         if (meta.country) return meta.country as string;
       }
     }
-    if (selectedCompany) {
-      const meta = (selectedCompany as any).metadata as Record<string, unknown> | undefined;
-      if (meta?.country) return meta.country as string;
-    }
     return undefined;
-  }, [selectedCompany, agents]);
+  }, [agents]);
 
   const credits = creditData?.balance ?? 0;
   const balance = credits * 10;
-  const isLow = credits > 0 && credits < 100;
+  const isLow = credits > 0 && credits < 50;
   const isEmpty = credits === 0;
   const progressPercent = Math.min(100, (credits / 500) * 100);
 
@@ -116,23 +88,21 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
     return (
       <>
         <button
-          onClick={() => setShowRecharge(true)}
+          onClick={() => setShowCheckout(true)}
           className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors hover:bg-accent/50 ${
-            isEmpty
-              ? "border-red-500/30 bg-red-500/5 text-red-500"
-              : isLow
-                ? "border-orange-500/30 bg-orange-500/5 text-orange-500"
-                : "border-border bg-card"
+            isEmpty ? "border-red-500/30 bg-red-500/5 text-red-500"
+            : isLow ? "border-orange-500/30 bg-orange-500/5 text-orange-500"
+            : "border-border bg-card"
           }`}
         >
           <span>💰</span>
           <span>{formattedBalance}</span>
         </button>
-        <RechargeModal userCountry={userCountry}
-          open={showRecharge}
-          onOpenChange={setShowRecharge}
+        <CheckoutModal
+          open={showCheckout}
+          onOpenChange={setShowCheckout}
           companyId={companyId}
-          onSuccess={() => refetch()}
+          userCountry={userCountry}
         />
       </>
     );
@@ -140,19 +110,13 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
 
   return (
     <>
-      <div
-        className={`rounded-xl border p-4 ${
-          isEmpty
-            ? "border-red-500/30 bg-red-500/5"
-            : isLow
-              ? "border-orange-500/30 bg-orange-500/5"
-              : "border-border bg-card"
-        }`}
-      >
+      <div className={`rounded-xl border p-4 ${
+        isEmpty ? "border-red-500/30 bg-red-500/5"
+        : isLow ? "border-orange-500/30 bg-orange-500/5"
+        : "border-border bg-card"
+      }`}>
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-muted-foreground">
-            {t("Solde")}
-          </span>
+          <span className="text-sm font-medium text-muted-foreground">{t("Solde")}</span>
           {isEmpty && (
             <span className="text-xs font-medium text-red-500 bg-red-500/10 px-2 py-0.5 rounded-full">
               {t("Solde épuisé")}
@@ -164,50 +128,36 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
             </span>
           )}
         </div>
-
         <div className="flex items-baseline gap-2 mb-1">
-          <span className="text-2xl font-bold">
-            {formattedBalance}
-          </span>
+          <span className="text-2xl font-bold">{formattedBalance}</span>
         </div>
-
         <p className="text-xs text-muted-foreground mb-3">
           {credits.toLocaleString(currency.locale)} {t("crédits restants")}
         </p>
-
         <div className="w-full h-2 rounded-full bg-muted mb-3 overflow-hidden">
           <div
             className={`h-full rounded-full transition-all duration-500 ${
-              isEmpty
-                ? "bg-red-500"
-                : isLow
-                  ? "bg-orange-500"
-                  : "bg-[#0071E3]"
+              isEmpty ? "bg-red-500" : isLow ? "bg-orange-500" : "bg-[#0071E3]"
             }`}
             style={{ width: `${progressPercent}%` }}
           />
         </div>
-
         {isEmpty && (
-          <p className="text-xs text-red-500 mb-3">
-            {t("Rechargez pour continuer")}
-          </p>
+          <p className="text-xs text-red-500 mb-3">{t("Rechargez pour continuer")}</p>
         )}
-
         <button
-          onClick={() => setShowRecharge(true)}
+          onClick={() => setShowCheckout(true)}
           className="w-full py-2 px-4 rounded-lg text-sm font-semibold text-white transition-colors"
           style={{ backgroundColor: "#0071E3" }}
         >
           {t("Recharger")}
         </button>
       </div>
-
-      <RechargeModal userCountry={userCountry}
-        open={showRecharge}
-        onOpenChange={setShowRecharge}
+      <CheckoutModal
+        open={showCheckout}
+        onOpenChange={setShowCheckout}
         companyId={companyId}
-        onSuccess={() => refetch()}
+        userCountry={userCountry}
       />
     </>
   );

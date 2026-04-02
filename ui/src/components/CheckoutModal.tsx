@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLanguage } from "../context/LanguageContext";
 import { useToast } from "../context/ToastContext";
+import { creditsApi } from "../api/credits";
 import {
   Dialog,
   DialogContent,
@@ -51,9 +52,56 @@ export function CheckoutModal({
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvc, setCardCvc] = useState("");
   const [cardName, setCardName] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   const providers = getPaymentProvidersForCountry(userCountry);
   const plans = BAARALY_BILLING_PLANS.filter((p) => p.id !== "trial" && p.id !== currentPlan);
+
+  /* ── Real payment handler ── */
+  async function handlePayment() {
+    if (!selectedProvider) return;
+    const plan = BAARALY_BILLING_PLANS.find((p) => p.id === selectedPlan);
+    if (!plan) return;
+
+    setIsProcessing(true);
+    setPaymentError(null);
+
+    try {
+      // 1. Create checkout intent
+      const checkout = await creditsApi.checkout(companyId, {
+        planId: selectedPlan,
+        provider: selectedProvider.id,
+        amount: plan.priceEur,
+        currency: userCountry ? getCurrencyCode(userCountry) : "XOF",
+        credits: plan.priceEur * 10, // 10 credits per EUR
+        phoneNumber: selectedProvider.types.includes("mobile_money") ? phoneNumber : undefined,
+        cardLast4: selectedProvider.types.includes("card") ? cardNumber.slice(-4) : undefined,
+      });
+
+      // 2. Confirm payment (dev mode — in production webhook does this)
+      await creditsApi.confirmPayment(companyId, checkout.paymentId);
+
+      // 3. Refresh credits
+      queryClient.invalidateQueries({ queryKey: ["credits", companyId] });
+      setStep("success");
+    } catch (err: any) {
+      setPaymentError(err?.message || t("Le paiement a échoué. Veuillez réessayer."));
+    } finally {
+      setIsProcessing(false);
+    }
+  }
+
+  function getCurrencyCode(country: string): string {
+    const currencies: Record<string, string> = {
+      fr: "EUR", be: "EUR", lu: "EUR", mc: "EUR",
+      ch: "CHF", ca: "CAD", us: "USD", gb: "GBP",
+      bf: "XOF", ml: "XOF", sn: "XOF", ci: "XOF", ne: "XOF", bj: "XOF", tg: "XOF",
+      cm: "XAF", ga: "XAF", gq: "XAF", td: "XAF", cf: "XAF", cg: "XAF",
+      cd: "CDF", gn: "GNF", gh: "GHS", ng: "NGN",
+    };
+    return currencies[country] || "XOF";
+  }
 
   function handleClose() {
     onOpenChange(false);
@@ -380,16 +428,20 @@ export function CheckoutModal({
 
         {/* Submit */}
         <button
-          onClick={() => setStep("success")}
+          onClick={handlePayment}
           disabled={
+            isProcessing ||
             (isMobile && phoneNumber.length < 8) ||
             (isCard && (cardNumber.length < 19 || cardExpiry.length < 5 || cardCvc.length < 3 || !cardName))
           }
           className="w-full py-3.5 rounded-xl text-sm font-semibold text-white transition-all disabled:opacity-50 hover:opacity-90 active:scale-[0.98]"
           style={{ backgroundColor: "#0071E3" }}
         >
-          {t("Payer")} {price}
+          {isProcessing ? t("Traitement en cours...") : `${t("Payer")} ${price}`}
         </button>
+        {paymentError && (
+          <p className="text-xs text-red-500 text-center mt-2">{paymentError}</p>
+        )}
       </div>
     );
   }
