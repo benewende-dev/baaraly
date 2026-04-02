@@ -224,8 +224,8 @@ export function Landing() {
         </div>
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-secondary to-primary opacity-30" />
-          <div className="space-y-12">
+          <div className="absolute left-5 sm:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-secondary to-primary opacity-30" />
+          <div className="space-y-8 sm:space-y-12">
             {[
               { n: 1, text: t("Tu choisis ton agent (Aminata, Mariama, Ibrahim...)"), delay: 0 },
               { n: 2, text: t("Il commence à travailler immédiatement"), delay: 150 },
@@ -234,15 +234,15 @@ export function Landing() {
             ].map((item, i) => (
               <div
                 key={i}
-                className={`flex items-center gap-6 transition-all duration-700 ${
+                className={`flex items-center gap-4 sm:gap-6 transition-all duration-700 ${
                   isVisible("how-it-works") ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
                 }`}
                 style={{ transitionDelay: `${item.delay}ms` }}
               >
-                <div className="relative z-10 w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
-                  <span className="text-sm font-bold text-white">{item.n}</span>
+                <div className="relative z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
+                  <span className="text-xs sm:text-sm font-bold text-white">{item.n}</span>
                 </div>
-                <p className="text-base font-medium">{item.text}</p>
+                <p className="text-sm sm:text-base font-medium">{item.text}</p>
               </div>
             ))}
           </div>
