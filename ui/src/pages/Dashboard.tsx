@@ -17,6 +17,7 @@ import type { Agent } from "@paperclipai/shared";
 import { ActionsRemaining } from "../components/ActionsRemaining";
 import { WhatsAppConnectButton } from "../components/WhatsAppConnect";
 import { CheckoutModal } from "../components/CheckoutModal";
+import { AgentDetailModal } from "../components/AgentDetailModal";
 import {
   BAARALY_AGENTS,
   AGENT_CATEGORIES,
@@ -84,6 +85,7 @@ export function Dashboard() {
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [recruitingAgent, setRecruitingAgent] = useState<string | null>(null);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState<BaaralyAgentDefinition | null>(null);
 
   const { data: agents, isLoading } = useQuery({
     queryKey: queryKeys.agents.list(selectedCompanyId!),
@@ -408,6 +410,7 @@ export function Dashboard() {
                           const inst = installedMap.get(a.name);
                           if (inst) navigate(agentUrl(inst));
                         }}
+                        onCardClick={(a) => setSelectedAgent(a)}
                         popular={POPULAR_AGENTS.includes(agent.name)}
                         planInfo={planInfo}
                       />
@@ -432,6 +435,7 @@ export function Dashboard() {
                   const inst = installedMap.get(a.name);
                   if (inst) navigate(agentUrl(inst));
                 }}
+                onCardClick={(a) => setSelectedAgent(a)}
                 popular={POPULAR_AGENTS.includes(agent.name)}
                 planInfo={planInfo}
               />
@@ -481,6 +485,20 @@ export function Dashboard() {
           userCountry={planInfo?.userCountry}
         />
       )}
+
+      {/* ── Agent detail modal ── */}
+      <AgentDetailModal
+        open={!!selectedAgent}
+        onOpenChange={(open) => { if (!open) setSelectedAgent(null); }}
+        agent={selectedAgent}
+        installed={selectedAgent ? installedMap.get(selectedAgent.name) : undefined}
+        isLocked={selectedAgent ? !planInfo?.availableAgents.find((a: BaaralyAgentDefinition) => a.name === selectedAgent.name) : false}
+        canInstall={!!planInfo?.canInstallMore}
+        isRecruiting={selectedAgent ? recruitingAgent === selectedAgent.name : false}
+        isHiring={hireMutation.isPending}
+        onRecruit={() => { if (selectedAgent) handleRecruit(selectedAgent); }}
+        onOpen={() => { if (selectedAgent) { const inst = installedMap.get(selectedAgent.name); if (inst) navigate(agentUrl(inst)); } }}
+      />
     </div>
   );
 }
@@ -581,6 +599,7 @@ function AgentBentoCard({
   isHiring,
   onRecruit,
   onOpen,
+  onCardClick,
   popular,
   planInfo,
 }: {
@@ -590,6 +609,7 @@ function AgentBentoCard({
   isHiring: boolean;
   onRecruit: () => void;
   onOpen: (agent: BaaralyAgentDefinition) => void;
+  onCardClick: (agent: BaaralyAgentDefinition) => void;
   popular: boolean;
   planInfo: any;
 }) {
@@ -604,7 +624,8 @@ function AgentBentoCard({
 
   return (
     <div
-      className={`group relative rounded-2xl border bg-gradient-to-br p-4 flex flex-col transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ${
+      onClick={() => onCardClick(agent)}
+      className={`group relative rounded-2xl border bg-gradient-to-br p-4 flex flex-col transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer ${
         isLocked ? "opacity-50 grayscale" : ""
       } ${CATEGORY_GRADIENTS[agent.category]} ${CATEGORY_BORDER[agent.category]}`}
     >
@@ -650,30 +671,33 @@ function AgentBentoCard({
       </p>
 
       {/* Action button */}
-      {isInstalled ? (
-        <button
-          onClick={() => onOpen(agent)}
-          className="w-full min-h-[36px] rounded-lg text-xs font-semibold transition-all border border-border hover:bg-muted/50"
-        >
-          {t("Ouvrir")}
-        </button>
-      ) : isLocked ? (
-        <button
-          className="w-full min-h-[36px] rounded-lg text-xs font-semibold transition-all border border-border text-muted-foreground cursor-not-allowed"
-          disabled
-        >
-          🔒 {agent.tier === 2 ? "Pro" : "Max"} {t("requis")}
-        </button>
-      ) : (
-        <button
-          onClick={onRecruit}
-          disabled={isRecruiting || isHiring || !canInstall}
-          className="w-full min-h-[36px] rounded-lg text-white text-xs font-semibold transition-all disabled:opacity-50 hover:opacity-90"
-          style={{ backgroundColor: agent.color }}
-        >
-          {isRecruiting ? t("Recrutement...") : !canInstall ? t("Limite atteinte") : `+ ${t("Installer")}`}
-        </button>
-      )}
+      {/* Action button — stopPropagation so card click doesn't trigger modal */}
+      <div onClick={(e) => e.stopPropagation()}>
+        {isInstalled ? (
+          <button
+            onClick={() => onOpen(agent)}
+            className="w-full min-h-[36px] rounded-lg text-xs font-semibold transition-all border border-border hover:bg-muted/50"
+          >
+            {t("Ouvrir")}
+          </button>
+        ) : isLocked ? (
+          <button
+            className="w-full min-h-[36px] rounded-lg text-xs font-semibold transition-all border border-border text-muted-foreground cursor-not-allowed"
+            disabled
+          >
+            🔒 {agent.tier === 2 ? "Pro" : "Max"} {t("requis")}
+          </button>
+        ) : (
+          <button
+            onClick={onRecruit}
+            disabled={isRecruiting || isHiring || !canInstall}
+            className="w-full min-h-[36px] rounded-lg text-white text-xs font-semibold transition-all disabled:opacity-50 hover:opacity-90"
+            style={{ backgroundColor: agent.color }}
+          >
+            {isRecruiting ? t("Recrutement...") : !canInstall ? t("Limite atteinte") : `+ ${t("Installer")}`}
+          </button>
+        )}
+      </div>
     </div>
   );
 }
