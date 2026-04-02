@@ -1151,6 +1151,12 @@ export const translations: Record<string, Record<Language, string>> = {
   "Agent name": { fr: "Nom de l'agent", en: "Agent name" },
   "e.g. VP of Engineering": { fr: "ex. VP Engineering", en: "e.g. VP of Engineering" },
   "e.g. --verbose, --foo=bar": { fr: "ex. --verbose, --foo=bar", en: "e.g. --verbose, --foo=bar" },
+  "Describe what this agent can do...": { fr: "Décrivez ce que cet agent peut faire...", en: "Describe what this agent can do..." },
+  "Prompt Template": { fr: "Modèle de prompt", en: "Prompt Template" },
+  "You are agent {{ agent.name }}. Your role is {{ agent.role }}...": { 
+    fr: "Vous êtes l'agent {{ agent.name }}. Votre rôle est {{ agent.role }}...", 
+    en: "You are agent {{ agent.name }}. Your role is {{ agent.role }}..." 
+  },
 };
 
 /** Renvoie la traduction pour la clé donnée dans la langue choisie.
