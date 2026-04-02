@@ -1040,3 +1040,123 @@ a.baaraly-mention-chip:hover {
 [class*="_toolbarNodeKindSelectContainer_"] {
   z-index: 81 !important;
 }
+
+/* ── LANDING PAGE ANIMATIONS ── */
+
+/* Gradient shift animation */
+@keyframes gradient-slow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient-slow {
+  background-size: 200% 200%;
+  animation: gradient-slow 15s ease infinite;
+}
+
+/* Floating blobs */
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -30px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+@keyframes float-slower {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-25px, 25px) scale(1.03); }
+  66% { transform: translate(35px, -15px) scale(0.97); }
+}
+
+.animate-float-slow {
+  animation: float-slow 20s ease-in-out infinite;
+}
+
+.animate-float-slower {
+  animation: float-slower 25s ease-in-out infinite;
+}
+
+/* Float animation for elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Pulse glow for badges */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 30%, transparent); }
+  50% { box-shadow: 0 0 20px 4px color-mix(in oklab, var(--primary) 20%, transparent); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Gradient text animation */
+@keyframes text-gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--primary) 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-gradient-shift 6s ease infinite;
+}
+
+/* Hover lift effect */
+.hover-lift {
+  transition: transform 300ms cubic-bezier(0.25, 0.1, 0.25, 1),
+              box-shadow 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 12px 40px -12px color-mix(in oklab, var(--primary) 25%, transparent),
+    0 4px 16px -4px rgba(0,0,0,0.12);
+}
+
+/* Glass panel */
+.glass-panel {
+  background: color-mix(in oklab, var(--card) 70%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in oklab, var(--border) 50%, transparent);
+  box-shadow: 0 8px 32px -8px rgba(0,0,0,0.08);
+}
+
+.dark .glass-panel {
+  background: color-mix(in oklab, var(--card) 60%, transparent);
+  box-shadow: 0 8px 32px -8px rgba(0,0,0,0.3);
+}
+
+/* Chat message animation */
+@keyframes chat-slide-in {
+  0% { opacity: 0; transform: translateY(8px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-chat-in {
+  animation: chat-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient-slow,
+  .animate-float-slow,
+  .animate-float-slower,
+  .animate-float,
+  .animate-pulse-glow,
+  .text-gradient,
+  .hover-lift {
+    animation: none !important;
+    transition: none !important;
+  }
+}
