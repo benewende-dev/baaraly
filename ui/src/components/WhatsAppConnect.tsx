@@ -16,6 +16,18 @@ const COUNTRIES = [
   { code: "+41", flag: "🇨🇭", name: "Suisse" },
   { code: "+352", flag: "🇱🇺", name: "Luxembourg" },
   { code: "+377", flag: "🇲🇨", name: "Monaco" },
+  // Amériques francophones
+  { code: "+1", flag: "🇨🇦", name: "Canada" },
+  { code: "+590", flag: "🇬🇵", name: "Guadeloupe" },
+  { code: "+596", flag: "🇲🇶", name: "Martinique" },
+  { code: "+594", flag: "🇬🇫", name: "Guyane" },
+  { code: "+508", flag: "🇵🇲", name: "Saint-Pierre-et-Miquelon" },
+  { code: "+590", flag: "🇧🇱", name: "Saint-Barthélemy" },
+  { code: "+590", flag: "🇲🇫", name: "Saint-Martin" },
+  // Océanie francophone
+  { code: "+687", flag: "🇳🇨", name: "Nouvelle-Calédonie" },
+  { code: "+689", flag: "🇵🇫", name: "Polynésie française" },
+  { code: "+681", flag: "🇼🇫", name: "Wallis-et-Futuna" },
   // Afrique de l'Ouest
   { code: "+226", flag: "🇧🇫", name: "Burkina Faso" },
   { code: "+229", flag: "🇧🇯", name: "Bénin" },
