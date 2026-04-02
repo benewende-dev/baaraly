@@ -32,7 +32,7 @@ export function CompanySettings() {
   } = useCompany();
   const { setBreadcrumbs } = useBreadcrumbs();
   const { t } = useLanguage();
-  const { pushToast: _pushToast } = useToast();
+  const { pushToast } = useToast();
   const queryClient = useQueryClient();
   // General settings local state
   const [companyName, setCompanyName] = useState("");
@@ -195,6 +195,32 @@ export function CompanySettings() {
       });
       await queryClient.invalidateQueries({
         queryKey: queryKeys.companies.stats
+      });
+    }
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: ({
+      companyId,
+      nextCompanyId
+    }: {
+      companyId: string;
+      nextCompanyId: string | null;
+    }) => companiesApi.remove(companyId).then(() => ({ nextCompanyId })),
+    onSuccess: async ({ nextCompanyId }) => {
+      if (nextCompanyId) {
+        setSelectedCompanyId(nextCompanyId);
+      }
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.companies.all
+      });
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.companies.stats
+      });
+      pushToast({
+        tone: "success",
+        title: t("Entreprise supprimée"),
+        body: t("L'entreprise a été supprimée définitivement"),
       });
     }
   });
@@ -494,16 +520,18 @@ export function CompanySettings() {
       {/* Danger Zone */}
       <div className="space-y-4">
         <div className="text-xs font-medium text-destructive uppercase tracking-wide">
-          {t("Danger Zone")}
+          {t("Zone de danger")}
         </div>
-        <div className="space-y-3 rounded-md border border-destructive/40 bg-destructive/5 px-4 py-4">
-          <p className="text-sm text-muted-foreground">
-            {t("Archive this company to hide it from the sidebar. This persists in the database.")}
-          </p>
-          <div className="flex items-center gap-2">
+        <div className="space-y-4 rounded-md border border-destructive/40 bg-destructive/5 px-4 py-4">
+          {/* Archive */}
+          <div className="space-y-2">
+            <p className="text-sm font-medium">{t("Archiver l'entreprise")}</p>
+            <p className="text-xs text-muted-foreground">
+              {t("Cache l'entreprise de la barre latérale. Les données sont conservées.")}
+            </p>
             <Button
               size="sm"
-              variant="destructive"
+              variant="outline"
               disabled={
                 archiveMutation.isPending ||
                 selectedCompany.status === "archived"
@@ -511,7 +539,7 @@ export function CompanySettings() {
               onClick={() => {
                 if (!selectedCompanyId) return;
                 const confirmed = window.confirm(
-                  `${t("Archive company")} "${selectedCompany.name}"?`
+                  `${t("Archiver l'entreprise")} « ${selectedCompany.name} » ?`
                 );
                 if (!confirmed) return;
                 const nextCompanyId =
@@ -527,17 +555,66 @@ export function CompanySettings() {
               }}
             >
               {archiveMutation.isPending
-                ? t("Archiving...")
+                ? t("Archivage...")
                 : selectedCompany.status === "archived"
-                ? t("Already archived")
-                : t("Archive company")}
+                ? t("Déjà archivée")
+                : t("Archiver")}
             </Button>
             {archiveMutation.isError && (
-              <span className="text-xs text-destructive">
+              <p className="text-xs text-destructive">
                 {archiveMutation.error instanceof Error
                   ? archiveMutation.error.message
-                  : t("Failed to archive company")}
-              </span>
+                  : t("Échec de l'archivage")}
+              </p>
+            )}
+          </div>
+
+          {/* Delete permanently */}
+          <div className="space-y-2 border-t border-destructive/20 pt-4">
+            <p className="text-sm font-medium text-destructive">{t("Supprimer définitivement")}</p>
+            <p className="text-xs text-muted-foreground">
+              {t("Supprime l'entreprise, tous les agents, et toutes les données associées. Cette action est irréversible.")}
+            </p>
+            <Button
+              size="sm"
+              variant="destructive"
+              disabled={deleteMutation.isPending}
+              onClick={() => {
+                if (!selectedCompanyId) return;
+                const companyName = selectedCompany.name;
+                const userInput = window.prompt(
+                  `${t("Pour confirmer, tapez le nom de l'entreprise")} : « ${companyName} »`
+                );
+                if (userInput !== companyName) {
+                  pushToast({
+                    tone: "error",
+                    title: t("Nom incorrect"),
+                    body: t("La suppression a été annulée"),
+                  });
+                  return;
+                }
+                const nextCompanyId =
+                  companies.find(
+                    (company) =>
+                      company.id !== selectedCompanyId &&
+                      company.status !== "archived"
+                  )?.id ?? null;
+                deleteMutation.mutate({
+                  companyId: selectedCompanyId,
+                  nextCompanyId
+                });
+              }}
+            >
+              {deleteMutation.isPending
+                ? t("Suppression...")
+                : t("Supprimer définitivement")}
+            </Button>
+            {deleteMutation.isError && (
+              <p className="text-xs text-destructive">
+                {deleteMutation.error instanceof Error
+                  ? deleteMutation.error.message
+                  : t("Échec de la suppression")}
+              </p>
             )}
           </div>
         </div>

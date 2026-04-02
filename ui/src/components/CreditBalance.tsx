@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { creditsApi } from "../api/credits";
+import { agentsApi } from "../api/agents";
 import { useLanguage } from "../context/LanguageContext";
 import { useCompany } from "../context/CompanyContext";
 import { RechargeModal } from "./RechargeModal";
@@ -58,16 +59,34 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
     enabled: !!companyId,
   });
 
+  // Fetch agents to detect country from agent metadata
+  const { data: agents } = useQuery({
+    queryKey: ["agents", companyId],
+    queryFn: () => agentsApi.list(companyId),
+    enabled: !!companyId,
+  });
+
   const currency = useMemo(() => {
-    if (!selectedCompany) return DEFAULT_CURRENCY;
-    const meta = (selectedCompany as any).metadata as Record<string, unknown> | undefined;
-    const country = meta?.country as string | undefined;
-    if (country && CURRENCY_BY_COUNTRY[country]) {
-      return CURRENCY_BY_COUNTRY[country];
+    // 1. Try to find country from agent metadata (set during onboarding)
+    if (agents && agents.length > 0) {
+      for (const agent of agents) {
+        const meta = (agent.metadata ?? {}) as Record<string, unknown>;
+        const country = meta.country as string | undefined;
+        if (country && CURRENCY_BY_COUNTRY[country]) {
+          return CURRENCY_BY_COUNTRY[country];
+        }
+      }
     }
-    // Fallback: check agent metadata for country
+    // 2. Fallback: check company metadata
+    if (selectedCompany) {
+      const meta = (selectedCompany as any).metadata as Record<string, unknown> | undefined;
+      const country = meta?.country as string | undefined;
+      if (country && CURRENCY_BY_COUNTRY[country]) {
+        return CURRENCY_BY_COUNTRY[country];
+      }
+    }
     return DEFAULT_CURRENCY;
-  }, [selectedCompany]);
+  }, [selectedCompany, agents]);
 
   const credits = creditData?.balance ?? 0;
   const balance = credits * 10;
@@ -118,28 +137,28 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
       >
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-muted-foreground">
-            {t("Credits")}
+            {t("Solde")}
           </span>
           {isEmpty && (
             <span className="text-xs font-medium text-red-500 bg-red-500/10 px-2 py-0.5 rounded-full">
-              {t("Credits exhausted")}
+              {t("Solde épuisé")}
             </span>
           )}
           {isLow && !isEmpty && (
             <span className="text-xs font-medium text-orange-500 bg-orange-500/10 px-2 py-0.5 rounded-full">
-              {t("Running low")}
+              {t("Solde bas")}
             </span>
           )}
         </div>
 
         <div className="flex items-baseline gap-2 mb-1">
           <span className="text-2xl font-bold">
-            💰 {formattedBalance}
+            {formattedBalance}
           </span>
         </div>
 
         <p className="text-xs text-muted-foreground mb-3">
-          {credits.toLocaleString("fr-FR")} {t("credits remaining")}
+          {credits.toLocaleString(currency.locale)} {t("crédits restants")}
         </p>
 
         <div className="w-full h-2 rounded-full bg-muted mb-3 overflow-hidden">
@@ -157,7 +176,7 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
 
         {isEmpty && (
           <p className="text-xs text-red-500 mb-3">
-            {t("Credits exhausted — Recharge to continue")}
+            {t("Rechargez pour continuer")}
           </p>
         )}
 
@@ -166,7 +185,7 @@ export function CreditBalance({ companyId, compact }: CreditBalanceProps) {
           className="w-full py-2 px-4 rounded-lg text-sm font-semibold text-white transition-colors"
           style={{ backgroundColor: "#0071E3" }}
         >
-          {t("Recharge")}
+          {t("Recharger")}
         </button>
       </div>
 
