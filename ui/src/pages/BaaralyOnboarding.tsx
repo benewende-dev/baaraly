@@ -18,6 +18,7 @@ const BUSINESS_TYPES = [
 ];
 
 const COUNTRIES = [
+  // ═══ AFRIQUE DE L'OUEST ═══
   { id: "bf", flag: "🇧🇫", label: "Burkina Faso" },
   { id: "bj", flag: "🇧🇯", label: "Bénin" },
   { id: "ml", flag: "🇲🇱", label: "Mali" },
@@ -27,18 +28,38 @@ const COUNTRIES = [
   { id: "tg", flag: "🇹🇬", label: "Togo" },
   { id: "gh", flag: "🇬🇭", label: "Ghana" },
   { id: "ng", flag: "🇳🇬", label: "Nigeria" },
+  { id: "gw", flag: "🇬🇼", label: "Guinée-Bissau" },
+  { id: "gn", flag: "🇬🇳", label: "Guinée" },
+  // ═══ AFRIQUE CENTRALE ═══
   { id: "ga", flag: "🇬🇦", label: "Gabon" },
   { id: "cm", flag: "🇨🇲", label: "Cameroun" },
   { id: "td", flag: "🇹🇩", label: "Tchad" },
   { id: "cf", flag: "🇨🇫", label: "Centrafrique" },
   { id: "gq", flag: "🇬🇶", label: "Guinée Équatoriale" },
-  { id: "gw", flag: "🇬🇼", label: "Guinée-Bissau" },
-  { id: "gn", flag: "🇬🇳", label: "Guinée" },
+  { id: "cg", flag: "🇨🇩", label: "Congo" },
+  { id: "cd", flag: "🇨🇩", label: "Congo (RDC)" },
+  // ═══ AFRIQUE DE L'EST & OCÉAN INDIEN ═══
   { id: "mu", flag: "🇲🇺", label: "Maurice" },
   { id: "mr", flag: "🇲🇷", label: "Mauritanie" },
+  { id: "sc", flag: "🇸🇨", label: "Seychelles" },
+  { id: "mg", flag: "🇲🇬", label: "Madagascar" },
+  // ═══ EUROPE FRANCOPHONE ═══
+  { id: "fr", flag: "🇫🇷", label: "France" },
+  { id: "be", flag: "🇧🇪", label: "Belgique" },
+  { id: "ch", flag: "🇨🇭", label: "Suisse" },
+  { id: "lu", flag: "🇱🇺", label: "Luxembourg" },
+  { id: "mc", flag: "🇲🇨", label: "Monaco" },
+  // ═══ AMÉRIQUES ═══
+  { id: "ca", flag: "🇨🇦", label: "Canada" },
+  { id: "us", flag: "🇺🇸", label: "États-Unis" },
+  // ═══ MAGHREB ═══
+  { id: "ma", flag: "🇲🇦", label: "Maroc" },
+  { id: "tn", flag: "🇹🇳", label: "Tunisie" },
+  { id: "dz", flag: "🇩🇿", label: "Algérie" },
 ];
 
 const WHATSAPP_COUNTRIES = [
+  // ═══ AFRIQUE DE L'OUEST ═══
   { code: "+226", flag: "🇧🇫", name: "Burkina Faso" },
   { code: "+223", flag: "🇲🇱", name: "Mali" },
   { code: "+221", flag: "🇸🇳", name: "Sénégal" },
@@ -48,9 +69,27 @@ const WHATSAPP_COUNTRIES = [
   { code: "+228", flag: "🇹🇬", name: "Togo" },
   { code: "+233", flag: "🇬🇭", name: "Ghana" },
   { code: "+234", flag: "🇳🇬", name: "Nigeria" },
+  { code: "+224", flag: "🇬🇳", name: "Guinée" },
+  // ═══ AFRIQUE CENTRALE ═══
   { code: "+237", flag: "🇨🇲", name: "Cameroun" },
   { code: "+241", flag: "🇬🇦", name: "Gabon" },
-  { code: "+224", flag: "🇬🇳", name: "Guinée" },
+  { code: "+242", flag: "🇨🇩", name: "Congo (RDC)" },
+  { code: "+235", flag: "🇹🇩", name: "Tchad" },
+  { code: "+236", flag: "🇨🇫", name: "République Centrafricaine" },
+  { code: "+240", flag: "🇬🇶", name: "Guinée Équatoriale" },
+  // ═══ EUROPE FRANCOPHONE ═══
+  { code: "+33", flag: "🇫🇷", name: "France" },
+  { code: "+32", flag: "🇧🇪", name: "Belgique" },
+  { code: "+41", flag: "🇨🇭", name: "Suisse" },
+  { code: "+352", flag: "🇱🇺", name: "Luxembourg" },
+  { code: "+377", flag: "🇲🇨", name: "Monaco" },
+  // ═══ AMÉRIQUES ═══
+  { code: "+1", flag: "🇨🇦", name: "Canada (QC)" },
+  { code: "+1", flag: "🇺🇸", name: "USA" },
+  // ═══ AUTRES ═══
+  { code: "+212", flag: "🇲🇦", name: "Maroc" },
+  { code: "+216", flag: "🇹🇳", name: "Tunisie" },
+  { code: "+213", flag: "🇩🇿", name: "Algérie" },
 ];
 
 export function BaaralyOnboarding() {
