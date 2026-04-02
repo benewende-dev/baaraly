@@ -14,6 +14,7 @@ import {
   formatPriceFromEur,
   type PaymentProvider,
 } from "@paperclipai/shared/baaraly-agents";
+import { ProviderLogo } from "./ProviderLogo";
 
 interface CreditRechargeModalProps {
   open: boolean;
@@ -109,32 +110,6 @@ export function CreditRechargeModal({ open, onOpenChange, companyId, userCountry
   const mobileProviders = providers.filter((p) => p.types.includes("mobile_money"));
   const cardProviders = providers.filter((p) => p.types.includes("card"));
   const cryptoProviders = providers.filter((p) => p.types.includes("crypto"));
-
-  /* ── Provider icon component with real branding ── */
-  function ProviderIcon({ provider, size = "md" }: { provider: PaymentProvider; size?: "sm" | "md" }) {
-    const s = size === "sm" ? "w-8 h-8 text-[10px]" : "w-10 h-10 text-xs";
-    const color = PROVIDER_COLORS[provider.id] || "#888";
-    const logos: Record<string, string> = {
-      orange_money: "OM",
-      wave: "WV",
-      moov_money: "MV",
-      mtn_momo: "MTN",
-      airtel_money: "ATL",
-      mpesa: "MP",
-      cinetpay: "CP",
-      stripe: "ST",
-      paypal: "PP",
-      crypto: "₿",
-    };
-    return (
-      <div
-        className={`${s} rounded-xl flex items-center justify-center font-black tracking-tight`}
-        style={{ backgroundColor: `${color}15`, color, border: `1.5px solid ${color}30` }}
-      >
-        {logos[provider.id] || provider.icon}
-      </div>
-    );
-  }
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -280,7 +255,7 @@ export function CreditRechargeModal({ open, onOpenChange, companyId, userCountry
                           className="w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-transform group-hover:scale-110"
                           style={{ backgroundColor: `${PROVIDER_COLORS[p.id] || "#888"}12` }}
                         >
-                          <ProviderIcon provider={p} />
+                          <ProviderLogo providerId={p.id} />
                         </div>
                         <span className="text-[10px] font-semibold text-center leading-tight">{p.name}</span>
                       </button>
@@ -318,7 +293,7 @@ export function CreditRechargeModal({ open, onOpenChange, companyId, userCountry
                           className="w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-transform group-hover:scale-110"
                           style={{ backgroundColor: `${PROVIDER_COLORS[p.id] || "#888"}12` }}
                         >
-                          <ProviderIcon provider={p} />
+                          <ProviderLogo providerId={p.id} />
                         </div>
                         <span className="text-[10px] font-semibold text-center leading-tight">{p.name}</span>
                       </button>
@@ -356,7 +331,7 @@ export function CreditRechargeModal({ open, onOpenChange, companyId, userCountry
                           className="w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-transform group-hover:scale-110"
                           style={{ backgroundColor: `${PROVIDER_COLORS[p.id] || "#888"}12` }}
                         >
-                          <ProviderIcon provider={p} />
+                          <ProviderLogo providerId={p.id} />
                         </div>
                         <span className="text-[10px] font-semibold text-center leading-tight">{p.name}</span>
                       </button>
