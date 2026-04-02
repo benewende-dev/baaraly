@@ -61,7 +61,7 @@ export function Landing() {
           <div className="text-center lg:text-left">
             <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold bg-primary/10 text-primary mb-6 animate-pulse-glow">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              {t("1 000 FCFA offerts à l'inscription")} 🎁
+              {t("7 jours gratuits")} 🎁
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
               <span className="text-gradient">{t("Un agent IA")}</span>
@@ -87,7 +87,7 @@ export function Landing() {
               </button>
             </div>
             <p className="text-xs text-muted-foreground mt-4">
-              {t("Pas de carte bancaire. 1 000 FCFA offerts.")}
+              {t("7 jours gratuits · 5 prospects/jour · Sans carte bancaire")}
             </p>
           </div>
 
@@ -257,12 +257,12 @@ export function Landing() {
       >
         <div className={`rounded-3xl bg-gradient-to-r from-primary to-secondary p-1 transition-all duration-700 ${isVisible("offer") ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
           <div className="rounded-[22px] bg-background p-8 sm:p-12 text-center">
-            <span className="text-sm font-semibold text-primary uppercase tracking-wider">{t("Offre de lancement")}</span>
+            <span className="text-sm font-semibold text-primary uppercase tracking-wider">{t("Essai gratuit")}</span>
             <h2 className="text-4xl sm:text-5xl font-extrabold mt-4 mb-2">
-              1 000 FCFA <span className="text-gradient">{t("offerts")}</span>
+              7 <span className="text-gradient">{t("jours gratuits")}</span>
             </h2>
             <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-              {t("Ensuite, recharge à partir de 1 000 FCFA. Pas d'engagement.")}
+              {t("5 prospects par jour, 1 entreprise. Sans carte bancaire. Ensuite 49$/mois tout inclus.")}
             </p>
             <button
               onClick={() => navigate("/welcome")}
@@ -325,33 +325,27 @@ export function Landing() {
           <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
             {t("Simple et transparent")} 💰
           </h2>
-          <p className="text-muted-foreground mt-3">{t("Pas d'abonnement. Tu paies ce que tu consommes.")}</p>
+          <p className="text-muted-foreground mt-3">{t("7 jours gratuits, puis un seul plan tout inclus.")}</p>
         </div>
-        <div className="grid sm:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
           {[
             {
-              name: t("Découverte"),
+              name: t("Essai gratuit"),
               price: "0",
-              desc: t("Pour essayer Baaraly"),
-              features: [t("1 000 FCFA offerts"), t("1 agent IA"), t("Prospection WhatsApp"), t("Rapport basique")],
+              period: t("7 jours"),
+              desc: t("Pour tester sans risque"),
+              features: [t("5 prospects par jour"), t("1 entreprise"), t("Agent IA configuré"), t("WhatsApp connecté"), t("Pas de carte bancaire")],
               cta: t("Commencer"),
               highlighted: false,
             },
             {
               name: t("Pro"),
-              price: "5 000",
+              price: "49",
+              period: t("$ / mois"),
               desc: t("Pour les entrepreneurs sérieux"),
-              features: [t("3 agents IA"), t("Prospection avancée"), t("Suivi des clients"), t("Rapports détaillés"), t("Relances automatiques")],
-              cta: t("Choisir Pro"),
+              features: [t("30 prospects par jour"), t("Jusqu'à 10 entreprises"), t("Agents IA illimités"), t("WhatsApp multi-numéros"), t("Rapports détaillés"), t("Relances automatiques"), t("Support prioritaire")],
+              cta: t("Passer à Pro"),
               highlighted: true,
-            },
-            {
-              name: t("Business"),
-              price: "15 000",
-              desc: t("Pour les équipes"),
-              features: [t("Agents illimités"), t("Multi-canaux"), t("CRM intégré"), t("Statistiques avancées"), t("Support prioritaire")],
-              cta: t("Choisir Business"),
-              highlighted: false,
             },
           ].map((plan, i) => (
             <div
@@ -368,12 +362,12 @@ export function Landing() {
                   {t("Populaire")}
                 </span>
               )}
-              <h3 className={`text-lg font-bold ${!plan.highlighted ? "" : ""}`}>{plan.name}</h3>
+              <h3 className="text-lg font-bold">{plan.name}</h3>
               <p className={`text-xs mt-1 ${plan.highlighted ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{plan.desc}</p>
               <div className="mt-4 mb-6">
-                <span className="text-3xl font-extrabold">{plan.price}</span>
+                <span className="text-4xl font-extrabold">{plan.price}</span>
                 <span className={`text-sm ml-1 ${plan.highlighted ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                  {t("FCFA / mois")}
+                  {plan.period}
                 </span>
               </div>
               <ul className="space-y-3 mb-6">
