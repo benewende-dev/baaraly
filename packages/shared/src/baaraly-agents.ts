@@ -925,20 +925,81 @@ export const BAARALY_PAYMENT_METHODS = [
 ] as const;
 
 /* ═══════════════════════════════════════════
-   BILLING PLANS
+   BILLING PLANS + CURRENCY
    ═══════════════════════════════════════════ */
 
 export type BillingPlanId = "trial" | "pro" | "max";
+
+/** Supported currencies with exchange rates from EUR */
+export const CURRENCY_CONFIG: Record<string, { symbol: string; code: string; locale: string; rateFromEur: number }> = {
+  // Europe francophone
+  fr: { symbol: "€", code: "EUR", locale: "fr-FR", rateFromEur: 1 },
+  be: { symbol: "€", code: "EUR", locale: "fr-BE", rateFromEur: 1 },
+  lu: { symbol: "€", code: "EUR", locale: "fr-LU", rateFromEur: 1 },
+  mc: { symbol: "€", code: "EUR", locale: "fr-FR", rateFromEur: 1 },
+  // Suisse
+  ch: { symbol: "CHF", code: "CHF", locale: "fr-CH", rateFromEur: 0.96 },
+  // Canada
+  ca: { symbol: "CA$", code: "CAD", locale: "fr-CA", rateFromEur: 1.48 },
+  // USA / UK
+  us: { symbol: "$", code: "USD", locale: "en-US", rateFromEur: 1.08 },
+  gb: { symbol: "£", code: "GBP", locale: "en-GB", rateFromEur: 0.86 },
+  // Afrique francophone (FCFA)
+  bf: { symbol: "FCFA", code: "XOF", locale: "fr-FR", rateFromEur: 655.96 },
+  ml: { symbol: "FCFA", code: "XOF", locale: "fr-FR", rateFromEur: 655.96 },
+  sn: { symbol: "FCFA", code: "XOF", locale: "fr-FR", rateFromEur: 655.96 },
+  ci: { symbol: "FCFA", code: "XOF", locale: "fr-FR", rateFromEur: 655.96 },
+  ne: { symbol: "FCFA", code: "XOF", locale: "fr-FR", rateFromEur: 655.96 },
+  bj: { symbol: "FCFA", code: "XOF", locale: "fr-FR", rateFromEur: 655.96 },
+  tg: { symbol: "FCFA", code: "XOF", locale: "fr-FR", rateFromEur: 655.96 },
+  cm: { symbol: "FCFA", code: "XAF", locale: "fr-FR", rateFromEur: 655.96 },
+  ga: { symbol: "FCFA", code: "XAF", locale: "fr-FR", rateFromEur: 655.96 },
+  gq: { symbol: "FCFA", code: "XAF", locale: "fr-FR", rateFromEur: 655.96 },
+  td: { symbol: "FCFA", code: "XAF", locale: "fr-FR", rateFromEur: 655.96 },
+  cf: { symbol: "FCFA", code: "XAF", locale: "fr-FR", rateFromEur: 655.96 },
+  cg: { symbol: "FCFA", code: "XAF", locale: "fr-FR", rateFromEur: 655.96 },
+  cd: { symbol: "CDF", code: "CDF", locale: "fr-CD", rateFromEur: 2800 },
+  gn: { symbol: "GNF", code: "GNF", locale: "fr-FR", rateFromEur: 9300 },
+  // Afrique anglophone
+  gh: { symbol: "GH₵", code: "GHS", locale: "en-GH", rateFromEur: 16.5 },
+  ng: { symbol: "₦", code: "NGN", locale: "en-NG", rateFromEur: 1650 },
+  // Outre-mer
+  gp: { symbol: "€", code: "EUR", locale: "fr-FR", rateFromEur: 1 },
+  mq: { symbol: "€", code: "EUR", locale: "fr-FR", rateFromEur: 1 },
+  gf: { symbol: "€", code: "EUR", locale: "fr-FR", rateFromEur: 1 },
+  nc: { symbol: "XPF", code: "XPF", locale: "fr-NC", rateFromEur: 119.33 },
+  pf: { symbol: "XPF", code: "XPF", locale: "fr-PF", rateFromEur: 119.33 },
+};
+
+/** Default currency (West Africa FCFA) */
+const DEFAULT_CURRENCY = { symbol: "FCFA", code: "XOF", locale: "fr-FR", rateFromEur: 655.96 };
+
+/** Get currency config for a country code */
+export function getCurrencyForCountry(country?: string) {
+  if (country && CURRENCY_CONFIG[country]) return CURRENCY_CONFIG[country];
+  return DEFAULT_CURRENCY;
+}
+
+/** Format a EUR price in local currency */
+export function formatPriceFromEur(eur: number, country?: string): string {
+  const cur = getCurrencyForCountry(country);
+  if (cur.code === "EUR") return `${eur}€`;
+  const local = Math.round(eur * cur.rateFromEur);
+  if (cur.code === "XOF" || cur.code === "XAF") {
+    return `${local.toLocaleString("fr-FR")} ${cur.symbol}`;
+  }
+  return `${cur.symbol}${local.toLocaleString(cur.locale)}`;
+}
 
 export interface BillingPlanDefinition {
   id: BillingPlanId;
   name: string;
   description: string;
-  prices: { fcfa: number; eur: number };
+  /** Base price in EUR — converted to local currency via formatPriceFromEur */
+  priceEur: number;
   maxAgents: number;
   maxProspectsPerDay: number;
   whatsappIncluded: boolean;
-  /** Which tiers of agents are available (null = all) */
   allowedTiers: AgentTier[] | null;
   trialDays: number | null;
 }
@@ -948,8 +1009,8 @@ export const BAARALY_BILLING_PLANS: BillingPlanDefinition[] = [
     id: "trial",
     name: "Essai gratuit",
     description: "Découvre Baaraly pendant 7 jours",
-    prices: { fcfa: 0, eur: 0 },
-    maxAgents: 3,
+    priceEur: 0,
+    maxAgents: 1,
     maxProspectsPerDay: 5,
     whatsappIncluded: true,
     allowedTiers: [1],
@@ -959,7 +1020,7 @@ export const BAARALY_BILLING_PLANS: BillingPlanDefinition[] = [
     id: "pro",
     name: "Pro",
     description: "Pour les PME qui veulent scaler",
-    prices: { fcfa: 19_900, eur: 49 },
+    priceEur: 49,
     maxAgents: 10,
     maxProspectsPerDay: 50,
     whatsappIncluded: true,
@@ -970,7 +1031,7 @@ export const BAARALY_BILLING_PLANS: BillingPlanDefinition[] = [
     id: "max",
     name: "Max",
     description: "Tous les agents, pas de limite",
-    prices: { fcfa: 59_900, eur: 149 },
+    priceEur: 149,
     maxAgents: 30,
     maxProspectsPerDay: 200,
     whatsappIncluded: true,
@@ -998,12 +1059,4 @@ export function getAgentsByTier(): Record<AgentTier, BaaralyAgentDefinition[]> {
     2: BAARALY_AGENTS.filter((a) => a.tier === 2),
     3: BAARALY_AGENTS.filter((a) => a.tier === 3),
   };
-}
-
-/** Format price based on currency */
-export function formatPrice(fcfa: number, eur: number, country?: string): string {
-  if (country && ["fr", "be", "ch", "lu", "mc", "ca"].includes(country)) {
-    return `${eur}€`;
-  }
-  return `${fcfa.toLocaleString("fr-FR")} FCFA`;
 }

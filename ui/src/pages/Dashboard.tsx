@@ -22,7 +22,8 @@ import {
   getBillingPlan,
   getAgentsForPlan,
   getAgentsByTier,
-  formatPrice,
+  formatPriceFromEur,
+  getCurrencyForCountry,
   type BaaralyAgentDefinition,
   type AgentCategory,
   type AgentTier,
@@ -161,6 +162,19 @@ export function Dashboard() {
     const plan = getBillingPlan(billingPlan);
     const trialEndsAt = (selectedCompany as any).trialEndsAt as Date | null;
     
+    // Detect user country from agents metadata
+    let userCountry: string | undefined;
+    if (agents && agents.length > 0) {
+      for (const agent of agents) {
+        const meta = (agent.metadata ?? {}) as Record<string, unknown>;
+        if (meta.country) { userCountry = meta.country as string; break; }
+      }
+    }
+    if (!userCountry) {
+      const meta = (selectedCompany as any).metadata as Record<string, unknown> | undefined;
+      userCountry = meta?.country as string | undefined;
+    }
+    
     let daysRemaining: number | null = null;
     let isTrialActive = false;
     
@@ -183,6 +197,7 @@ export function Dashboard() {
       installedCount,
       canInstallMore: installedCount < plan.maxAgents,
       remainingSlots: plan.maxAgents - installedCount,
+      userCountry,
     };
   }, [selectedCompany, agents]);
 
@@ -461,7 +476,10 @@ export function Dashboard() {
    Plan Banner
    ═══════════════════════════════════════════ */
 function PlanBanner({ planInfo, t }: { planInfo: any; t: (s: string) => string }) {
-  const { plan, billingPlan, daysRemaining, isTrialActive, installedCount, remainingSlots } = planInfo;
+  const { plan, billingPlan, daysRemaining, isTrialActive, installedCount, remainingSlots, userCountry } = planInfo;
+
+  const proPrice = formatPriceFromEur(49, userCountry);
+  const maxPrice = formatPriceFromEur(149, userCountry);
 
   const bannerConfig: Record<string, { bg: string; border: string; icon: string; title: string }> = {
     trial: { bg: "from-amber-500/5 to-orange-500/5", border: "border-amber-500/30", icon: "🎁", title: "Essai gratuit" },
@@ -480,7 +498,7 @@ function PlanBanner({ planInfo, t }: { planInfo: any; t: (s: string) => string }
             <p className="text-sm font-bold">{cfg.title}</p>
             {billingPlan === "trial" && isTrialActive && (
               <p className="text-xs text-muted-foreground">
-                {t("Il reste")} {daysRemaining} {t("jours")} · {plan.maxProspectsPerDay} {t("prospects/jour")} · {plan.maxAgents} agents
+                {t("Il reste")} {daysRemaining} {t("jours")} · {plan.maxProspectsPerDay} {t("prospects/jour")} · {plan.maxAgents} agent
               </p>
             )}
             {billingPlan !== "trial" && (
@@ -500,11 +518,11 @@ function PlanBanner({ planInfo, t }: { planInfo: any; t: (s: string) => string }
           <div className="flex gap-2">
             {billingPlan === "trial" && (
               <button className="rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-all hover:opacity-90 active:scale-[0.98] whitespace-nowrap">
-                Pro — 49€
+                Pro — {proPrice}
               </button>
             )}
             <button className={`rounded-xl border px-4 py-2 text-xs font-semibold transition-all hover:bg-muted/50 whitespace-nowrap ${billingPlan === "pro" ? "border-purple-500/30 text-purple-600" : "border-border"}`}>
-              {billingPlan === "trial" ? "Max — 149€" : "Max — 149€"}
+              Max — {maxPrice}
             </button>
           </div>
         )}
