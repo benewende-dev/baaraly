@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/context/ToastContext";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/context/LanguageContext";
 
 function firstNonEmptyLine(value: string | null | undefined): string | null {
   if (!value) return null;
@@ -63,6 +64,7 @@ function getPluginErrorSummary(plugin: PluginRecord): string {
 export function PluginManager() {
   const { selectedCompany } = useCompany();
   const { setBreadcrumbs } = useBreadcrumbs();
+  const { t } = useLanguage();
   const queryClient = useQueryClient();
   const { pushToast } = useToast();
 
@@ -74,9 +76,9 @@ export function PluginManager() {
 
   useEffect(() => {
     setBreadcrumbs([
-      { label: selectedCompany?.name ?? "Company", href: "/dashboard" },
-      { label: "Settings", href: "/instance/settings/heartbeats" },
-      { label: "Plugins" },
+      { label: selectedCompany?.name ?? t("Company"), href: "/dashboard" },
+      { label: t("Settings"), href: "/instance/settings/heartbeats" },
+      { label: t("Plugins") },
     ]);
   }, [selectedCompany?.name, setBreadcrumbs]);
 
@@ -208,7 +210,7 @@ export function PluginManager() {
         <div className="flex items-start gap-3">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" />
           <div className="space-y-1 text-sm">
-            <p className="font-medium text-foreground">Plugins are alpha.</p>
+            <p className="font-medium text-foreground">{t("Plugins are alpha")}.</p>
             <p className="text-muted-foreground">
               The plugin runtime and API surface are still changing. Expect breaking changes while this feature settles.
             </p>
@@ -219,7 +221,7 @@ export function PluginManager() {
       <section className="space-y-3">
         <div className="flex items-center gap-2">
           <FlaskConical className="h-5 w-5 text-muted-foreground" />
-          <h2 className="text-base font-semibold">Available Plugins</h2>
+          <h2 className="text-base font-semibold">{t("Available Plugins")}</h2>
           <Badge variant="outline">Examples</Badge>
         </div>
 
@@ -306,14 +308,14 @@ export function PluginManager() {
       <section className="space-y-3">
         <div className="flex items-center gap-2">
           <Puzzle className="h-5 w-5 text-muted-foreground" />
-          <h2 className="text-base font-semibold">Installed Plugins</h2>
+          <h2 className="text-base font-semibold">{t("Installed Plugins")}</h2>
         </div>
 
         {!installedPlugins.length ? (
           <Card className="bg-muted/30">
             <CardContent className="flex flex-col items-center justify-center py-10">
               <Puzzle className="h-10 w-10 text-muted-foreground mb-4" />
-              <p className="text-sm font-medium">No plugins installed</p>
+              <p className="text-sm font-medium">{t("No plugins installed yet")}</p>
               <p className="text-xs text-muted-foreground mt-1">
                 Install a plugin to extend functionality.
               </p>

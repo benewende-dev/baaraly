@@ -1160,6 +1160,23 @@ export const translations: Record<string, Record<Language, string>> = {
 
   // ═══ Agent Status ═══
   "En attente d'approbation": { fr: "En attente d'approbation", en: "Pending approval" },
+
+  // ═══ Experimental Settings ═══
+  "Loading experimental settings...": { fr: "Chargement des paramètres...", en: "Loading experimental settings..." },
+  "Failed to load experimental settings.": { fr: "Échec du chargement des paramètres.", en: "Failed to load experimental settings." },
+  "Failed to update experimental settings.": { fr: "Échec de la mise à jour.", en: "Failed to update experimental settings." },
+  "Opt into features that are still being evaluated before they become default behavior.": {
+    fr: "Activez les fonctionnalités en cours d'évaluation avant qu'elles ne deviennent le comportement par défaut.",
+    en: "Opt into features that are still being evaluated before they become default behavior."
+  },
+  "Enable Isolated Workspaces": { fr: "Activer les espaces de travail isolés", en: "Enable Isolated Workspaces" },
+  "Auto-Restart Dev Server When Idle": { fr: "Redémarrer automatiquement le serveur en attente", en: "Auto-Restart Dev Server When Idle" },
+
+  // ═══ Plugins ═══
+  "Plugins are alpha.": { fr: "Les plugins sont en version alpha.", en: "Plugins are alpha." },
+  "Available Plugins": { fr: "Plugins disponibles", en: "Available Plugins" },
+  "Installed Plugins": { fr: "Plugins installés", en: "Installed Plugins" },
+  "No plugins installed yet.": { fr: "Aucun plugin installé.", en: "No plugins installed yet." },
 };
 
 /** Renvoie la traduction pour la clé donnée dans la langue choisie.
