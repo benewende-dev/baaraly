@@ -179,14 +179,12 @@ export function PluginManager() {
           <DialogHeader>
             <DialogTitle>{t("Install Plugin")}</DialogTitle>
             <DialogDescription>
-              {language === "fr" 
-                ? "Entrez le nom du package npm du plugin que vous souhaitez installer."
-                : "Enter the npm package name of the plugin you wish to install."}
+              {t("Enter the npm package name of the plugin you wish to install.")}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="packageName">{language === "fr" ? "Nom du package npm" : "npm Package Name"}</Label>
+              <Label htmlFor="packageName">{t("npm Package Name")}</Label>
               <Input
                 id="packageName"
                 placeholder="@paperclipai/plugin-example"
@@ -230,10 +228,10 @@ export function PluginManager() {
         {examplesQuery.isLoading ? (
           <div className="text-sm text-muted-foreground">{t("Loading...")}</div>
         ) : examplesQuery.error ? (
-          <div className="text-sm text-destructive">{t("Failed to load")}</div>
+          <div className="text-sm text-destructive">{t("Failed to load app state")}</div>
         ) : examples.length === 0 ? (
           <div className="rounded-md border border-dashed px-4 py-3 text-sm text-muted-foreground">
-            {language === "fr" ? "Aucun plugin d'exemple trouvé." : "No bundled example plugins were found in this checkout."}
+            {t("No bundled example plugins were found in this checkout.")}
           </div>
         ) : (
           <ul className="divide-y rounded-md border bg-card">
@@ -338,7 +336,7 @@ export function PluginManager() {
                         {plugin.manifestJson.displayName ?? plugin.packageName}
                       </Link>
                       {examplePackageNames.has(plugin.packageName) && (
-                        <Badge variant="outline">Example</Badge>
+                        <Badge variant="outline">{t("Example")}</Badge>
                       )}
                     </div>
                     <div>

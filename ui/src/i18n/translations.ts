@@ -1159,7 +1159,7 @@ export const translations: Record<string, Record<Language, string>> = {
   },
 
   // ═══ Agent Status ═══
-  "En attente d'approbation": { fr: "En attente d'approbation", en: "Pending approval" },
+  "Pending approval": { fr: "En attente d'approbation", en: "Pending approval" },
 
   // ═══ Experimental Settings ═══
   "Loading experimental settings...": { fr: "Chargement des paramètres...", en: "Loading experimental settings..." },
@@ -1183,32 +1183,28 @@ export const translations: Record<string, Record<Language, string>> = {
   // ═══ Plugins ═══
   "Plugin Manager": { fr: "Gestionnaire de plugins", en: "Plugin Manager" },
   "Install Plugin": { fr: "Installer un plugin", en: "Install Plugin" },
+  "Enter the npm package name of the plugin you wish to install.": { 
+    fr: "Entrez le nom du package npm du plugin que vous souhaitez installer.", 
+    en: "Enter the npm package name of the plugin you wish to install." 
+  },
+  "npm Package Name": { fr: "Nom du package npm", en: "npm Package Name" },
+  "Plugins are alpha": { fr: "Les plugins sont en alpha", en: "Plugins are alpha" },
   "The plugin runtime and API surface are still changing. Expect breaking changes while this feature settles.": {
     fr: "Le runtime des plugins et l'API sont encore en cours de modification. Attendez-vous à des changements majeurs pendant que cette fonctionnalité se stabilise.",
     en: "The plugin runtime and API surface are still changing. Expect breaking changes while this feature settles."
   },
-  "Examples": { fr: "Exemples", en: "Examples" },
-  "Not installed": { fr: "Non installé", en: "Not installed" },
-  "Install": { fr: "Installer", en: "Install" },
-  "Reference UI plugin that adds a simple Hello World widget to the Baaraly dashboard.": {
-    fr: "Plugin UI de référence qui ajoute un widget Hello World simple au tableau de bord Baaraly.",
-    en: "Reference UI plugin that adds a simple Hello World widget to the Baaraly dashboard."
-  },
-  "Example plugin that adds a Files link in project navigation plus a project detail file browser.": {
-    fr: "Plugin d'exemple qui ajoute un lien Fichiers dans la navigation du projet ainsi qu'un navigateur de fichiers de détail de projet.",
-    en: "Example plugin that adds a Files link in project navigation plus a project detail file browser."
-  },
-  "Reference plugin that demonstrates the current Baaraly plugin API surface, bridge flows, UI extension surfaces, jobs, webhooks, tools, streams, and trusted local workspace/process demos.": {
-    fr: "Plugin de référence qui démontre la surface API actuelle des plugins Baaraly, les flux de pont, les surfaces d'extension UI, les jobs, les webhooks, les outils, les flux et les démos d'espace de travail/processus local de confiance.",
-    en: "Reference plugin that demonstrates the current Baaraly plugin API surface, bridge flows, UI extension surfaces, jobs, webhooks, tools, streams, and trusted local workspace/process demos."
-  },
-  "Install a plugin to extend functionality.": { fr: "Installez un plugin pour étendre les fonctionnalités.", en: "Install a plugin to extend functionality." },
-
-  // ═══ Plugins ═══
-  "Plugins are alpha.": { fr: "Les plugins sont en version alpha.", en: "Plugins are alpha." },
   "Available Plugins": { fr: "Plugins disponibles", en: "Available Plugins" },
   "Installed Plugins": { fr: "Plugins installés", en: "Installed Plugins" },
-  "No plugins installed yet.": { fr: "Aucun plugin installé.", en: "No plugins installed yet." },
+  "Examples": { fr: "Exemples", en: "Examples" },
+  "Example": { fr: "Exemple", en: "Example" },
+  "Not installed": { fr: "Non installé", en: "Not installed" },
+  "Install": { fr: "Installer", en: "Install" },
+  "Installing...": { fr: "Installation en cours...", en: "Installing..." },
+  "Install Example": { fr: "Installer l'exemple", en: "Install Example" },
+  "Enable": { fr: "Activer", en: "Enable" },
+  "No plugins installed yet": { fr: "Aucun plugin installé", en: "No plugins installed yet" },
+  "No bundled example plugins were found in this checkout.": { fr: "Aucun plugin d'exemple trouvé.", en: "No bundled example plugins were found in this checkout." },
+  "Install a plugin to extend functionality.": { fr: "Installez un plugin pour étendre les fonctionnalités.", en: "Install a plugin to extend functionality." },
 };
 
 /** Renvoie la traduction pour la clé donnée dans la langue choisie.
