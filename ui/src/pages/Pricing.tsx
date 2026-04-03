@@ -6,6 +6,51 @@ import { plansApi } from "../api/pricing";
 import { queryKeys } from "../lib/queryKeys";
 import { ThemeLangToggle } from "../components/ThemeLangToggle";
 
+const FALLBACK_PLANS = [
+  {
+    id: "fallback-trial",
+    name: "gratuit",
+    displayName: "Essai Gratuit",
+    priceFcfa: 0,
+    durationDays: 7,
+    maxAgents: 1,
+    creditsIncluded: 500,
+    features: ["1 agent Standard", "WhatsApp inclus", "Dashboard basique", "Support email"],
+    isPublic: true,
+    isPopular: false,
+    color: "#30D158",
+    order: 1,
+  },
+  {
+    id: "fallback-pro",
+    name: "pro",
+    displayName: "Pro",
+    priceFcfa: 30000,
+    durationDays: null,
+    maxAgents: 10,
+    creditsIncluded: 5000,
+    features: ["10 agents (Standard + Avancé)", "Multi WhatsApp", "Rapports avancés", "Support prioritaire", "Agents Finance, Commerce, Conformité"],
+    isPublic: true,
+    isPopular: true,
+    color: "#0071E3",
+    order: 2,
+  },
+  {
+    id: "fallback-max",
+    name: "max",
+    displayName: "Max",
+    priceFcfa: 95000,
+    durationDays: null,
+    maxAgents: 999,
+    creditsIncluded: 20000,
+    features: ["Tous les agents disponibles", "API access", "Multi-entreprise", "Support dédié", "Agents premium inclus"],
+    isPublic: true,
+    isPopular: false,
+    color: "#BF5AF2",
+    order: 3,
+  },
+];
+
 export function Pricing() {
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -16,11 +61,7 @@ export function Pricing() {
     queryFn: plansApi.list,
   });
 
-  const plans = plansData?.plans ?? [];
-
-  if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center text-muted-foreground">{t("Chargement...")}</div>;
-  }
+  const plans = plansData?.plans && plansData.plans.length > 0 ? plansData.plans : FALLBACK_PLANS;
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] dark:bg-[#000] text-foreground">
