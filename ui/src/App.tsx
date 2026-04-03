@@ -39,6 +39,7 @@ import { RunTranscriptUxLab } from "./pages/RunTranscriptUxLab";
 import { OrgChart } from "./pages/OrgChart";
 import { NewAgent } from "./pages/NewAgent";
 import { AgentTemplates } from "./pages/AgentTemplates";
+import { Pricing } from "./pages/Pricing";
 import { BaaralyOnboarding } from "./pages/BaaralyOnboarding";
 import { Landing } from "./pages/Landing";
 import { AuthPage } from "./pages/Auth";
@@ -296,6 +297,7 @@ export function App() {
         <Route path="cli-auth/:id" element={<CliAuthPage />} />
         <Route path="invite/:token" element={<InviteLandingPage />} />
         <Route path="landing" element={<Landing />} />
+        <Route path="pricing" element={<Pricing />} />
 
         <Route element={<CloudAccessGate />}>
           <Route index element={<CompanyRootRedirect />} />

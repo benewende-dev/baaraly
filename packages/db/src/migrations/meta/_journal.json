@@ -358,6 +358,13 @@
       "when": 1775236851005,
       "tag": "0050_condemned_punisher",
       "breakpoints": true
+    },
+    {
+      "idx": 51,
+      "version": "7",
+      "when": 1775251591196,
+      "tag": "0051_absurd_vanisher",
+      "breakpoints": true
     }
   ]
 }

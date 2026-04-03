@@ -60,5 +60,6 @@ export { pluginEntities } from "./plugin_entities.js";
 export { pluginJobs, pluginJobRuns } from "./plugin_jobs.js";
 export { pluginWebhookDeliveries } from "./plugin_webhooks.js";
 export { pluginLogs } from "./plugin_logs.js";
+export { plans } from "./plans.js";
 export { companyCredits, creditTransactions } from "./company_credits.js";
 export { dailyProspectCounts } from "./daily_prospect_counts.js";

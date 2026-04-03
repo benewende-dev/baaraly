@@ -29,6 +29,7 @@ import { llmRoutes } from "./routes/llms.js";
 import { assetRoutes } from "./routes/assets.js";
 import { accessRoutes } from "./routes/access.js";
 import { creditRoutes } from "./routes/credits.js";
+import { pricingRoutes } from "./routes/pricing.js";
 import { aiRoutes } from "./routes/ai.js";
 import { pluginRoutes } from "./routes/plugins.js";
 import { agentTemplateRoutes } from "./routes/agent-templates.js";
@@ -162,6 +163,7 @@ export async function createApp(
   api.use(sidebarBadgeRoutes(db));
   api.use(instanceSettingsRoutes(db));
   api.use(creditRoutes(db));
+  api.use(pricingRoutes(db));
   api.use(agentTemplateRoutes(db));
   api.use(aiRoutes(db));
   api.use(metricsRoutes(db));

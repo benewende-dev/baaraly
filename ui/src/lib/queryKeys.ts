@@ -145,4 +145,5 @@ export const queryKeys = {
     detail: (id: string) => ["agent-templates", id] as const,
     instances: (companyId: string) => ["agent-instances", companyId] as const,
   },
+  plans: ["plans"] as const,
 };
