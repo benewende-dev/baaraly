@@ -54,6 +54,35 @@ export function AgentTemplates() {
     },
   });
 
+  const { selectedCompany } = useCompany();
+
+  const hireMutation = useMutation({
+    mutationFn: ({ templateId }: { templateId: string }) =>
+      agentTemplatesApi.hireFromTemplate(selectedCompany!.id, templateId, {
+        model: "opencode/qwen3.6-plus-free",
+        command: "opencode",
+      }),
+    onSuccess: (_data, vars) => {
+      const tpl = templates.find((t) => t.id === vars.templateId);
+      pushToast({ tone: "success", title: t("Agent recruté"), body: `${tpl?.name ?? "Agent"} ${t("a été ajouté à votre company")}` });
+    },
+  });
+
+  const hireAllMutation = useMutation({
+    mutationFn: () =>
+      agentTemplatesApi.hireAll(selectedCompany!.id, {
+        model: "opencode/qwen3.6-plus-free",
+        command: "opencode",
+      }),
+    onSuccess: (data) => {
+      pushToast({
+        tone: "success",
+        title: t("Agents recrutés"),
+        body: `${data.hired.length} ${t("ajoutés")}${data.skipped.length > 0 ? `, ${data.skipped.length} ${t("déjà existants")}` : ""}`,
+      });
+    },
+  });
+
   function handleCreate(data: CreateTemplateInput | UpdateTemplateInput) {
     createMutation.mutate(data as CreateTemplateInput);
   }
@@ -68,6 +97,16 @@ export function AgentTemplates() {
     }
   }
 
+  function handleHire(templateId: string) {
+    hireMutation.mutate({ templateId });
+  }
+
+  function handleHireAll() {
+    if (confirm(`${t("Recruter les")} ${templates.length} ${t("agents dans votre company")} ?`)) {
+      hireAllMutation.mutate();
+    }
+  }
+
   if (isLoading) {
     return <div className="p-6 text-center text-muted-foreground">{t("Chargement...")}</div>;
   }
@@ -79,13 +118,23 @@ export function AgentTemplates() {
           <h1 className="text-2xl font-bold">{t("Templates d'agents")}</h1>
           <p className="text-sm text-muted-foreground">{t("Gère les 30 agents préconfigurés")} ({templates.length})</p>
         </div>
-        <button
-          type="button"
-          className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90"
-          onClick={() => setShowForm(true)}
-        >
-          {t("Nouveau template")}
-        </button>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            className="px-4 py-2 rounded-lg bg-green-600 text-white text-sm font-medium hover:bg-green-700"
+            onClick={handleHireAll}
+            disabled={hireAllMutation.isPending}
+          >
+            {hireAllMutation.isPending ? t("Recrutement...") : t("Recruter tout")}
+          </button>
+          <button
+            type="button"
+            className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90"
+            onClick={() => setShowForm(true)}
+          >
+            {t("Nouveau template")}
+          </button>
+        </div>
       </div>
 
       <div className="flex gap-2 flex-wrap">
@@ -178,6 +227,14 @@ export function AgentTemplates() {
                 onClick={() => setEditingTemplate(template)}
               >
                 {t("Modifier")}
+              </button>
+              <button
+                type="button"
+                className="flex-1 text-xs px-3 py-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 font-medium"
+                onClick={() => handleHire(template.id)}
+                disabled={hireMutation.isPending}
+              >
+                {t("Recruter")}
               </button>
               <button
                 type="button"

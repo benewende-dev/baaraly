@@ -99,4 +99,10 @@ export const agentTemplatesApi = {
 
   syncInstance: (companyId: string, agentId: string) =>
     api.post<{ instance: AgentInstance }>(`/api/companies/${companyId}/agent-instances/${agentId}/sync`, {}),
+
+  hireFromTemplate: (companyId: string, templateId: string, body?: { model?: string; command?: string; budgetMonthlyCents?: number }) =>
+    api.post<{ agent: unknown }>(`/api/companies/${companyId}/agent-templates/${templateId}/hire`, body ?? {}),
+
+  hireAll: (companyId: string, body?: { model?: string; command?: string; budgetMonthlyCents?: number; templateIds?: string[] }) =>
+    api.post<{ hired: Array<{ name: string; id: string }>; skipped: string[]; total: number }>(`/api/companies/${companyId}/agent-templates/hire-all`, body ?? {}),
 };

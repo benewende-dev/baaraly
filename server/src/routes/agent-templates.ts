@@ -5,7 +5,9 @@ import { and, eq, inArray } from "drizzle-orm";
 import { z } from "zod";
 import { validate } from "../middleware/validate.js";
 import { assertBoard, assertCompanyAccess } from "./authz.js";
-import { notFound, forbidden, badRequest } from "../errors.js";
+import { notFound, forbidden, badRequest, conflict } from "../errors.js";
+import { agentService, logActivity } from "../services/index.js";
+import { AGENT_ROLES, AGENT_ICON_NAMES } from "@paperclipai/shared";
 
 const createTemplateSchema = z.object({
   name: z.string().min(1),
@@ -45,8 +47,41 @@ const updateTemplateSchema = z.object({
   sortIndex: z.number().int().optional(),
 });
 
+const hireAgentSchema = z.object({
+  model: z.string().optional().default("opencode/qwen3.6-plus-free"),
+  command: z.string().optional().default("opencode"),
+  budgetMonthlyCents: z.number().int().nonnegative().optional().default(0),
+});
+
+const hireAllSchema = z.object({
+  model: z.string().optional().default("opencode/qwen3.6-plus-free"),
+  command: z.string().optional().default("opencode"),
+  budgetMonthlyCents: z.number().int().nonnegative().optional().default(0),
+  templateIds: z.array(z.string().uuid()).optional(),
+});
+
+function resolveRole(category: string, templateRole: string): string {
+  const roleMap: Record<string, string> = {
+    tech: "engineer",
+    marketing: "marketing",
+    finance: "finance",
+    commerce: "sales",
+    juridique: "legal",
+    trading: "trading",
+    crypto: "crypto",
+    divertissement: "entertainment",
+  };
+  const resolved = roleMap[category] ?? templateRole;
+  return AGENT_ROLES.includes(resolved as typeof AGENT_ROLES[number]) ? resolved : "general";
+}
+
+function resolveIcon(emoji: string): string {
+  return AGENT_ICON_NAMES.includes(emoji as typeof AGENT_ICON_NAMES[number]) ? emoji : "robot";
+}
+
 export function agentTemplateRoutes(db: Db) {
   const router = Router();
+  const svc = agentService(db);
 
   router.get("/agent-templates", async (_req, res) => {
     const templates = await db.query.agentTemplates.findMany({
@@ -226,6 +261,164 @@ export function agentTemplateRoutes(db: Db) {
 
     res.json({ instance: updated });
   });
+
+  router.post(
+    "/companies/:companyId/agent-templates/:templateId/hire",
+    validate(hireAgentSchema),
+    async (req, res) => {
+      const companyId = Array.isArray(req.params.companyId) ? req.params.companyId[0] : req.params.companyId;
+      assertCompanyAccess(req, companyId);
+      const templateId = Array.isArray(req.params.templateId)
+        ? req.params.templateId[0]
+        : req.params.templateId;
+      const body = req.body as z.infer<typeof hireAgentSchema>;
+
+      const template = await db.query.agentTemplates.findFirst({
+        where: eq(agentTemplates.id, templateId),
+      });
+      if (!template) throw notFound("Template not found");
+      if (!template.isActive) throw forbidden("Template is not active");
+
+      const existing = await db.query.agents.findFirst({
+        where: and(
+          eq(agentsTable.companyId, companyId),
+          eq(agentsTable.name, template.name),
+        ),
+      });
+      if (existing) throw conflict(`Agent "${template.name}" already exists in this company`);
+
+      const role = resolveRole(template.category, template.role);
+      const icon = resolveIcon(template.emoji);
+
+      const adapterConfig: Record<string, unknown> = {
+        command: body.command,
+        model: body.model,
+        dangerouslySkipPermissions: true,
+      };
+
+      const created = await svc.create(companyId, {
+        name: template.name,
+        role,
+        title: `${template.name} — ${template.category}`,
+        icon,
+        adapterType: "opencode_local",
+        adapterConfig,
+        budgetMonthlyCents: body.budgetMonthlyCents,
+        status: "idle",
+        metadata: {
+          sourceTemplateId: template.id,
+          sourceTemplateName: template.name,
+          category: template.category,
+        },
+      });
+
+      await db.insert(agentInstances).values({
+        companyId,
+        agentId: created.id,
+        templateId: template.id,
+        templateSnapshot: {
+          name: template.name,
+          role: template.role,
+          emoji: template.emoji,
+          color: template.color,
+          category: template.category,
+          tier: template.tier,
+          description: template.description,
+          systemPrompt: template.systemPrompt,
+          tools: template.tools,
+          superpowers: template.superpowers,
+        },
+        isPaid: true,
+        lastSyncedAt: new Date(),
+      });
+
+      res.status(201).json({ agent: created });
+    },
+  );
+
+  router.post(
+    "/companies/:companyId/agent-templates/hire-all",
+    validate(hireAllSchema),
+    async (req, res) => {
+      const companyId = Array.isArray(req.params.companyId) ? req.params.companyId[0] : req.params.companyId;
+      assertCompanyAccess(req, companyId);
+      const body = req.body as z.infer<typeof hireAllSchema>;
+
+      const templates = await db.query.agentTemplates.findMany({
+        where: body.templateIds?.length
+          ? inArray(agentTemplates.id, body.templateIds)
+          : eq(agentTemplates.isActive, true),
+        orderBy: [agentTemplates.sortIndex, agentTemplates.name],
+      });
+
+      if (templates.length === 0) throw notFound("No active templates found");
+
+      const existingNames = new Set(
+        (await db.query.agents.findMany({
+          where: eq(agentsTable.companyId, companyId),
+        })).map((a) => a.name),
+      );
+
+      const hired: Array<{ name: string; id: string }> = [];
+      const skipped: string[] = [];
+
+      for (const template of templates) {
+        if (existingNames.has(template.name)) {
+          skipped.push(template.name);
+          continue;
+        }
+
+        const role = resolveRole(template.category, template.role);
+        const icon = resolveIcon(template.emoji);
+
+        const adapterConfig: Record<string, unknown> = {
+          command: body.command,
+          model: body.model,
+          dangerouslySkipPermissions: true,
+        };
+
+        const created = await svc.create(companyId, {
+          name: template.name,
+          role,
+          title: `${template.name} — ${template.category}`,
+          icon,
+          adapterType: "opencode_local",
+          adapterConfig,
+          budgetMonthlyCents: body.budgetMonthlyCents,
+          status: "idle",
+          metadata: {
+            sourceTemplateId: template.id,
+            sourceTemplateName: template.name,
+            category: template.category,
+          },
+        });
+
+        await db.insert(agentInstances).values({
+          companyId,
+          agentId: created.id,
+          templateId: template.id,
+          templateSnapshot: {
+            name: template.name,
+            role: template.role,
+            emoji: template.emoji,
+            color: template.color,
+            category: template.category,
+            tier: template.tier,
+            description: template.description,
+            systemPrompt: template.systemPrompt,
+            tools: template.tools,
+            superpowers: template.superpowers,
+          },
+          isPaid: true,
+          lastSyncedAt: new Date(),
+        });
+
+        hired.push({ name: template.name, id: created.id });
+      }
+
+      res.status(201).json({ hired, skipped, total: templates.length });
+    },
+  );
 
   return router;
 }
