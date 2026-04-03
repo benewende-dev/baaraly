@@ -4,7 +4,11 @@ import { eq } from "drizzle-orm";
 import { BAARALY_AGENTS } from "@paperclipai/shared/baaraly-agents";
 
 const url = process.env.DATABASE_URL;
-if (!url) throw new Error("DATABASE_URL is required");
+if (!url) {
+  console.log("No DATABASE_URL set, skipping seed (PGlite mode — tables created on server start)");
+  console.log("To seed manually, set DATABASE_URL and run this script.");
+  process.exit(0);
+}
 
 const db = createDb(url);
 
