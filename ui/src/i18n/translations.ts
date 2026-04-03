@@ -1157,6 +1157,9 @@ export const translations: Record<string, Record<Language, string>> = {
     fr: "Vous êtes l'agent {{ agent.name }}. Votre rôle est {{ agent.role }}...", 
     en: "You are agent {{ agent.name }}. Your role is {{ agent.role }}..." 
   },
+
+  // ═══ Agent Status ═══
+  "En attente d'approbation": { fr: "En attente d'approbation", en: "Pending approval" },
 };
 
 /** Renvoie la traduction pour la clé donnée dans la langue choisie.

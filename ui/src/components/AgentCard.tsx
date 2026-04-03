@@ -1,19 +1,22 @@
 import { Link } from "@/lib/router";
 import { agentUrl } from "../lib/utils";
 import type { Agent } from "@paperclipai/shared";
+import { useLanguage } from "../context/LanguageContext";
 
-const STATUS_CONFIG: Record<string, { bg: string; color: string; label: string }> = {
-  running: { bg: "rgba(48,209,88,0.15)", color: "#30D158", label: "En cours" },
-  active:  { bg: "rgba(48,209,88,0.15)", color: "#30D158", label: "Actif" },
-  idle:    { bg: "rgba(48,209,88,0.15)", color: "#30D158", label: "Disponible" },
-  paused:  { bg: "rgba(255,159,10,0.15)", color: "#FF9F0A", label: "En pause" },
-  error:   { bg: "rgba(255,69,58,0.15)", color: "#FF453A", label: "Erreur" },
-  terminated: { bg: "rgba(28,28,30,0.8)", color: "rgba(255,255,255,0.3)", label: "Arrêté" },
-  queued:  { bg: "rgba(0,113,227,0.15)", color: "#0071E3", label: "En attente" },
-};
+const STATUS_CONFIG = (t: (key: string) => string): Record<string, { bg: string; color: string; label: string }> => ({
+  running: { bg: "rgba(48,209,88,0.15)", color: "#30D158", label: t("En cours") },
+  active:  { bg: "rgba(48,209,88,0.15)", color: "#30D158", label: t("Actif") },
+  idle:    { bg: "rgba(48,209,88,0.15)", color: "#30D158", label: t("Disponible") },
+  paused:  { bg: "rgba(255,159,10,0.15)", color: "#FF9F0A", label: t("En pause") },
+  error:   { bg: "rgba(255,69,58,0.15)", color: "#FF453A", label: t("Erreur") },
+  terminated: { bg: "rgba(28,28,30,0.8)", color: "rgba(255,255,255,0.3)", label: t("Arrêté") },
+  queued:  { bg: "rgba(0,113,227,0.15)", color: "#0071E3", label: t("En attente") },
+  pending_approval: { bg: "rgba(255,159,10,0.15)", color: "#FF9F0A", label: t("En attente d'approbation") },
+});
 
-function getStatusConfig(status: string) {
-  return STATUS_CONFIG[status] ?? { bg: "rgba(28,28,30,0.8)", color: "rgba(255,255,255,0.4)", label: status };
+function getStatusConfig(status: string, t: (key: string) => string) {
+  const config = STATUS_CONFIG(t);
+  return config[status] ?? { bg: "rgba(28,28,30,0.8)", color: "rgba(255,255,255,0.4)", label: status };
 }
 
 /** Génère un gradient déterministe à partir du nom */
@@ -37,7 +40,8 @@ interface AgentCardProps {
 }
 
 export function AgentCard({ agent, liveCount, lastActivity }: AgentCardProps) {
-  const statusCfg = getStatusConfig(agent.status);
+  const { t } = useLanguage();
+  const statusCfg = getStatusConfig(agent.status, t);
   const initial = (agent.name?.[0] ?? "?").toUpperCase();
 
   return (
