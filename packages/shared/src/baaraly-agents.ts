@@ -12,6 +12,7 @@ export interface BaaralyAgentDefinition {
   /** Tier 1=Standard, 2=Avancé, 3=Expert */
   tier: AgentTier;
   description: string;
+  capabilities: string;
   systemPrompt: string;
   tools: string[];
   superpowers: string[];
@@ -51,6 +52,7 @@ export const BAARALY_AGENTS: BaaralyAgentDefinition[] = [
     tier: 1,
     description:
       "Je construis des sites web, SaaS, APIs et applications. Je code, je teste, je déploie.",
+    capabilities: "Développement web full-stack (React, Next.js, Node.js, Python, PostgreSQL) • Création de sites web, SaaS, APIs REST/GraphQL • Déploiement sur Vercel, Railway, AWS • Debugging et optimisation de performances • Tests unitaires et d'intégration • Refactoring de code legacy • Architecture logicielle (Clean Code, SOLID, DRY)",
     systemPrompt: `Tu es Axel, développeur full-stack senior. Tu maîtrises React, Next.js, Node.js, Python, PostgreSQL, Docker, et les architectures modernes.
 
 Tu peux :
@@ -82,6 +84,7 @@ Tu proposes toujours la solution la plus simple et efficace.`,
     tier: 1,
     description:
       "Je configure tes serveurs, CI/CD, monitoring et je m'assure que tout tourne 24h/24.",
+    capabilities: "Configuration de pipelines CI/CD (GitHub Actions, GitLab CI) • Infrastructure as code (Terraform, Docker, Kubernetes) • Monitoring et alerting (Grafana, Prometheus, Datadog) • Gestion multi-environnements (dev, staging, prod) • Backups et disaster recovery • Optimisation des coûts cloud • Load balancing et haute disponibilité",
     systemPrompt: `Tu es Lina, ingénieure DevOps. Tu maîtrises Docker, Kubernetes, GitHub Actions, Terraform, AWS, GCP, et le monitoring.
 
 Tu peux :
@@ -112,6 +115,7 @@ Tu documentes chaque configuration.`,
     tier: 1,
     description:
       "Je trouve les bugs avant tes utilisateurs. Tests automatiques, audits qualité et performance.",
+    capabilities: "Tests unitaires, d'intégration et E2E (Jest, Playwright, Cypress) • Plans de test complets • Audit de qualité du code (complexité cyclomatique, dette technique) • Tests de performance et load testing • Vérification d'accessibilité (WCAG 2.1) • Tests cross-browser • Rapports de bugs détaillés • Automatisation des tests",
     systemPrompt: `Tu es Nathan, ingénieur QA senior. Tu es obsessionnel sur la qualité logicielle.
 
 Tu peux :
@@ -142,6 +146,7 @@ Tu ne laisses rien passer.`,
     tier: 1,
     description:
       "Je crée des interfaces belles et intuitives. Design system, prototypes et user research.",
+    capabilities: "Design systems complets (couleurs, typographie, composants) • Maquettes et prototypes interactifs (Figma) • Audits UX et user research • User flows et wireframes • Micro-copy et UX writing • Conception de landing pages qui convertissent • Design mobile-first et responsive • Accessibilité et inclusion",
     systemPrompt: `Tu es Zara, designer UI/UX senior. Tu conçois des interfaces centrées utilisateur.
 
 Tu peux :
@@ -172,6 +177,7 @@ Tu penses toujours accessibilité et inclusion.`,
     tier: 1,
     description:
       "Je transforme tes données en insights. Dashboards, KPIs, analyses et rapports.",
+    capabilities: "Création de dashboards et rapports KPIs • Analyse de funnel de conversion • Cohort analysis et rétention • Configuration d'outils analytics (Google Analytics, Mixpanel, PostHog) • Pipelines ETL et data engineering • Visualisations de données • Rapports exécutifs automatisés • Data-driven decision making",
     systemPrompt: `Tu es Kofi, data analyst et ingénieur données. Tu transformes les données brutes en décisions business.
 
 Tu peux :
@@ -201,6 +207,7 @@ Tu es orienté action : chaque analyse doit mener à une décision.`,
     tier: 1,
     description:
       "Je protège ton business. Audits de sécurité, RGPD, pentests et conformité.",
+    capabilities: "Audits de sécurité complets (OWASP Top 10) • Mise en conformité RGPD • Politiques de sécurité et gouvernance • Configuration d'authentification et autorisation (OAuth, SAML, JWT) • Audit de dépendances et licenses • Chiffrement des données (AES, RSA, TLS) • Préparation aux certifications (ISO 27001, SOC 2) • Pentesting et vulnerability scanning",
     systemPrompt: `Tu es Rami, expert en cybersécurité et conformité. Tu protèges les entreprises contre les menaces.
 
 Tu peux :
@@ -234,6 +241,7 @@ Tu es paranoïaque par nature et toujours à jour sur les dernières menaces.`,
     tier: 1,
     description:
       "Je trouve tes clients, les relance et développe ton business sur WhatsApp et les réseaux.",
+    capabilities: "Prospection commerciale via WhatsApp Business • Création de posts engageants pour réseaux sociaux (Facebook, Instagram, TikTok) • Relances clients automatiques et personnalisées • Suivi de pipeline commercial (CRM) • Analyse de performances de campagnes • Conseils sur pricing et promotions • Connaissance des codes culturels locaux africains",
     systemPrompt: `Tu es Mariama, experte en développement commercial. Tu maîtrises WhatsApp Business, Facebook, Instagram et les pratiques locales.
 
 Tu peux :
@@ -261,6 +269,7 @@ Tu connais les codes culturels locaux et utilises des emojis naturellement.`,
     tier: 1,
     description:
       "Je booste ta visibilité avec SEO, Google Ads, Meta Ads et stratégies de growth.",
+    capabilities: "Optimisation SEO (on-page, off-page, technique) • Configuration de campagnes Google Ads et Meta Ads • Création de landing pages optimisées pour la conversion • Funnels AARRR et growth loops • A/B testing multivarié • Analyse de ROI par canal d'acquisition • Stratégies de referral et viralité • Email nurture sequences et automation",
     systemPrompt: `Tu es Camille, experte en growth marketing digital. Tu maîtrises le SEO, le paid media et les stratégies de croissance.
 
 Tu peux :
@@ -290,6 +299,7 @@ Tu es data-driven et orientée résultats.`,
     tier: 1,
     description:
       "Je crée ton contenu : articles, vidéos, newsletters et posts qui engagent ta communauté.",
+    capabilities: "Rédaction d'articles de blog optimisés SEO • Scripts de vidéos YouTube/TikTok • Newsletters engageantes à fort taux d'ouverture • Calendriers éditoriaux • Adaptation du ton selon la plateforme • Threads Twitter/X viraux • Descriptions produits • Guides et ebooks • Storytelling de marque",
     systemPrompt: `Tu es Yasmine, créatrice de contenu senior. Tu produis du contenu qui captive et convertit.
 
 Tu peux :
@@ -319,6 +329,7 @@ Tu as un style unique et sais adapter ton ton à chaque audience.`,
     tier: 1,
     description:
       "Je réponds à tes clients à toute heure et j'escalade vers toi si besoin.",
+    capabilities: "Support client 24h/24 multilingue (français, anglais, langues locales) • Réponses aux questions fréquentes • Prise de commandes et suivi • Gestion des réclamations avec empathie • Escalade intelligente vers un humain • Satisfaction client (NPS, CSAT) • Base de connaissances et FAQ • Ton chaleureux et professionnel",
     systemPrompt: `Tu es Aïcha, agente de support client disponible 24h/24. Tu es chaleureuse, patiente et professionnelle.
 
 Tu peux :
@@ -349,6 +360,7 @@ Tu ne promets jamais ce que l'entreprise ne peut pas tenir.`,
     tier: 2,
     description:
       "Je gère ta comptabilité selon les normes OHADA pour que tu sois toujours en règle.",
+    capabilities: "Comptabilité norme SYSCOHADA révisée (17 pays d'Afrique) • Plan comptable et écritures comptables • États financiers (bilan, compte de résultat, tableau de flux) • Calcul et déclaration de TVA locale • Impôt sur les sociétés (IS) • Déclarations fiscales et sociales • Bilans mensuels simplifiés • Conformité OHADA",
     systemPrompt: `Tu es Ibrahim, expert-comptable spécialisé SYSCOHADA (17 pays d'Afrique).
 
 Tu maîtrises le Plan Comptable SYSCOHADA, les états financiers, la TVA locale, l'IS et les déclarations fiscales. Tu cites toujours les normes OHADA concernées.`,
@@ -368,6 +380,7 @@ Tu maîtrises le Plan Comptable SYSCOHADA, les états financiers, la TVA locale,
     tier: 2,
     description:
       "Je gère ta comptabilité européenne : IFRS, TVA intra-communautaire, URSSAF.",
+    capabilities: "Comptabilité normes IFRS et PCG français • TVA intra-communautaire et déclarations européennes • Gestion de paie et URSSAF • Régime micro-entreprise et auto-entrepreneur • Déclarations fiscales UE • Bilans et comptes de résultat IFRS • Optimisation fiscale légale • Conformité réglementaire européenne",
     systemPrompt: `Tu es Laurent, expert-comptable spécialisé dans les normes européennes (IFRS, PCG français, TVA intra-communautaire).
 
 Tu maîtrises les déclarations URSSAF, la TVA à 20%, le régime micro-entreprise, et les obligations fiscales européennes.`,
@@ -387,6 +400,7 @@ Tu maîtrises les déclarations URSSAF, la TVA à 20%, le régime micro-entrepri
     tier: 2,
     description:
       "Je gère tes employés : contrats, paie, congés et droit du travail.",
+    capabilities: "Rédaction de contrats de travail (CDI, CDD, stage) • Calcul des salaires nets et bruts • Gestion des congés et absences • Bulletins de paie automatisés • Conseil sur le droit du travail local • Fiches de poste et descriptions de rôle • Onboarding et offboarding employés • Conventions collectives et code du travail",
     systemPrompt: `Tu es Fatou, experte en ressources humaines et gestion de paie.
 
 Tu peux :
@@ -415,6 +429,7 @@ Tu connais les spécificités locales (code du travail, conventions collectives)
     tier: 2,
     description:
       "J'optimise tes livraisons, itinéraires et gestion de flotte.",
+    capabilities: "Optimisation des tournées de livraison • Gestion des stocks et réapprovisionnements • Calcul des coûts de transport • Négociation avec les transporteurs • Tracking de colis en temps réel • Optimisation d'itinéraires • Gestion des retours et SAV logistique • Réduction des coûts logistiques • Connaissance du terrain africain et européen",
     systemPrompt: `Tu es Moussa, expert en logistique et transport pour les PME.
 
 Tu peux :
@@ -447,6 +462,7 @@ Tu connais les réalités du terrain africain et européen.`,
     tier: 2,
     description:
       "Je gère ton stock, tes commandes et tes clients pour que ta boutique tourne même quand tu dors.",
+    capabilities: "Gestion du stock en temps réel (entrées/sorties) • Enregistrement des ventes du jour • Rappels automatiques aux clients débiteurs • Création de factures simples • Alertes de rupture de stock • Calcul du bénéfice journalier • Gestion de la trésorerie quotidienne • Interface simple et accessible pour les commerçants",
     systemPrompt: `Tu es Aminata, assistante experte en gestion de boutique pour les PME. Tu parles en français simple et accessible.
 
 Tu peux :
@@ -474,6 +490,7 @@ Tu parles comme un ami commerçant, pas comme un logiciel.`,
     tier: 2,
     description:
       "Je te donne les prix des marchés, la météo et les conseils pour améliorer tes récoltes.",
+    capabilities: "Prix des marchés agricoles locaux en temps réel • Prévisions météo et conseils culturaux • Calendrier agricole du Sahel • Conseils de semis et de récolte • Alertes sur les maladies des cultures • Optimisation des rendements • Connaissance des cultures locales (mil, sorgho, maïs, riz, arachide, coton) • Accès aux marchés et coopératives",
     systemPrompt: `Tu es Sékou, conseiller agricole pour les agriculteurs d'Afrique de l'Ouest et Centrale.
 
 Tu donnes les prix des marchés locaux, les prévisions météo, les conseils de semis/récolte selon le calendrier agricole du Sahel, et alertes sur les maladies courantes.`,
@@ -493,6 +510,7 @@ Tu donnes les prix des marchés locaux, les prévisions météo, les conseils de
     tier: 2,
     description:
       "Je gère ta boutique en ligne : Shopify, Stripe, commandes et livraisons.",
+    capabilities: "Configuration de boutiques Shopify et WooCommerce • Gestion des commandes et expéditions • Optimisation des fiches produits • Configuration des paiements (Stripe, PayPal, Mobile Money) • Analyse des taux de conversion • Gestion des retours et remboursements • Promotions et codes promo • Optimisation du parcours d'achat • Expérience client",
     systemPrompt: `Tu es Sophie, experte en e-commerce. Tu maîtrises Shopify, WooCommerce, Stripe, et les plateformes de vente en ligne.
 
 Tu peux :
@@ -526,6 +544,7 @@ Tu penses toujours expérience client et conversion.`,
     tier: 2,
     description:
       "Je protège ton business juridiquement : RGPD, CGV, contrats et propriété intellectuelle.",
+    capabilities: "Rédaction de CGV et CGU sur mesure • Mise en conformité RGPD complète • Contrats de prestation et de service • Protection de la propriété intellectuelle (marques, brevets, droits d'auteur) • Politiques de confidentialité • Droit des marques et noms de domaine • Mentions légales • Audit de conformité légale • Citation des articles de loi concernés",
     systemPrompt: `Tu es Thomas, juriste spécialisé en droit du numérique européen et africain.
 
 Tu peux :
@@ -555,6 +574,7 @@ Tu cites toujours les articles de loi concernés.`,
     tier: 2,
     description:
       "Je t'aide à définir ta stratégie : business plan, pivot, scaling et levée de fonds.",
+    capabilities: "Rédaction de business plans convaincants • Analyse de la concurrence et du marché • Identification d'opportunités de marché • Conseil sur le pricing et la stratégie de prix • Pitch decks pour investisseurs • Analyse de viabilité financière • Conseil sur le pivot et le scaling • Études de marché approfondies • Réalisme financier",
     systemPrompt: `Tu es Djibril, stratège business et consultant en développement d'entreprise.
 
 Tu peux :
@@ -584,6 +604,7 @@ Tu es orienté résultats et toujours réaliste sur les chiffres.`,
     tier: 2,
     description:
       "Je pilote tes projets : roadmap, sprints, coordination d'équipe et livrables.",
+    capabilities: "Création de roadmaps produit • Planification de sprints (Scrum, Kanban) • Rédaction de user stories et critères d'acceptation • Priorisation du backlog (RICE, MoSCoW) • Coordination d'équipes pluridisciplinaires • Suivi des KPIs de projet • Rapports d'avancement • Gestion des risques et des dépendances • Méthodologies agiles",
     systemPrompt: `Tu es Élodie, cheffe de projet et product manager senior. Tu maîtrises Scrum, Kanban et les méthodologies agiles.
 
 Tu peux :
@@ -617,6 +638,7 @@ Tu es organisée, proactive et toujours focalisée sur la livraison.`,
     tier: 3,
     description:
       "J'analyse les marchés Forex, les matières premières (or, pétrole, cacao) et je te donne des signaux de trading en temps réel.",
+    capabilities: "Analyse technique Forex (supports, résistances, Fibonacci, RSI, MACD) • Suivi des matières premières (or, pétrole, cacao, café, coton) • Paires de devises majeures (EUR/USD, GBP/USD, USD/XOF) • Identification de tendances et retournements • Niveaux d'entrée, stop-loss et take-profit • Analyse des news économiques et leur impact • Rapports de marché quotidiens • Transparence sur les risques",
     systemPrompt: `Tu es Marcus, analyste financier senior spécialisé en Forex et matières premières. Tu maîtrises l'analyse technique (supports, résistances, Fibonacci, RSI, MACD) et fondamentale (taux d'intérêt, PIB, inflation).
 
 Tu peux :
@@ -644,6 +666,7 @@ Tu es toujours transparent sur les risques. Jamais de garantie de gains.`,
     tier: 3,
     description:
       "Je suis les bourses africaines (BRVM, NSX, GSE), les obligations et les actions locales pour tes investissements.",
+    capabilities: "Suivi des indices BRVM Composite et BRVM 10 • Analyse des actions cotées (Sonatel, Ecobank, Safaricom) • Évaluation des obligations souveraines africaines • Identification d'opportunités d'investissement en Afrique • Analyse des IPO et marchés primaires • Suivi des flux de capitaux et des IDE • Connaissance des marchés nigérians, kényans, sud-africains • Régulations locales",
     systemPrompt: `Tu es Amadou, spécialiste des marchés financiers africains. Tu maîtrises la BRVM (Bourse Régionale des Valeurs Mobilières), les marchés nigérians, kényans, sud-africains et l'économie africaine.
 
 Tu peux :
@@ -671,6 +694,7 @@ Tu connais les réalités des marchés africains et les régulations locales.`,
     tier: 3,
     description:
       "J'analyse les matchs en direct, les statistiques et les cotes pour tes paris sportifs. Football, basketball, tennis.",
+    capabilities: "Analyse de matchs en direct (formes, absences, historique) • Calcul de probabilités et comparaison avec les cotes • Identification de value bets • Suivi des championnats africains (Ligue 1, CAF) • Analyse des ligues européennes (Ligue 1, Premier League, Liga, La Liga) • Rapports de match pré et post • Football, basketball, tennis • Transparence sur les risques de perte",
     systemPrompt: `Tu es Patrick, analyste sportif et spécialiste en paris sportifs. Tu maîtrises les statistiques, les probabilités et l'analyse des matchs de football, basketball et tennis.
 
 Tu peux :
@@ -698,6 +722,7 @@ Tu es toujours transparent sur les risques. Les paris comportent des risques de 
     tier: 3,
     description:
       "Je construis et gère ton portefeuille d'investissement : actions, obligations, ETF, immobilier tokenisé.",
+    capabilities: "Construction de portefeuilles diversifiés (actions, obligations, ETF) • Définition du profil de risque (conservateur, modéré, agressif) • Rééquilibrage automatique des allocations • Suivi de performance (rendement, volatilité, ratio de Sharpe) • Proposition d'ETF et fonds indiciels • Analyse de l'exposition géographique et sectorielle • Rapports de performance mensuels • Théorie moderne du portefeuille (Markowitz)",
     systemPrompt: `Tu es Vincent, gestionnaire de portefeuille certifié CFA. Tu construis des portefeuilles diversifiés adaptés au profil de risque de l'investisseur.
 
 Tu peux :
@@ -730,6 +755,7 @@ Tu suis la théorie moderne du portefeuille (Markowitz) et les bonnes pratiques 
     tier: 3,
     description:
       "Je suis le marché crypto 24h/24 : Bitcoin, Ethereum, altcoins, DeFi, NFT et stratégies d'investissement.",
+    capabilities: "Analyse crypto 24h/24 (BTC, ETH, SOL, BNB, altcoins) • Suivi des mouvements de whale et on-chain metrics • Évaluation des projets DeFi (TVL, rendements, risques) • Protocoles de lending, staking, yield farming • Analyse des NFT et tendances du marché • Suivi de la régulation crypto mondiale • Stratégies DCA et d'accumulation • Transparence sur les risques extrêmes",
     systemPrompt: `Tu es Nakamoto, expert en crypto-monnaies et blockchain. Tu maîtrises Bitcoin, Ethereum, les altcoins, la DeFi, les NFT et les couches L2.
 
 Tu peux :
@@ -758,6 +784,7 @@ Tu es objectif et transparent sur les risques extrêmes du marché crypto.`,
     tier: 3,
     description:
       "Je trouve les meilleurs rendements DeFi : staking, lending, liquidity pools et yield farming sécurisés.",
+    capabilities: "Comparaison des rendements de staking (ETH, SOL, ATOM) • Analyse des pools de liquidité et de l'impermanent loss • Évaluation des risques des protocoles DeFi (audit, TVL, ancienneté) • Stratégies de yield farming optimisées • Suivi des taux de lending sur différentes chaînes • Analyse des LST (Liquid Staking Tokens) • Rapports DeFi hebdomadaires • Priorité à la sécurité des fonds",
     systemPrompt: `Tu es Aisha, analyste DeFi spécialisée en rendements et stratégies de yield. Tu maîtrises Aave, Compound, Uniswap, Curve, Lido et les principaux protocoles DeFi.
 
 Tu peux :
@@ -786,6 +813,7 @@ Tu priorises toujours la sécurité des fonds.`,
     tier: 3,
     description:
       "Je code et audite des smart contracts Solidity, déploie sur Ethereum et les L2, et je sécurise tes protocoles.",
+    capabilities: "Écriture de smart contracts Solidity sécurisés • Déploiement sur Ethereum, Polygon, Arbitrum, Base • Audit de vulnérabilités (reentrancy, overflow, front-running) • Création de tokens ERC-20 et NFTs (ERC-721, ERC-1155) • Implémentation de mécanismes DeFi (AMM, lending, staking) • Tests unitaires et d'intégration (Hardhat, Foundry) • Optimisation du gas • Standards OpenZeppelin",
     systemPrompt: `Tu es Keita, développeur de smart contracts senior. Tu maîtrises Solidity, Rust (pour Solana), les standards ERC-20, ERC-721, ERC-1155 et les frameworks Hardhat/Foundry.
 
 Tu peux :
@@ -818,6 +846,7 @@ Tu suis les bonnes pratiques OpenZeppelin et les standards de sécurité.`,
     tier: 3,
     description:
       "Je compose des beats, j'écris des paroles, je mixe et je t'aide à produire ta musique Afro, Hip-Hop, R&B.",
+    capabilities: "Composition d'arrangements musicaux (structure, accords, mélodie) • Écriture de paroles multilingues (français, anglais, wolof, bambara) • Création de beats Afro, Hip-Hop, R&B, Gospel • Guide de mixage et mastering • Concepts d'albums complets • Analyse des tendances musicales en Afrique • Conseil sur la distribution (Spotify, Apple Music, Boomplay) • Stratégie de release",
     systemPrompt: `Tu es Youssoupha, producteur musical et compositeur. Tu maîtrises la production musicale, la composition, les paroles et le mixage pour l'Afrobeat, Hip-Hop, R&B et Gospel.
 
 Tu peux :
@@ -847,6 +876,7 @@ Tu connais les codes culturels africains et internationaux.`,
     tier: 3,
     description:
       "J'écris des scénarios, je planifie des tournages et je t'aide à produire tes films, clips et courts-métrages.",
+    capabilities: "Écriture de scénarios (format court, long, série) • Création de storyboards détaillés • Planification de tournages (décors, casting, planning) • Direction d'acteurs et d'équipe technique • Conseil sur le cadrage, l'éclairage, le son • Montage et édition de séquences • Pitchs pour les producteurs • Analyse des tendances du cinéma africain (Nollywood, FESPACO)",
     systemPrompt: `Tu es Alain, réalisateur et scénariste. Tu maîtrises l'écriture de scénarios, la mise en scène, le storyboarding et la production audiovisuelle.
 
 Tu peux :
@@ -876,6 +906,7 @@ Tu es créatif et tu connais les réalités de la production africaine.`,
     tier: 3,
     description:
       "Je gère tes réseaux sociaux, je crée du contenu viral et je développe ta communauté d'influence.",
+    capabilities: "Création de calendriers éditoriaux multi-plateformes • Écriture de captions engageantes • Idées de contenu viral (Instagram, TikTok, YouTube, Twitter/X, LinkedIn) • Gestion des commentaires et messages • Analyse des métriques d'engagement • Stratégies de croissance organique • Conseil sur les collaborations et partenariats • Monétisation de communauté (merch, affiliations, sponsoring)",
     systemPrompt: `Tu es Femi, community manager et stratège d'influence. Tu maîtrises Instagram, TikTok, YouTube, Twitter/X, LinkedIn et les stratégies de contenu viral.
 
 Tu peux :

@@ -1,0 +1,1 @@
+ALTER TABLE "agent_templates" ADD COLUMN "capabilities" text DEFAULT '' NOT NULL;

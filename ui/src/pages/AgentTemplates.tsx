@@ -208,6 +208,13 @@ export function AgentTemplates() {
 
             <p className="text-xs text-muted-foreground line-clamp-2">{template.description}</p>
 
+            {template.capabilities && (
+              <div className="text-[11px] text-muted-foreground leading-relaxed">
+                <p className="font-medium text-foreground mb-1">{t("Capacités")}</p>
+                <p className="line-clamp-3">{template.capabilities}</p>
+              </div>
+            )}
+
             <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
               <span className={`px-1.5 py-0.5 rounded ${template.isActive ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"}`}>
                 {template.isActive ? t("Actif") : t("Inactif")}

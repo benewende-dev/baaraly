@@ -12,6 +12,7 @@ export const agentTemplates = pgTable(
     category: text("category").notNull(),
     tier: integer("tier").notNull().default(1),
     description: text("description").notNull(),
+    capabilities: text("capabilities").notNull().default(""),
     systemPrompt: text("system_prompt").notNull(),
     tools: jsonb("tools").$type<string[]>().notNull().default([]),
     superpowers: jsonb("superpowers").$type<string[]>().notNull().default([]),

@@ -53,6 +53,7 @@ async function seedAgentTemplates() {
       category: agent.category,
       tier: agent.tier,
       description: agent.description,
+      capabilities: agent.capabilities,
       systemPrompt: agent.systemPrompt,
       tools: agent.tools,
       superpowers: agent.superpowers,

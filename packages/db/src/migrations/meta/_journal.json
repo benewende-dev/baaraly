@@ -351,6 +351,13 @@
       "when": 1775230179839,
       "tag": "0049_jittery_terror",
       "breakpoints": true
+    },
+    {
+      "idx": 50,
+      "version": "7",
+      "when": 1775236851005,
+      "tag": "0050_condemned_punisher",
+      "breakpoints": true
     }
   ]
 }

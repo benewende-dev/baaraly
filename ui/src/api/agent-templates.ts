@@ -10,6 +10,7 @@ export interface AgentTemplate {
   category: string;
   tier: number;
   description: string;
+  capabilities: string;
   systemPrompt: string;
   tools: string[];
   superpowers: string[];
