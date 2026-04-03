@@ -1,19 +1,25 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "@/lib/router";
 import { useLanguage } from "../context/LanguageContext";
 import { ThemeLangToggle } from "../components/ThemeLangToggle";
-import { BAARALY_BILLING_PLANS, formatPriceFromEur, AGENT_CATEGORIES, BAARALY_AGENTS, getBillingPlan } from "@paperclipai/shared/baaraly-agents";
+import { BAARALY_BILLING_PLANS, formatPriceFromEur, AGENT_CATEGORIES, BAARALY_AGENTS, getBillingPlan, getAgentsByTier } from "@paperclipai/shared/baaraly-agents";
 
 export function Landing() {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [chatStep, setChatStep] = useState(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  // Get trial plan for dynamic values
   const trialPlan = getBillingPlan("trial");
   const trialDays = trialPlan.trialDays ?? 7;
   const trialProspects = trialPlan.maxProspectsPerDay;
+  const trialAgents = trialPlan.maxAgents;
+
+  const agentsByTier = getAgentsByTier();
+  const tier1Count = agentsByTier[1].length;
+  const tier2Count = agentsByTier[2].length;
+  const tier3Count = agentsByTier[3].length;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -26,7 +32,6 @@ export function Landing() {
       },
       { threshold: 0.15 }
     );
-
     document.querySelectorAll("[data-animate]").forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
@@ -71,16 +76,16 @@ export function Landing() {
           <div className="text-center lg:text-left">
             <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold bg-primary/10 text-primary mb-6 animate-pulse-glow">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              {trialDays} {t("jours gratuits")} 🎁
+              {trialDays} {t("jours gratuits")} · {tier1Count} {t("agents Standard")} 🎁
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-              <span className="text-gradient">{t("Un agent IA")}</span>
+              <span className="text-gradient">{t("30 agents IA")}</span>
               <br />
-              {t("qui trouve des clients pour toi")}
-              <span className="block text-primary mt-2">{t("sur WhatsApp")}</span>
+              {t("pour faire grandir ton business")}
+              <span className="block text-primary mt-2">{t("automatiquement")}</span>
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed">
-              {t("Baaraly travaille pour toi automatiquement. Tu dors, il prospecte. Tu te réveilles, t'as des clients.")}
+              {t("Tech, Marketing, Finance, Trading, Crypto, Commerce, Juridique, Divertissement — Baaraly travaille pour toi 24h/24. Tu dors, il prospecte. Tu te réveilles, t'as des résultats.")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <button
@@ -90,14 +95,14 @@ export function Landing() {
                 {t("Tester gratuitement")} →
               </button>
               <button
-                onClick={() => document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })}
+                onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}
                 className="rounded-2xl px-8 py-4 text-base font-semibold border-2 border-border transition-all hover:border-primary/50 hover:bg-primary/5"
               >
-                {t("Comment ça marche ?")}
+                {t("Voir les tarifs")}
               </button>
             </div>
             <p className="text-xs text-muted-foreground mt-4">
-              {trialDays} {t("jours gratuits")} · {trialProspects} {t("prospects/jour")} · {t("Sans carte bancaire")}
+              {trialDays} {t("jours gratuits")} · {trialProspects} {t("prospects/jour")} · {trialAgents} {t("agent Standard")} · {t("Sans carte bancaire")}
             </p>
           </div>
 
@@ -105,7 +110,6 @@ export function Landing() {
           <div className="hidden lg:block">
             <div className="relative mx-auto w-80 animate-float">
               <div className="rounded-3xl border border-border bg-card shadow-2xl overflow-hidden">
-                {/* Chat header */}
                 <div className="bg-primary/10 px-4 py-3 flex items-center gap-3 border-b border-border/50">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-sm">
                     A
@@ -118,35 +122,13 @@ export function Landing() {
                     </p>
                   </div>
                 </div>
-                {/* Chat messages */}
                 <div className="p-4 space-y-3 min-h-[280px]">
-                  <ChatMessage
-                    text={t("J'ai trouvé 5 nouveaux prospects aujourd'hui !")}
-                    time="09:30"
-                    sent={false}
-                    visible={chatStep >= 1}
-                  />
-                  <ChatMessage
-                    text={t("3 ont répondu positivement")}
-                    time="09:31"
-                    sent={false}
-                    visible={chatStep >= 2}
-                  />
-                  <ChatMessage
-                    text={t("Super ! Envoie-moi le rapport")}
-                    time="09:32"
-                    sent={true}
-                    visible={chatStep >= 3}
-                  />
-                  <ChatMessage
-                    text={t("Voilà, c'est fait ! 📊")}
-                    time="09:33"
-                    sent={false}
-                    visible={chatStep >= 4}
-                  />
+                  <ChatMessage text={t("J'ai trouvé 5 nouveaux prospects aujourd'hui !")} time="09:30" sent={false} visible={chatStep >= 1} />
+                  <ChatMessage text={t("3 ont répondu positivement")} time="09:31" sent={false} visible={chatStep >= 2} />
+                  <ChatMessage text={t("Super ! Envoie-moi le rapport")} time="09:32" sent={true} visible={chatStep >= 3} />
+                  <ChatMessage text={t("Voilà, c'est fait ! 📊")} time="09:33" sent={false} visible={chatStep >= 4} />
                 </div>
               </div>
-              {/* Glow behind mockup */}
               <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-3xl blur-2xl -z-10" />
             </div>
           </div>
@@ -154,29 +136,25 @@ export function Landing() {
       </section>
 
       {/* ── PROBLÈME ── */}
-      <section
-        id="problem"
-        data-animate
-        className="relative z-10 px-5 py-24 max-w-4xl mx-auto"
-      >
+      <section id="problem" data-animate className="relative z-10 px-5 py-24 max-w-4xl mx-auto">
         <div className={`text-center mb-12 transition-all duration-700 ${isVisible("problem") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="text-sm font-semibold text-destructive uppercase tracking-wider">{t("Le problème")}</span>
           <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
-            {t("Tu perds du temps à chercher des clients")} 😤
+            {t("Tu perds du temps et de l'argent")} 😤
           </h2>
         </div>
         <div className="grid sm:grid-cols-3 gap-6">
           {[
-            { emoji: "⏰", title: t("Tu passes des heures sur WhatsApp"), desc: t("À envoyer des messages un par un, sans résultat"), delay: 0 },
-            { emoji: "📉", title: t("Pas de système"), desc: t("Tu ne sais pas qui relancer, quand, ni comment"), delay: 100 },
-            { emoji: "💸", title: t("Tu perds de l'argent"), desc: t("Chaque jour sans client, c'est du chiffre d'affaires perdu"), delay: 200 },
+            { emoji: "⏰", title: t("Tu passes des heures sur WhatsApp"), desc: t("À envoyer des messages un par un, sans système ni suivi") },
+            { emoji: "📉", title: t("Pas de visibilité"), desc: t("Tu ne sais pas qui relancer, quand, ni comment optimiser") },
+            { emoji: "💸", title: t("Tu perds des opportunités"), desc: t("Chaque jour sans prospection, c'est du chiffre d'affaires perdu") },
           ].map((item, i) => (
             <div
               key={i}
               className={`rounded-2xl border border-border bg-card/80 backdrop-blur-sm p-6 transition-all duration-700 hover-lift ${
                 isVisible("problem") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
-              style={{ transitionDelay: `${item.delay}ms` }}
+              style={{ transitionDelay: `${i * 100}ms` }}
             >
               <span className="text-4xl block mb-4">{item.emoji}</span>
               <p className="font-semibold text-sm mb-2">{item.title}</p>
@@ -187,45 +165,36 @@ export function Landing() {
       </section>
 
       {/* ── SOLUTION ── */}
-      <section
-        id="solution"
-        data-animate
-        className="relative z-10 px-5 py-24 max-w-4xl mx-auto"
-      >
+      <section id="solution" data-animate className="relative z-10 px-5 py-24 max-w-4xl mx-auto">
         <div className={`text-center mb-12 transition-all duration-700 ${isVisible("solution") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="text-sm font-semibold text-primary uppercase tracking-wider">{t("La solution")}</span>
           <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
-            {t("Baaraly travaille pour toi")} 🤖
+            {t("30 agents IA à ton service")} 🤖
           </h2>
-          <p className="text-muted-foreground mt-3">{t("Automatiquement. 24h/24. 7j/7.")}</p>
+          <p className="text-muted-foreground mt-3">{t("Automatiquement. 24h/24. 7j/7. Dans 8 domaines.")}</p>
         </div>
-        <div className="grid sm:grid-cols-3 gap-6">
-          {[
-            { emoji: "🔍", title: t("Trouve des prospects"), desc: t("L'IA identifie tes clients potentiels"), delay: 0 },
-            { emoji: "📨", title: t("Envoie des messages"), desc: t("Messages personnalisés automatiques"), delay: 100 },
-            { emoji: "📊", title: t("Te fait un rapport"), desc: t("Tu vois tout dans ton dashboard"), delay: 200 },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className={`glass-panel rounded-2xl p-6 text-center transition-all duration-700 hover-lift ${
-                isVisible("solution") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${item.delay}ms` }}
-            >
-              <span className="text-4xl block mb-4 animate-float" style={{ animationDelay: `${i * 0.5}s` }}>{item.emoji}</span>
-              <p className="font-semibold text-sm mb-2">{item.title}</p>
-              <p className="text-xs text-muted-foreground">{item.desc}</p>
-            </div>
-          ))}
+        <div className="grid sm:grid-cols-4 gap-4">
+          {AGENT_CATEGORIES.map((cat, i) => {
+            const count = BAARALY_AGENTS.filter((a) => a.category === cat.id).length;
+            return (
+              <div
+                key={cat.id}
+                className={`glass-panel rounded-2xl p-5 text-center transition-all duration-700 hover-lift ${
+                  isVisible("solution") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
+                style={{ transitionDelay: `${i * 80}ms` }}
+              >
+                <span className="text-3xl block mb-2">{cat.emoji}</span>
+                <p className="font-bold text-sm">{cat.label}</p>
+                <p className="text-xs text-muted-foreground">{count} {t("agents")}</p>
+              </div>
+            );
+          })}
         </div>
       </section>
 
       {/* ── COMMENT ÇA MARCHE ── */}
-      <section
-        id="how-it-works"
-        data-animate
-        className="relative z-10 px-5 py-24 max-w-4xl mx-auto"
-      >
+      <section id="how-it-works" data-animate className="relative z-10 px-5 py-24 max-w-4xl mx-auto">
         <div className={`text-center mb-16 transition-all duration-700 ${isVisible("how-it-works") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="text-sm font-semibold text-secondary uppercase tracking-wider">{t("Processus")}</span>
           <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
@@ -233,21 +202,21 @@ export function Landing() {
           </h2>
         </div>
         <div className="relative">
-          {/* Timeline line */}
           <div className="absolute left-5 sm:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-secondary to-primary opacity-30" />
           <div className="space-y-8 sm:space-y-12">
             {[
-              { n: 1, text: t("Tu choisis ton agent (Aminata, Mariama, Ibrahim...)"), delay: 0 },
-              { n: 2, text: t("Il commence à travailler immédiatement"), delay: 150 },
-              { n: 3, text: t("Tu reçois les résultats sur WhatsApp"), delay: 300 },
-              { n: 4, text: t("Tu gagnes des clients sans effort"), delay: 450 },
+              { n: 1, text: t("Crée ton compte et choisis tes agents parmi 30 profils") },
+              { n: 2, text: t("Configure ton agent : rôle, capacités, modèle IA") },
+              { n: 3, text: t("L'agent travaille automatiquement 24h/24") },
+              { n: 4, text: t("Reçois tes résultats sur WhatsApp et dans ton dashboard") },
+              { n: 5, text: t("Scale en ajoutant d'autres agents selon tes besoins") },
             ].map((item, i) => (
               <div
                 key={i}
                 className={`flex items-center gap-4 sm:gap-6 transition-all duration-700 ${
                   isVisible("how-it-works") ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
                 }`}
-                style={{ transitionDelay: `${item.delay}ms` }}
+                style={{ transitionDelay: `${i * 120}ms` }}
               >
                 <div className="relative z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
                   <span className="text-xs sm:text-sm font-bold text-white">{item.n}</span>
@@ -259,12 +228,70 @@ export function Landing() {
         </div>
       </section>
 
+      {/* ── LES AGENTS PAR TIER ── */}
+      <section id="agent-details" data-animate className="relative z-10 px-5 py-24 max-w-4xl mx-auto">
+        <div className={`text-center mb-12 transition-all duration-700 ${isVisible("agent-details") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <span className="text-sm font-semibold text-primary uppercase tracking-wider">{t("Nos agents")}</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
+            {t("30 agents IA spécialisés")} 🎯
+          </h2>
+          <p className="text-muted-foreground mt-3">{t("3 niveaux de compétence · 8 catégories · Configurables à volonté")}</p>
+        </div>
+
+        {/* Tier 1 */}
+        <div className={`mb-10 transition-all duration-700 ${isVisible("agent-details") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: "100ms" }}>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-xs font-bold">{t("Standard")} · {tier1Count} {t("agents")}</span>
+            <span className="text-xs text-muted-foreground">{t("Inclus dans l'essai gratuit")}</span>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {agentsByTier[1].map((a) => (
+              <div key={a.name} className="rounded-xl border border-border bg-card/60 p-4 text-center hover-lift">
+                <span className="text-2xl block mb-1">{a.emoji}</span>
+                <p className="font-semibold text-xs">{a.name}</p>
+                <p className="text-[10px] text-muted-foreground">{a.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Tier 2 */}
+        <div className={`mb-10 transition-all duration-700 ${isVisible("agent-details") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: "200ms" }}>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="px-3 py-1 rounded-full bg-blue-500/10 text-blue-500 text-xs font-bold">{t("Avancé")} · {tier2Count} {t("agents")}</span>
+            <span className="text-xs text-muted-foreground">{t("Disponible à partir du plan Pro")}</span>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {agentsByTier[2].map((a) => (
+              <div key={a.name} className="rounded-xl border border-border bg-card/60 p-4 text-center hover-lift">
+                <span className="text-2xl block mb-1">{a.emoji}</span>
+                <p className="font-semibold text-xs">{a.name}</p>
+                <p className="text-[10px] text-muted-foreground">{a.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Tier 3 */}
+        <div className={`transition-all duration-700 ${isVisible("agent-details") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: "300ms" }}>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="px-3 py-1 rounded-full bg-purple-500/10 text-purple-500 text-xs font-bold">{t("Expert")} · {tier3Count} {t("agents")}</span>
+            <span className="text-xs text-muted-foreground">{t("Disponible avec le plan Max")}</span>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {agentsByTier[3].map((a) => (
+              <div key={a.name} className="rounded-xl border border-border bg-card/60 p-4 text-center hover-lift">
+                <span className="text-2xl block mb-1">{a.emoji}</span>
+                <p className="font-semibold text-xs">{a.name}</p>
+                <p className="text-[10px] text-muted-foreground">{a.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── OFFRE ── */}
-      <section
-        id="offer"
-        data-animate
-        className="relative z-10 px-5 py-24 max-w-4xl mx-auto"
-      >
+      <section id="offer" data-animate className="relative z-10 px-5 py-24 max-w-4xl mx-auto">
         <div className={`rounded-3xl bg-gradient-to-r from-primary to-secondary p-1 transition-all duration-700 ${isVisible("offer") ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
           <div className="rounded-[22px] bg-background p-8 sm:p-12 text-center">
             <span className="text-sm font-semibold text-primary uppercase tracking-wider">{t("Essai gratuit")}</span>
@@ -272,7 +299,7 @@ export function Landing() {
               {trialDays} <span className="text-gradient">{t("jours gratuits")}</span>
             </h2>
             <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-              {trialProspects} {t("prospects/jour, 1 agent, WhatsApp inclus. Sans carte bancaire.")}
+              {trialAgents} {t("agent Standard")} · {trialProspects} {t("prospects/jour")} · WhatsApp inclus · {t("Sans carte bancaire")}
             </p>
             <button
               onClick={() => navigate("/welcome")}
@@ -284,53 +311,8 @@ export function Landing() {
         </div>
       </section>
 
-      {/* ── LES 30 AGENTS ── */}
-      <section
-        id="agents"
-        data-animate
-        className="relative z-10 px-5 py-24 max-w-4xl mx-auto"
-      >
-        <div className={`text-center mb-12 transition-all duration-700 ${isVisible("agents") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <span className="text-sm font-semibold text-secondary uppercase tracking-wider">{t("Nos agents")}</span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
-            {t("30 agents IA pour tous vos besoins")} 🤖
-          </h2>
-          <p className="text-muted-foreground mt-3">{t("8 catégories · 3 niveaux · Votre arme secrète")}</p>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {AGENT_CATEGORIES.map((cat) => {
-            const count = BAARALY_AGENTS.filter((a) => a.category === cat.id).length;
-            return (
-              <div
-                key={cat.id}
-                className={`glass-panel rounded-2xl p-5 text-center transition-all duration-700 hover-lift ${
-                  isVisible("agents") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-                style={{ transitionDelay: `${AGENT_CATEGORIES.indexOf(cat) * 80}ms` }}
-              >
-                <span className="text-3xl block mb-2">{cat.emoji}</span>
-                <p className="font-bold text-sm">{t(cat.label.split(" & ")[0])}</p>
-                <p className="text-xs text-muted-foreground">{count} {t("agents")}</p>
-              </div>
-            );
-          })}
-        </div>
-        <div className="text-center mt-8">
-          <button
-            onClick={() => navigate("/welcome")}
-            className="rounded-xl px-6 py-3 text-sm font-semibold border-2 border-primary/30 transition-all hover:bg-primary/10"
-          >
-            {t("Voir tous les agents")} →
-          </button>
-        </div>
-      </section>
-
       {/* ── TÉMOIGNAGES ── */}
-      <section
-        id="testimonials"
-        data-animate
-        className="relative z-10 px-5 py-24 max-w-4xl mx-auto"
-      >
+      <section id="testimonials" data-animate className="relative z-10 px-5 py-24 max-w-4xl mx-auto">
         <div className={`text-center mb-12 transition-all duration-700 ${isVisible("testimonials") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="text-sm font-semibold text-primary uppercase tracking-wider">{t("Témoignages")}</span>
           <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
@@ -339,9 +321,9 @@ export function Landing() {
         </div>
         <div className="grid sm:grid-cols-3 gap-6">
           {[
-            { name: "Fatou D.", location: "Ouagadougou", text: t("J'ai eu 3 nouveaux clients en 2 jours, sans rien faire"), initials: "FD" },
-            { name: "Moussa K.", location: "Bamako", text: t("Mon agent m'envoie un rapport chaque matin. C'est magique"), initials: "MK" },
-            { name: "Aïssata B.", location: "Dakar", text: t("Je recommande à tous les commerçants"), initials: "AB" },
+            { name: "Fatou D.", location: "Ouagadougou", text: t("J'ai eu 3 nouveaux clients en 2 jours grâce à Aminata"), initials: "FD" },
+            { name: "Moussa K.", location: "Bamako", text: t("Mon agent Ibrahim gère toute ma compta SYSCOHADA. Magique"), initials: "MK" },
+            { name: "Aïssata B.", location: "Dakar", text: t("Marcus m'aide à suivre le Forex et les matières premières chaque jour"), initials: "AB" },
           ].map((item, i) => (
             <div
               key={i}
@@ -366,11 +348,7 @@ export function Landing() {
       </section>
 
       {/* ── TARIFS ── */}
-      <section
-        id="pricing"
-        data-animate
-        className="relative z-10 px-5 py-24 max-w-4xl mx-auto"
-      >
+      <section id="pricing" data-animate className="relative z-10 px-5 py-24 max-w-4xl mx-auto">
         <div className={`text-center mb-12 transition-all duration-700 ${isVisible("pricing") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="text-sm font-semibold text-primary uppercase tracking-wider">{t("Tarifs")}</span>
           <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
@@ -384,11 +362,38 @@ export function Landing() {
             const isMax = plan.id === "max";
             const isTrial = plan.id === "trial";
             const price = formatPriceFromEur(plan.priceEur, undefined);
-            const features = isTrial 
-              ? [`${plan.maxAgents} ${t("agent")}`, `${plan.maxProspectsPerDay} ${t("prospects/jour")}`, t("WhatsApp inclus"), t("Support email")]
+            const tierLabels = plan.allowedTiers?.includes(1) && plan.allowedTiers?.includes(2) && plan.allowedTiers?.includes(3)
+              ? `${tier1Count} Standard + ${tier2Count} Avancé + ${tier3Count} Expert`
+              : plan.allowedTiers?.includes(1) && plan.allowedTiers?.includes(2)
+                ? `${tier1Count} Standard + ${tier2Count} Avancé`
+                : `${tier1Count} Standard`;
+
+            const features = isTrial
+              ? [
+                  `${plan.maxAgents} ${t("agent Standard")}`,
+                  `${plan.maxProspectsPerDay} ${t("prospects/jour")}`,
+                  t("WhatsApp inclus"),
+                  t("Support email"),
+                  t("Dashboard basique"),
+                ]
               : isPro
-                ? [`${plan.maxAgents} ${t("agents")}`, `${plan.maxProspectsPerDay} ${t("prospects/jour")}`, t("Multi WhatsApp"), t("Rapports avancés"), t("Prioritaire")]
-                : [`${plan.maxAgents} ${t("agents")}`, `${plan.maxProspectsPerDay} ${t("prospects/jour")}`, t("API access"), t("Multi-entreprise"), t("Support dédié")];
+                ? [
+                    `${plan.maxAgents} ${t("agents (Standard + Avancé)")}`,
+                    `${plan.maxProspectsPerDay} ${t("prospects/jour")}`,
+                    t("Multi WhatsApp"),
+                    t("Rapports avancés"),
+                    t("Support prioritaire"),
+                    t("Agents Finance, Commerce, Juridique"),
+                  ]
+                : [
+                    `${plan.maxAgents} ${t("agents (tous niveaux)")}`,
+                    `${plan.maxProspectsPerDay} ${t("prospects/jour")}`,
+                    t("API access"),
+                    t("Multi-entreprise"),
+                    t("Support dédié"),
+                    t("Trading, Crypto, Divertissement"),
+                  ];
+
             return (
               <div
                 key={plan.id}
@@ -409,7 +414,7 @@ export function Landing() {
                 <div className="mt-4 mb-6">
                   <span className="text-4xl font-extrabold">{price}</span>
                   <span className={`text-sm ml-1 ${isPro ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                    {isTrial ? `${plan.trialDays ?? 7} ${t("jours")}` : "€/mois"}
+                    {isTrial ? `· ${plan.trialDays ?? 7} ${t("jours")}` : "/mois"}
                   </span>
                 </div>
                 <ul className="space-y-3 mb-6">
@@ -420,6 +425,11 @@ export function Landing() {
                     </li>
                   ))}
                 </ul>
+                <div className={`text-[10px] mb-4 p-2 rounded-lg ${isPro ? "bg-white/10" : "bg-muted/50"}`}>
+                  <span className={isPro ? "text-primary-foreground/80" : "text-muted-foreground"}>
+                    {tierLabels}
+                  </span>
+                </div>
                 <button
                   onClick={() => navigate("/welcome")}
                   className={`w-full rounded-xl py-3 text-sm font-semibold transition-all active:scale-[0.98] ${
@@ -442,11 +452,7 @@ export function Landing() {
       </section>
 
       {/* ── FAQ ── */}
-      <section
-        id="faq"
-        data-animate
-        className="relative z-10 px-5 py-24 max-w-3xl mx-auto"
-      >
+      <section id="faq" data-animate className="relative z-10 px-5 py-24 max-w-3xl mx-auto">
         <div className={`text-center mb-12 transition-all duration-700 ${isVisible("faq") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="text-sm font-semibold text-primary uppercase tracking-wider">FAQ</span>
           <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
@@ -457,36 +463,55 @@ export function Landing() {
           {[
             {
               q: t("C'est quoi Baaraly exactement ?"),
-              a: t("Baaraly est un assistant IA qui prospecte automatiquement pour toi sur WhatsApp. Il trouve des clients potentiels, les contacte et te fait un rapport."),
+              a: t("Baaraly est une plateforme de 30 agents IA spécialisés dans 8 domaines : Tech, Marketing, Finance, Trading, Crypto, Commerce, Juridique et Divertissement. Chaque agent travaille automatiquement pour toi 24h/24."),
+            },
+            {
+              q: t("Comment fonctionne l'essai gratuit ?"),
+              a: `${t("Tu as accès à")} ${trialDays} ${t("jours gratuits avec")} ${trialAgents} ${t("agent Standard et")} ${trialProspects} ${t("prospects/jour")}. ${t("Aucune carte bancaire n'est requise. Tu peux passer au plan Pro ou Max à tout moment.")}`,
+            },
+            {
+              q: t("Quelle différence entre les plans ?"),
+              a: `${t("Essai :")} ${tier1Count} ${t("agents Standard,")} ${trialProspects} ${t("prospects/jour")}. ${t("Pro :")} ${tier1Count + tier2Count} ${t("agents Standard + Avancé,")} 50 ${t("prospects/jour")}. ${t("Max : tous les")} 30 ${t("agents (Standard + Avancé + Expert),")} 200 ${t("prospects/jour")}.`,
             },
             {
               q: t("Est-ce que c'est vraiment automatique ?"),
-              a: t("Oui. Une fois configuré, ton agent travaille 24h/24 sans intervention de ta part. Tu reçois juste les résultats."),
+              a: t("Oui. Une fois configuré, ton agent travaille 24h/24 sans intervention de ta part. Tu reçois les résultats sur WhatsApp et dans ton dashboard."),
             },
             {
               q: t("Comment je paie ?"),
-              a: t("Tu recharges ton compte. Pas d'abonnement, pas d'engagement. Tu consommes ce que tu veux."),
+              a: t("Tu recharges ton compte. Pas d'abonnement obligatoire, pas d'engagement. Paiement via Orange Money, Wave, MTN, Moov, M-Pesa, Stripe, PayPal ou Crypto."),
             },
             {
               q: t("Est-ce que ça marche dans mon pays ?"),
-              a: t("Baaraly fonctionne dans toute l'Afrique de l'Ouest et Centrale : Burkina Faso, Mali, Sénégal, Côte d'Ivoire, Niger, Bénin, Togo, Ghana, Cameroun, Gabon, et plus encore."),
+              a: t("Baaraly fonctionne dans toute l'Afrique de l'Ouest et Centrale : Burkina Faso, Mali, Sénégal, Côte d'Ivoire, Niger, Bénin, Togo, Ghana, Cameroun, Gabon, et plus encore. Aussi disponible en Europe."),
+            },
+            {
+              q: t("Puis-je personnaliser mes agents ?"),
+              a: t("Oui. Chaque agent est configurable : tu peux modifier ses capacités, son prompt système, ses outils et ses super-pouvoirs. Tu gardes le contrôle total."),
             },
             {
               q: t("Est-ce que mes données sont en sécurité ?"),
-              a: t("Oui. Tes données sont chiffrées et ne sont jamais partagées avec des tiers. Tu gardes le contrôle total."),
-            },
-            {
-              q: t("Puis-je essayer gratuitement ?"),
-              a: t("Oui !") + ` ${trialDays} ${t("jours gratuits")} ${t("sans carte bancaire pour tester Baaraly")}.`,
+              a: t("Oui. Tes données sont chiffrées et ne sont jamais partagées avec des tiers. Tu gardes le contrôle total de tes agents et de tes informations."),
             },
           ].map((faq, i) => (
-            <FaqItem
+            <div
               key={i}
-              question={faq.q}
-              answer={faq.a}
-              delay={i * 80}
-              visible={isVisible("faq")}
-            />
+              className={`rounded-2xl border border-border bg-card/80 backdrop-blur-sm overflow-hidden transition-all duration-700 ${
+                isVisible("faq") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+              }`}
+              style={{ transitionDelay: `${i * 80}ms` }}
+            >
+              <button
+                onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-accent/50 transition-colors"
+              >
+                <span className="font-semibold text-sm pr-4">{faq.q}</span>
+                <span className={`text-lg transition-transform duration-300 shrink-0 ${openFaq === i ? "rotate-45" : ""}`}>+</span>
+              </button>
+              <div className={`transition-all duration-300 ease-out ${openFaq === i ? "max-h-60 opacity-100" : "max-h-0 opacity-0"} overflow-hidden`}>
+                <p className="px-6 pb-5 text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
+              </div>
+            </div>
           ))}
         </div>
       </section>
@@ -495,10 +520,10 @@ export function Landing() {
       <section className="relative z-10 px-5 py-24 text-center">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">
-            {t("Prêt à trouver des clients ?")} 🔥
+            {t("Prêt à faire grandir ton business ?")} 🔥
           </h2>
           <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-            {t("Rejoins les entrepreneurs qui utilisent l'IA pour grandir")}
+            {t("Rejoins les entrepreneurs qui utilisent les 30 agents IA de Baaraly pour prospecter, trader, gérer et créer")}
           </p>
           <button
             onClick={() => navigate("/welcome")}
@@ -532,29 +557,6 @@ function ChatMessage({ text, time, sent, visible }: { text: string; time: string
       }`}>
         <p>{text}</p>
         <p className={`text-[9px] mt-1 ${sent ? "text-primary-foreground/60" : "text-muted-foreground"}`}>{time}</p>
-      </div>
-    </div>
-  );
-}
-
-function FaqItem({ question, answer, delay, visible }: { question: string; answer: string; delay: number; visible: boolean }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div
-      className={`rounded-2xl border border-border bg-card/80 backdrop-blur-sm overflow-hidden transition-all duration-700 ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      }`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-accent/50 transition-colors"
-      >
-        <span className="font-semibold text-sm pr-4">{question}</span>
-        <span className={`text-lg transition-transform duration-300 shrink-0 ${open ? "rotate-45" : ""}`}>+</span>
-      </button>
-      <div className={`transition-all duration-300 ease-out ${open ? "max-h-48 opacity-100" : "max-h-0 opacity-0"} overflow-hidden`}>
-        <p className="px-6 pb-5 text-sm text-muted-foreground leading-relaxed">{answer}</p>
       </div>
     </div>
   );
