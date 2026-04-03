@@ -84,9 +84,10 @@ export function Pricing() {
     <div className="min-h-screen bg-[#F5F5F7] dark:bg-[#000] text-foreground">
       {/* Nav */}
       <nav className="flex items-center justify-between px-5 py-4 max-w-5xl mx-auto">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-          <img src="/baaraly-logo.svg" alt="Baaraly" className="w-7 h-7" />
-          <span className="text-xl font-extrabold tracking-tight">
+        <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/")}>
+          <img src="/baaraly-logo.svg" alt="Baaraly" className="w-10 h-10" />
+          <img src="/baaraly-wordmark.svg" alt="Baaraly" className="h-9 dark:hidden" />
+          <span className="text-xl font-extrabold tracking-tight hidden dark:inline">
             Baaraly <span className="text-gradient">AI</span>
           </span>
         </div>
