@@ -15,7 +15,12 @@ const FALLBACK_PLANS = [
     durationDays: 7,
     maxAgents: 1,
     creditsIncluded: 500,
-    features: ["1 agent Standard", "WhatsApp inclus", "Dashboard basique", "Support email"],
+    features: [
+      "1 agent Standard",
+      "WhatsApp inclus",
+      "Dashboard basique",
+      "Support email",
+    ],
     isPublic: true,
     isPopular: false,
     color: "#30D158",
@@ -29,7 +34,13 @@ const FALLBACK_PLANS = [
     durationDays: null,
     maxAgents: 10,
     creditsIncluded: 5000,
-    features: ["10 agents (Standard + Avancé)", "Multi WhatsApp", "Rapports avancés", "Support prioritaire", "Agents Finance, Commerce, Conformité"],
+    features: [
+      "10 agents (Standard + Avancé)",
+      "Multi WhatsApp",
+      "Rapports avancés",
+      "Support prioritaire",
+      "Agents Finance, Commerce, Conformité",
+    ],
     isPublic: true,
     isPopular: true,
     color: "#0071E3",
@@ -43,7 +54,13 @@ const FALLBACK_PLANS = [
     durationDays: null,
     maxAgents: 999,
     creditsIncluded: 20000,
-    features: ["Tous les agents disponibles", "API access", "Multi-entreprise", "Support dédié", "Agents premium inclus"],
+    features: [
+      "Tous les agents disponibles",
+      "API access",
+      "Multi-entreprise",
+      "Support dédié",
+      "Agents premium inclus",
+    ],
     isPublic: true,
     isPopular: false,
     color: "#BF5AF2",
@@ -110,8 +127,9 @@ export function Pricing() {
         <div className="grid sm:grid-cols-3 gap-6">
           {plans.map((plan) => {
             const monthlyPrice = plan.priceFcfa;
-            const annualPrice = Math.round(monthlyPrice * 0.8);
-            const displayPrice = annual ? annualPrice : monthlyPrice;
+            const annualMonthlyPrice = Math.round(monthlyPrice * 0.8);
+            const annualTotal = annualMonthlyPrice * 12;
+            const displayPrice = annual ? annualMonthlyPrice : monthlyPrice;
             const isPopular = plan.isPopular;
 
             return (
@@ -141,30 +159,44 @@ export function Pricing() {
                   {plan.maxAgents === 999 ? t("Illimité") : `${plan.maxAgents} ${t("agents")}`}
                 </p>
 
-                <div className="mt-4 mb-6">
+                <div className="mt-4 mb-2">
                   <span className="text-4xl font-extrabold">
                     {displayPrice === 0 ? "0" : displayPrice.toLocaleString("fr-FR")}
                   </span>
                   <span className={`text-sm ml-1 ${isPopular ? "text-white/70" : "text-muted-foreground"}`}>
                     {displayPrice === 0 ? `FCFA · ${plan.durationDays} ${t("jours")}` : "FCFA/mois"}
                   </span>
-                  {annual && displayPrice > 0 && (
-                    <p className={`text-xs mt-1 ${isPopular ? "text-white/60" : "text-green-500"}`}>
-                      {t("Soit")} {(displayPrice / 30).toLocaleString("fr-FR", { maximumFractionDigits: 0 })} FCFA/{t("jour")}
-                    </p>
-                  )}
                 </div>
+
+                {/* Prix annuel total */}
+                {annual && displayPrice > 0 && (
+                  <div className={`mb-4 p-2 rounded-lg ${isPopular ? "bg-white/10" : "bg-green-500/5 border border-green-500/20"}`}>
+                    <p className={`text-xs ${isPopular ? "text-white/70" : "text-green-600 dark:text-green-400"}`}>
+                      {t("Total annuel")} : <span className="font-bold text-base">{annualTotal.toLocaleString("fr-FR")} FCFA</span>
+                    </p>
+                    <p className={`text-[10px] ${isPopular ? "text-white/50" : "text-muted-foreground"}`}>
+                      {t("Économie de")} {(monthlyPrice * 12 - annualTotal).toLocaleString("fr-FR")} FCFA {t("par an")}
+                    </p>
+                  </div>
+                )}
+
+                {/* Prix mensuel équivalent en annuel */}
+                {annual && displayPrice > 0 && (
+                  <p className={`text-xs mb-4 ${isPopular ? "text-white/60" : "text-green-500"}`}>
+                    {t("Soit")} {displayPrice.toLocaleString("fr-FR")} FCFA/{t("mois")} {t("au lieu de")} {monthlyPrice.toLocaleString("fr-FR")} FCFA
+                  </p>
+                )}
 
                 <ul className="space-y-3 mb-6">
                   {plan.features.map((f, j) => (
-                    <li key={j} className="flex items-center gap-2 text-sm">
-                      <span className={`shrink-0 ${isPopular ? "text-white" : "text-green-500"}`}>✔</span>
-                      {t(f)}
+                    <li key={j} className="flex items-start gap-2 text-sm">
+                      <span className={`shrink-0 mt-0.5 ${isPopular ? "text-white" : "text-green-500"}`}>✔</span>
+                      <span>{t(f)}</span>
                     </li>
                   ))}
-                  <li className="flex items-center gap-2 text-sm">
-                    <span className={`shrink-0 ${isPopular ? "text-white" : "text-green-500"}`}>✔</span>
-                    {plan.creditsIncluded.toLocaleString("fr-FR")} {t("crédits inclus/mois")}
+                  <li className="flex items-start gap-2 text-sm">
+                    <span className={`shrink-0 mt-0.5 ${isPopular ? "text-white" : "text-green-500"}`}>✔</span>
+                    <span>{plan.creditsIncluded.toLocaleString("fr-FR")} {t("crédits inclus/mois")}</span>
                   </li>
                 </ul>
 
