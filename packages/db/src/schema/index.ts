@@ -19,6 +19,8 @@ export { agentTaskSessions } from "./agent_task_sessions.js";
 export { agentWakeupRequests } from "./agent_wakeup_requests.js";
 export { agentMemory } from "./agent_memory.js";
 export { agentTools } from "./agent_tools.js";
+export { agentTemplates } from "./agent_templates.js";
+export { agentInstances } from "./agent_instances.js";
 export { projects } from "./projects.js";
 export { projectWorkspaces } from "./project_workspaces.js";
 export { executionWorkspaces } from "./execution_workspaces.js";

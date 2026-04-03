@@ -139,4 +139,10 @@ export const queryKeys = {
     dashboard: (pluginId: string) => ["plugins", pluginId, "dashboard"] as const,
     logs: (pluginId: string) => ["plugins", pluginId, "logs"] as const,
   },
+  agentTemplates: {
+    all: ["agent-templates"] as const,
+    admin: ["agent-templates", "admin"] as const,
+    detail: (id: string) => ["agent-templates", id] as const,
+    instances: (companyId: string) => ["agent-instances", companyId] as const,
+  },
 };

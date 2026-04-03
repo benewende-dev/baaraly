@@ -337,6 +337,13 @@
       "when": 1775128276843,
       "tag": "0047_exotic_nova",
       "breakpoints": true
+    },
+    {
+      "idx": 48,
+      "version": "7",
+      "when": 1775230179839,
+      "tag": "0048_jittery_terror",
+      "breakpoints": true
     }
   ]
 }

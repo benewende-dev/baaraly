@@ -31,6 +31,7 @@ import { accessRoutes } from "./routes/access.js";
 import { creditRoutes } from "./routes/credits.js";
 import { aiRoutes } from "./routes/ai.js";
 import { pluginRoutes } from "./routes/plugins.js";
+import { agentTemplateRoutes } from "./routes/agent-templates.js";
 import { pluginUiStaticRoutes } from "./routes/plugin-ui-static.js";
 import { applyUiBranding } from "./ui-branding.js";
 import { logger } from "./middleware/logger.js";
@@ -161,6 +162,7 @@ export async function createApp(
   api.use(sidebarBadgeRoutes(db));
   api.use(instanceSettingsRoutes(db));
   api.use(creditRoutes(db));
+  api.use(agentTemplateRoutes(db));
   api.use(aiRoutes(db));
   api.use(metricsRoutes(db));
   const hostServicesDisposers = new Map<string, () => void>();
