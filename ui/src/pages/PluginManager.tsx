@@ -64,7 +64,7 @@ function getPluginErrorSummary(plugin: PluginRecord): string {
 export function PluginManager() {
   const { selectedCompany } = useCompany();
   const { setBreadcrumbs } = useBreadcrumbs();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const queryClient = useQueryClient();
   const { pushToast } = useToast();
 
@@ -165,45 +165,47 @@ export function PluginManager() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Puzzle className="h-6 w-6 text-muted-foreground" />
-          <h1 className="text-xl font-semibold">Plugin Manager</h1>
-        </div>
-        
-        <Dialog open={installDialogOpen} onOpenChange={setInstallDialogOpen}>
-          <DialogTrigger asChild>
-            <Button size="sm" className="gap-2">
-              <Plus className="h-4 w-4" />
-              Install Plugin
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Install Plugin</DialogTitle>
-              <DialogDescription>
-                Enter the npm package name of the plugin you wish to install.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="packageName">npm Package Name</Label>
-                <Input
-                  id="packageName"
-                  placeholder="@paperclipai/plugin-example"
-                  value={installPackage}
-                  onChange={(e) => setInstallPackage(e.target.value)}
-                />
-              </div>
+        <h1 className="text-xl font-semibold">{t("Plugin Manager")}</h1>
+      </div>
+      
+      <Dialog open={installDialogOpen} onOpenChange={setInstallDialogOpen}>
+        <DialogTrigger asChild>
+          <Button size="sm" className="gap-2">
+            <Plus className="h-4 w-4" />
+            {t("Install Plugin")}
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("Install Plugin")}</DialogTitle>
+            <DialogDescription>
+              {language === "fr" 
+                ? "Entrez le nom du package npm du plugin que vous souhaitez installer."
+                : "Enter the npm package name of the plugin you wish to install."}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="packageName">{language === "fr" ? "Nom du package npm" : "npm Package Name"}</Label>
+              <Input
+                id="packageName"
+                placeholder="@paperclipai/plugin-example"
+                value={installPackage}
+                onChange={(e) => setInstallPackage(e.target.value)}
+              />
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setInstallDialogOpen(false)}>Annuler</Button>
-              <Button
-                onClick={() => installMutation.mutate({ packageName: installPackage })}
-                disabled={!installPackage || installMutation.isPending}
-              >
-                {installMutation.isPending ? "Installing..." : "Install"}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setInstallDialogOpen(false)}>{t("Cancel")}</Button>
+            <Button
+              onClick={() => installMutation.mutate({ packageName: installPackage })}
+              disabled={!installPackage || installMutation.isPending}
+            >
+              {installMutation.isPending ? t("Installing...") : t("Install")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       </div>
 
       <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3">
@@ -212,7 +214,7 @@ export function PluginManager() {
           <div className="space-y-1 text-sm">
             <p className="font-medium text-foreground">{t("Plugins are alpha")}.</p>
             <p className="text-muted-foreground">
-              The plugin runtime and API surface are still changing. Expect breaking changes while this feature settles.
+              {t("The plugin runtime and API surface are still changing. Expect breaking changes while this feature settles.")}
             </p>
           </div>
         </div>
@@ -222,16 +224,16 @@ export function PluginManager() {
         <div className="flex items-center gap-2">
           <FlaskConical className="h-5 w-5 text-muted-foreground" />
           <h2 className="text-base font-semibold">{t("Available Plugins")}</h2>
-          <Badge variant="outline">Examples</Badge>
+          <Badge variant="outline">{t("Examples")}</Badge>
         </div>
 
         {examplesQuery.isLoading ? (
-          <div className="text-sm text-muted-foreground">Loading bundled examples...</div>
+          <div className="text-sm text-muted-foreground">{t("Loading...")}</div>
         ) : examplesQuery.error ? (
-          <div className="text-sm text-destructive">Failed to load bundled examples.</div>
+          <div className="text-sm text-destructive">{t("Failed to load")}</div>
         ) : examples.length === 0 ? (
           <div className="rounded-md border border-dashed px-4 py-3 text-sm text-muted-foreground">
-            No bundled example plugins were found in this checkout.
+            {language === "fr" ? "Aucun plugin d'exemple trouvé." : "No bundled example plugins were found in this checkout."}
           </div>
         ) : (
           <ul className="divide-y rounded-md border bg-card">
@@ -248,7 +250,7 @@ export function PluginManager() {
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="font-medium">{example.displayName}</span>
-                        <Badge variant="outline">Example</Badge>
+                        <Badge variant="outline">{t("Example")}</Badge>
                         {installedPlugin ? (
                           <Badge
                             variant={installedPlugin.status === "ready" ? "default" : "secondary"}
@@ -257,7 +259,7 @@ export function PluginManager() {
                             {installedPlugin.status}
                           </Badge>
                         ) : (
-                          <Badge variant="secondary">Not installed</Badge>
+                          <Badge variant="secondary">{t("Not installed")}</Badge>
                         )}
                       </div>
                       <p className="mt-1 text-sm text-muted-foreground">{example.description}</p>
@@ -273,7 +275,7 @@ export function PluginManager() {
                               disabled={enableMutation.isPending}
                               onClick={() => enableMutation.mutate(installedPlugin.id)}
                             >
-                              Enable
+                              {t("Enable")}
                             </Button>
                           )}
                           <Button variant="outline" size="sm" asChild>
@@ -293,7 +295,7 @@ export function PluginManager() {
                             })
                           }
                         >
-                          {installPending ? "Installing..." : "Install Example"}
+                          {installPending ? t("Installing...") : t("Install Example")}
                         </Button>
                       )}
                     </div>
@@ -317,7 +319,7 @@ export function PluginManager() {
               <Puzzle className="h-10 w-10 text-muted-foreground mb-4" />
               <p className="text-sm font-medium">{t("No plugins installed yet")}</p>
               <p className="text-xs text-muted-foreground mt-1">
-                Install a plugin to extend functionality.
+                {t("Install a plugin to extend functionality.")}
               </p>
             </CardContent>
           </Card>

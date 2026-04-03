@@ -9,7 +9,7 @@ import { useLanguage } from "../context/LanguageContext";
 
 export function InstanceExperimentalSettings() {
   const { setBreadcrumbs } = useBreadcrumbs();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const queryClient = useQueryClient();
   const [actionError, setActionError] = useState<string | null>(null);
 
@@ -80,8 +80,7 @@ export function InstanceExperimentalSettings() {
           <div className="space-y-1.5">
             <h2 className="text-sm font-semibold">{t("Enable Isolated Workspaces")}</h2>
             <p className="max-w-2xl text-sm text-muted-foreground">
-              Show execution workspace controls in project configuration and allow isolated workspace behavior for new
-              and existing issue runs.
+              {t("Show execution workspace controls in project configuration and allow isolated workspace behavior for new and existing issue runs.")}
             </p>
           </div>
           <button
@@ -110,8 +109,7 @@ export function InstanceExperimentalSettings() {
           <div className="space-y-1.5">
             <h2 className="text-sm font-semibold">{t("Auto-Restart Dev Server When Idle")}</h2>
             <p className="max-w-2xl text-sm text-muted-foreground">
-              In `pnpm dev:once`, wait for all queued and running local agent runs to finish, then restart the server
-              automatically when backend changes or migrations make the current boot stale.
+              {t("In pnpm dev:once, wait for all queued and running local agent runs to finish, then restart the server automatically when backend changes or migrations make the current boot stale.")}
             </p>
           </div>
           <button

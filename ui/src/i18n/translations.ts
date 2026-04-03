@@ -1170,7 +1170,39 @@ export const translations: Record<string, Record<Language, string>> = {
     en: "Opt into features that are still being evaluated before they become default behavior."
   },
   "Enable Isolated Workspaces": { fr: "Activer les espaces de travail isolés", en: "Enable Isolated Workspaces" },
+  "Show execution workspace controls in project configuration and allow isolated workspace behavior for new and existing issue runs.": {
+    fr: "Afficher les contrôles d'espace d'exécution dans la configuration du projet et permettre un comportement d'espace de travail isolé pour les nouvelles et les existantes.",
+    en: "Show execution workspace controls in project configuration and allow isolated workspace behavior for new and existing issue runs."
+  },
   "Auto-Restart Dev Server When Idle": { fr: "Redémarrer automatiquement le serveur en attente", en: "Auto-Restart Dev Server When Idle" },
+  "In pnpm dev:once, wait for all queued and running local agent runs to finish, then restart the server automatically when backend changes or migrations make the current boot stale.": {
+    fr: "Dans `pnpm dev:once`, attendez que toutes les exécutions d'agents locales en attente et en cours se terminent, puis redémarrez automatiquement le serveur lorsque les modifications du backend ou les migrations rendent le démarrage actuel obsolète.",
+    en: "In pnpm dev:once, wait for all queued and running local agent runs to finish, then restart the server automatically when backend changes or migrations make the current boot stale."
+  },
+
+  // ═══ Plugins ═══
+  "Plugin Manager": { fr: "Gestionnaire de plugins", en: "Plugin Manager" },
+  "Install Plugin": { fr: "Installer un plugin", en: "Install Plugin" },
+  "The plugin runtime and API surface are still changing. Expect breaking changes while this feature settles.": {
+    fr: "Le runtime des plugins et l'API sont encore en cours de modification. Attendez-vous à des changements majeurs pendant que cette fonctionnalité se stabilise.",
+    en: "The plugin runtime and API surface are still changing. Expect breaking changes while this feature settles."
+  },
+  "Examples": { fr: "Exemples", en: "Examples" },
+  "Not installed": { fr: "Non installé", en: "Not installed" },
+  "Install": { fr: "Installer", en: "Install" },
+  "Reference UI plugin that adds a simple Hello World widget to the Baaraly dashboard.": {
+    fr: "Plugin UI de référence qui ajoute un widget Hello World simple au tableau de bord Baaraly.",
+    en: "Reference UI plugin that adds a simple Hello World widget to the Baaraly dashboard."
+  },
+  "Example plugin that adds a Files link in project navigation plus a project detail file browser.": {
+    fr: "Plugin d'exemple qui ajoute un lien Fichiers dans la navigation du projet ainsi qu'un navigateur de fichiers de détail de projet.",
+    en: "Example plugin that adds a Files link in project navigation plus a project detail file browser."
+  },
+  "Reference plugin that demonstrates the current Baaraly plugin API surface, bridge flows, UI extension surfaces, jobs, webhooks, tools, streams, and trusted local workspace/process demos.": {
+    fr: "Plugin de référence qui démontre la surface API actuelle des plugins Baaraly, les flux de pont, les surfaces d'extension UI, les jobs, les webhooks, les outils, les flux et les démos d'espace de travail/processus local de confiance.",
+    en: "Reference plugin that demonstrates the current Baaraly plugin API surface, bridge flows, UI extension surfaces, jobs, webhooks, tools, streams, and trusted local workspace/process demos."
+  },
+  "Install a plugin to extend functionality.": { fr: "Installez un plugin pour étendre les fonctionnalités.", en: "Install a plugin to extend functionality." },
 
   // ═══ Plugins ═══
   "Plugins are alpha.": { fr: "Les plugins sont en version alpha.", en: "Plugins are alpha." },
