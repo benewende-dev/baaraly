@@ -24,8 +24,11 @@ export function TemplateGallery() {
         name: agent.name,
         role: "general",
         title: agent.role,
-        adapterType: "process",
+        adapterType: "opencode_local",
         adapterConfig: {
+          command: "opencode",
+          model: "opencode/qwen3.6-plus-free",
+          dangerouslySkipPermissions: true,
           promptTemplate: agent.systemPrompt,
         },
         metadata: {

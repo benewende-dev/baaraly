@@ -154,8 +154,13 @@ export function BaaralyOnboarding() {
         name: selectedAgent.name,
         role: "general",
         title: selectedAgent.role,
-        adapterType: "process",
-        adapterConfig: { promptTemplate: selectedAgent.systemPrompt },
+        adapterType: "opencode_local",
+        adapterConfig: {
+          command: "opencode",
+          model: "opencode/qwen3.6-plus-free",
+          dangerouslySkipPermissions: true,
+          promptTemplate: selectedAgent.systemPrompt,
+        },
         metadata: {
           emoji: selectedAgent.emoji,
           color: selectedAgent.color,

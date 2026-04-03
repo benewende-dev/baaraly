@@ -47,9 +47,12 @@ export function Landing() {
     <div className="bg-[#F5F5F7] dark:bg-[#000] text-foreground overflow-x-hidden">
       {/* ── NAV ── */}
       <nav className="flex items-center justify-between px-5 py-4 max-w-5xl mx-auto backdrop-blur-sm sticky top-0 z-50 bg-[#F5F5F7]/80 dark:bg-[#000]/80">
-        <span className="text-xl font-extrabold tracking-tight">
-          Baaraly <span className="text-gradient">AI</span>
-        </span>
+        <div className="flex items-center gap-2">
+          <img src="/baaraly-logo.svg" alt="Baaraly" className="w-8 h-8" />
+          <span className="text-xl font-extrabold tracking-tight">
+            Baaraly <span className="text-gradient">AI</span>
+          </span>
+        </div>
         <div className="flex items-center gap-3">
           <ThemeLangToggle compact />
           <button
@@ -419,9 +422,12 @@ export function Landing() {
       {/* ── FOOTER ── */}
       <footer className="px-5 py-8 text-center border-t border-gray-200 dark:border-gray-800">
         <div className="max-w-4xl mx-auto">
-          <p className="text-lg font-extrabold mb-1">
-            Baaraly <span className="text-gradient">AI</span>
-          </p>
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <img src="/baaraly-logo.svg" alt="Baaraly" className="w-6 h-6" />
+            <p className="text-lg font-extrabold">
+              Baaraly <span className="text-gradient">AI</span>
+            </p>
+          </div>
           <p className="text-xs text-muted-foreground mb-4">
             {t("L'IA qui fait prospérer ton entreprise")}
           </p>
