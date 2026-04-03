@@ -164,78 +164,28 @@ export function Landing() {
         </div>
       </section>
 
-      {/* ── SOLUTION ── */}
-      <section id="solution" data-animate className="relative z-10 px-5 py-24 max-w-4xl mx-auto">
-        <div className={`text-center mb-12 transition-all duration-700 ${isVisible("solution") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <span className="text-sm font-semibold text-primary uppercase tracking-wider">{t("La solution")}</span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
-            {t("30 agents IA à ton service")} 🤖
-          </h2>
-          <p className="text-muted-foreground mt-3">{t("Automatiquement. 24h/24. 7j/7. Dans 8 domaines.")}</p>
-        </div>
-        <div className="grid sm:grid-cols-4 gap-4">
-          {AGENT_CATEGORIES.map((cat, i) => {
-            const count = BAARALY_AGENTS.filter((a) => a.category === cat.id).length;
-            return (
-              <div
-                key={cat.id}
-                className={`glass-panel rounded-2xl p-5 text-center transition-all duration-700 hover-lift ${
-                  isVisible("solution") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-                style={{ transitionDelay: `${i * 80}ms` }}
-              >
-                <span className="text-3xl block mb-2">{cat.emoji}</span>
-                <p className="font-bold text-sm">{cat.label}</p>
-                <p className="text-xs text-muted-foreground">{count} {t("agents")}</p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ── COMMENT ÇA MARCHE ── */}
-      <section id="how-it-works" data-animate className="relative z-10 px-5 py-24 max-w-4xl mx-auto">
-        <div className={`text-center mb-16 transition-all duration-700 ${isVisible("how-it-works") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <span className="text-sm font-semibold text-secondary uppercase tracking-wider">{t("Processus")}</span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
-            {t("Comment ça marche")} ⚡
-          </h2>
-        </div>
-        <div className="relative">
-          <div className="absolute left-5 sm:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-secondary to-primary opacity-30" />
-          <div className="space-y-8 sm:space-y-12">
-            {[
-              { n: 1, text: t("Crée ton compte et choisis tes agents parmi 30 profils") },
-              { n: 2, text: t("Configure ton agent : rôle, capacités, modèle IA") },
-              { n: 3, text: t("L'agent travaille automatiquement 24h/24") },
-              { n: 4, text: t("Reçois tes résultats sur WhatsApp et dans ton dashboard") },
-              { n: 5, text: t("Scale en ajoutant d'autres agents selon tes besoins") },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className={`flex items-center gap-4 sm:gap-6 transition-all duration-700 ${
-                  isVisible("how-it-works") ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
-                }`}
-                style={{ transitionDelay: `${i * 120}ms` }}
-              >
-                <div className="relative z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
-                  <span className="text-xs sm:text-sm font-bold text-white">{item.n}</span>
-                </div>
-                <p className="text-sm sm:text-base font-medium">{item.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── LES AGENTS PAR TIER ── */}
+      {/* ── 30 AGENTS SPÉCIALISÉS ── */}
       <section id="agent-details" data-animate className="relative z-10 px-5 py-24 max-w-4xl mx-auto">
         <div className={`text-center mb-12 transition-all duration-700 ${isVisible("agent-details") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <span className="text-sm font-semibold text-primary uppercase tracking-wider">{t("Nos agents")}</span>
+          <span className="text-sm font-semibold text-primary uppercase tracking-wider">{t("La solution")}</span>
           <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
             {t("30 agents IA spécialisés")} 🎯
           </h2>
-          <p className="text-muted-foreground mt-3">{t("3 niveaux de compétence · 8 catégories · Configurables à volonté")}</p>
+          <p className="text-muted-foreground mt-3">{t("Automatiquement. 24h/24. 7j/7. · 3 niveaux · 8 catégories · Configurables à volonté")}</p>
+        </div>
+
+        {/* 8 catégories */}
+        <div className={`grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12 transition-all duration-700 ${isVisible("agent-details") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: "50ms" }}>
+          {AGENT_CATEGORIES.map((cat, i) => {
+            const count = BAARALY_AGENTS.filter((a) => a.category === cat.id).length;
+            return (
+              <div key={cat.id} className="glass-panel rounded-xl p-4 text-center hover-lift">
+                <span className="text-2xl block mb-1">{cat.emoji}</span>
+                <p className="font-bold text-xs">{cat.label}</p>
+                <p className="text-[10px] text-muted-foreground">{count} {t("agents")}</p>
+              </div>
+            );
+          })}
         </div>
 
         {/* Tier 1 */}
@@ -244,7 +194,7 @@ export function Landing() {
             <span className="px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-xs font-bold">{t("Standard")} · {tier1Count} {t("agents")}</span>
             <span className="text-xs text-muted-foreground">{t("Inclus dans l'essai gratuit")}</span>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {agentsByTier[1].map((a) => (
               <div key={a.name} className="rounded-xl border border-border bg-card/60 p-4 text-center hover-lift">
                 <span className="text-2xl block mb-1">{a.emoji}</span>
