@@ -1341,6 +1341,38 @@ export const translations: Record<string, Record<Language, string>> = {
   "Économie de": { fr: "Économie de", en: "Save" },
   "par an": { fr: "par an", en: "per year" },
   "au lieu de": { fr: "au lieu de", en: "instead of" },
+
+  // ── Auth PME ─────────────────────────────────────────────────────────────
+  "Bon retour parmi nous": { fr: "Bon retour parmi nous", en: "Welcome back" },
+  "Connecte-toi pour accéder à ton tableau de bord": { fr: "Connecte-toi pour accéder à ton tableau de bord", en: "Sign in to access your dashboard" },
+  "Crée ton compte gratuitement": { fr: "Crée ton compte gratuitement", en: "Create your free account" },
+  "7 jours d'essai. Sans carte bancaire.": { fr: "7 jours d'essai. Sans carte bancaire.", en: "7-day trial. No credit card required." },
+  "Prénom et Nom": { fr: "Prénom et Nom", en: "Full name" },
+  "Secteur d'activité": { fr: "Secteur d'activité", en: "Business sector" },
+  "Sélectionner": { fr: "Sélectionner", en: "Select" },
+  "Pays": { fr: "Pays", en: "Country" },
+  "optionnel": { fr: "optionnel", en: "optional" },
+  "Confirmer le mot de passe": { fr: "Confirmer le mot de passe", en: "Confirm password" },
+  "Les mots de passe ne correspondent pas": { fr: "Les mots de passe ne correspondent pas", en: "Passwords do not match" },
+  "Minimum 8 caractères": { fr: "Minimum 8 caractères", en: "Minimum 8 characters" },
+  "Pas encore de compte ?": { fr: "Pas encore de compte ?", en: "Don't have an account?" },
+  "Déjà un compte ?": { fr: "Déjà un compte ?", en: "Already have an account?" },
+  "Créer un compte": { fr: "Créer un compte", en: "Create an account" },
+  "En créant un compte tu acceptes nos": { fr: "En créant un compte tu acceptes nos", en: "By creating an account you accept our" },
+  "conditions d'utilisation": { fr: "conditions d'utilisation", en: "terms of service" },
+
+  // ── Forgot password ──────────────────────────────────────────────────────
+  "Mot de passe oublié ?": { fr: "Mot de passe oublié ?", en: "Forgot password?" },
+  "Entre ton email et on t'envoie un lien pour le réinitialiser": { fr: "Entre ton email et on t'envoie un lien pour le réinitialiser", en: "Enter your email and we'll send you a reset link" },
+  "Envoyer le lien": { fr: "Envoyer le lien", en: "Send reset link" },
+  "Lien envoyé !": { fr: "Lien envoyé !", en: "Link sent!" },
+  "Un email a été envoyé à": { fr: "Un email a été envoyé à", en: "An email has been sent to" },
+  "Vérifie aussi tes spams.": { fr: "Vérifie aussi tes spams.", en: "Check your spam folder too." },
+  "J'ai le lien, réinitialiser": { fr: "J'ai le lien, réinitialiser", en: "I have the link, reset" },
+  "Retour à la connexion": { fr: "Retour à la connexion", en: "Back to sign in" },
+  "Nouveau mot de passe": { fr: "Nouveau mot de passe", en: "New password" },
+  "Choisis un nouveau mot de passe pour ton compte": { fr: "Choisis un nouveau mot de passe pour ton compte", en: "Choose a new password for your account" },
+  "Réinitialiser": { fr: "Réinitialiser", en: "Reset" },
 };
 
 /** Renvoie la traduction pour la clé donnée dans la langue choisie.

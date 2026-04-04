@@ -43,6 +43,7 @@ import { Pricing } from "./pages/Pricing";
 import { BaaralyOnboarding } from "./pages/BaaralyOnboarding";
 import { Landing } from "./pages/Landing";
 import { AuthPage } from "./pages/Auth";
+import { ForgotPasswordPage } from "./pages/ForgotPassword";
 import { BoardClaimPage } from "./pages/BoardClaim";
 import { CliAuthPage } from "./pages/CliAuth";
 import { InviteLandingPage } from "./pages/InviteLanding";
@@ -293,6 +294,7 @@ export function App() {
     <>
       <Routes>
         <Route path="auth" element={<AuthPage />} />
+        <Route path="forgot-password" element={<ForgotPasswordPage />} />
         <Route path="board-claim/:token" element={<BoardClaimPage />} />
         <Route path="cli-auth/:id" element={<CliAuthPage />} />
         <Route path="invite/:token" element={<InviteLandingPage />} />
