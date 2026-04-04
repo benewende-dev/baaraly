@@ -7,7 +7,39 @@ import { validate } from "../middleware/validate.js";
 import { assertBoard, assertCompanyAccess } from "./authz.js";
 import { notFound, forbidden, badRequest, conflict } from "../errors.js";
 import { agentService, logActivity } from "../services/index.js";
+import { agentInstructionsService } from "../services/agent-instructions.js";
+import {
+  loadDefaultAgentInstructionsBundle,
+  resolveDefaultAgentInstructionsBundleRole,
+} from "../services/default-agent-instructions.js";
 import { AGENT_ROLES, AGENT_ICON_NAMES } from "@paperclipai/shared";
+
+async function materializeAgentInstructions(
+  agent: { id: string; companyId: string; name: string; role: string; adapterConfig: unknown },
+  dbRef: Db,
+) {
+  const instructions = agentInstructionsService();
+  const adapterConfig = agent.adapterConfig as Record<string, unknown> | null;
+  const hasExplicitBundle = !!(
+    adapterConfig?.instructionsBundleMode ||
+    adapterConfig?.instructionsRootPath ||
+    adapterConfig?.instructionsEntryFile ||
+    adapterConfig?.instructionsFilePath ||
+    adapterConfig?.agentsMdPath
+  );
+  if (hasExplicitBundle) return;
+
+  const promptTemplate = typeof adapterConfig?.promptTemplate === "string" ? adapterConfig.promptTemplate : "";
+  const files = promptTemplate.trim().length === 0
+    ? await loadDefaultAgentInstructionsBundle(resolveDefaultAgentInstructionsBundleRole(agent.role))
+    : { "AGENTS.md": promptTemplate };
+
+  const materialized = await instructions.materializeManagedBundle(agent, files, { entryFile: "AGENTS.md", replaceExisting: false });
+  const nextAdapterConfig = { ...materialized.adapterConfig };
+  delete nextAdapterConfig.promptTemplate;
+
+  await agentService(dbRef).update(agent.id, { adapterConfig: nextAdapterConfig });
+}
 
 const createTemplateSchema = z.object({
   name: z.string().min(1),
@@ -313,6 +345,8 @@ export function agentTemplateRoutes(db: Db) {
         },
       });
 
+      await materializeAgentInstructions(created, db);
+
       await db.insert(agentInstances).values({
         companyId,
         agentId: created.id,
@@ -394,6 +428,8 @@ export function agentTemplateRoutes(db: Db) {
             category: template.category,
           },
         });
+
+        await materializeAgentInstructions(created, db);
 
         await db.insert(agentInstances).values({
           companyId,
