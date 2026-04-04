@@ -49,7 +49,7 @@ export function Landing() {
       <nav className="flex items-center justify-between px-5 py-4 max-w-5xl mx-auto backdrop-blur-sm sticky top-0 z-50 bg-[#F5F5F7]/80 dark:bg-[#000]/80">
         <div className="flex items-center gap-3">
           <img src="/baaraly-logo.svg" alt="Baaraly" className="w-10 h-10" />
-          <img src="/baaraly-wordmark.svg" alt="Baaraly" className="h-9 dark:hidden" />
+          <img src="/baaraly-wordmark-full.svg" alt="Baaraly AI" className="h-9 dark:hidden" />
           <span className="text-xl font-extrabold tracking-tight hidden dark:inline">
             Baaraly <span className="text-gradient">AI</span>
           </span>
@@ -425,7 +425,7 @@ export function Landing() {
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-center gap-3 mb-2">
             <img src="/baaraly-logo.svg" alt="Baaraly" className="w-8 h-8" />
-            <img src="/baaraly-wordmark.svg" alt="Baaraly" className="h-7 dark:hidden" />
+            <img src="/baaraly-wordmark-full.svg" alt="Baaraly AI" className="h-7 dark:hidden" />
             <p className="text-lg font-extrabold hidden dark:inline">
               Baaraly <span className="text-gradient">AI</span>
             </p>

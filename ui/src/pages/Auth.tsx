@@ -3,9 +3,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useSearchParams } from "@/lib/router";
 import { authApi } from "../api/auth";
 import { queryKeys } from "../lib/queryKeys";
-import { Button } from "@/components/ui/button";
-import { AsciiArtAnimation } from "@/components/AsciiArtAnimation";
-import { Sparkles } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 type AuthMode = "sign_in" | "sign_up";
@@ -18,6 +15,7 @@ export function AuthPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { t } = useLanguage();
 
@@ -64,35 +62,56 @@ export function AuthPage() {
 
   if (isSessionLoading) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center">
+      <div className="fixed inset-0 flex items-center justify-center bg-[#F5F5F7]">
         <p className="text-sm text-muted-foreground">{t("Loading…")}</p>
       </div>
     );
   }
 
   return (
-    <div className="fixed inset-0 flex bg-background">
+    <div className="fixed inset-0 flex bg-[#F5F5F7]">
       {/* Left half — form */}
       <div className="w-full md:w-1/2 flex flex-col overflow-y-auto">
-        <div className="w-full max-w-md mx-auto my-auto px-8 py-12">
-          <div className="flex items-center gap-2 mb-8">
-            <Sparkles className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm font-medium">Baaraly</span>
+        <div className="w-full max-w-md mx-auto my-auto px-6 sm:px-8 py-12">
+          {/* Logo */}
+          <div className="flex items-center gap-3 mb-10">
+            <img src="/baaraly-logo.svg" alt="Baaraly" className="w-10 h-10" />
+            <div>
+              <span className="text-xl font-extrabold tracking-tight text-[#1A1A2E]">
+                Baaraly <span className="text-gradient">AI</span>
+              </span>
+              <p className="text-[11px] text-[#666666] -mt-0.5">
+                {t("L'IA qui fait prospérer ton entreprise")}
+              </p>
+            </div>
           </div>
 
-          <h1 className="text-xl font-semibold">
-            {mode === "sign_in" ? t("Sign in to Baaraly") : t("Create your Baaraly account")}
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {mode === "sign_in"
-              ? t("Use your email and password to access this instance.")
-              : t("Create an account for this instance. Email confirmation is not required in v1.")}
-          </p>
+          {/* Sign In */}
+          {mode === "sign_in" && (
+            <>
+              <h1 className="text-2xl font-bold text-[#1A1A2E]">
+                {t("Bon retour parmi nous")}
+              </h1>
+              <p className="mt-2 text-[15px] text-[#666666]">
+                {t("Connecte-toi pour accéder à ton tableau de bord")}
+              </p>
+            </>
+          )}
+
+          {/* Sign Up */}
+          {mode === "sign_up" && (
+            <>
+              <h1 className="text-2xl font-bold text-[#1A1A2E]">
+                {t("Crée ton compte gratuitement")}
+              </h1>
+              <p className="mt-2 text-[15px] text-[#666666]">
+                {t("7 jours d'essai. Sans carte bancaire.")}
+              </p>
+            </>
+          )}
 
           <form
-            className="mt-6 space-y-4"
-            method="post"
-            action={mode === "sign_up" ? "/api/auth/sign-up/email" : "/api/auth/sign-in/email"}
+            className="mt-8 space-y-5"
             onSubmit={(event) => {
               event.preventDefault();
               if (mutation.isPending) return;
@@ -103,13 +122,16 @@ export function AuthPage() {
               mutation.mutate();
             }}
           >
+            {/* Name (sign up only) */}
             {mode === "sign_up" && (
               <div>
-                <label htmlFor="name" className="text-xs text-muted-foreground mb-1 block">{t("Name")}</label>
+                <label htmlFor="name" className="text-sm font-medium text-[#1A1A2E] mb-1.5 block">
+                  {t("Prénom et Nom")}
+                </label>
                 <input
                   id="name"
-                  name="name"
-                  className="w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-ring placeholder:text-muted-foreground/50"
+                  className="w-full rounded-xl border border-[#E0E0E5] bg-white px-4 py-3.5 text-sm outline-none transition-all focus:border-[#0071E3] focus:ring-2 focus:ring-[#0071E3]/20 placeholder:text-[#999999]"
+                  placeholder="Ex: Aminata Diallo"
                   value={name}
                   onChange={(event) => setName(event.target.value)}
                   autoComplete="name"
@@ -117,65 +139,149 @@ export function AuthPage() {
                 />
               </div>
             )}
+
+            {/* Email */}
             <div>
-              <label htmlFor="email" className="text-xs text-muted-foreground mb-1 block">{t("Email")}</label>
+              <label htmlFor="email" className="text-sm font-medium text-[#1A1A2E] mb-1.5 block">
+                {t("Adresse email")}
+              </label>
               <input
                 id="email"
-                name="email"
-                className="w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-ring placeholder:text-muted-foreground/50"
+                className="w-full rounded-xl border border-[#E0E0E5] bg-white px-4 py-3.5 text-sm outline-none transition-all focus:border-[#0071E3] focus:ring-2 focus:ring-[#0071E3]/20 placeholder:text-[#999999]"
                 type="email"
+                placeholder="ton@email.com"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 autoComplete="email"
                 autoFocus={mode === "sign_in"}
               />
             </div>
+
+            {/* Password */}
             <div>
-              <label htmlFor="password" className="text-xs text-muted-foreground mb-1 block">{t("Password")}</label>
-              <input
-                id="password"
-                name="password"
-                className="w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-ring placeholder:text-muted-foreground/50"
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                autoComplete={mode === "sign_in" ? "current-password" : "new-password"}
-              />
+              <div className="flex items-center justify-between mb-1.5">
+                <label htmlFor="password" className="text-sm font-medium text-[#1A1A2E]">
+                  {t("Mot de passe")}
+                </label>
+                {mode === "sign_in" && (
+                  <button
+                    type="button"
+                    className="text-xs text-[#0071E3] hover:underline"
+                    onClick={() => {/* TODO: password reset */}}
+                  >
+                    {t("Mot de passe oublié ?")}
+                  </button>
+                )}
+              </div>
+              <div className="relative">
+                <input
+                  id="password"
+                  className="w-full rounded-xl border border-[#E0E0E5] bg-white px-4 py-3.5 pr-12 text-sm outline-none transition-all focus:border-[#0071E3] focus:ring-2 focus:ring-[#0071E3]/20 placeholder:text-[#999999]"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  autoComplete={mode === "sign_in" ? "current-password" : "new-password"}
+                />
+                <button
+                  type="button"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#999999] hover:text-[#666666]"
+                  onClick={() => setShowPassword(!showPassword)}
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><path d="m14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  )}
+                </button>
+              </div>
+              {mode === "sign_up" && password.length > 0 && password.length < 8 && (
+                <p className="text-xs text-[#FF453A] mt-1.5">{t("Minimum 8 caractères")}</p>
+              )}
             </div>
-            {error && <p className="text-xs text-destructive">{error}</p>}
-            <Button
+
+            {/* Error */}
+            {error && (
+              <div className="rounded-xl bg-[#FF453A]/10 border border-[#FF453A]/20 px-4 py-3 text-sm text-[#FF453A]">
+                {error}
+              </div>
+            )}
+
+            {/* Submit */}
+            <button
               type="submit"
-              disabled={mutation.isPending}
-              aria-disabled={!canSubmit || mutation.isPending}
-              className={`w-full ${!canSubmit && !mutation.isPending ? "opacity-50" : ""}`}
+              disabled={!canSubmit || mutation.isPending}
+              className="w-full rounded-xl bg-[#0071E3] py-4 text-sm font-semibold text-white transition-all hover:bg-[#0062CC] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              {mutation.isPending
-                ? t("Working…")
-                : mode === "sign_in"
-                  ? t("Sign In")
-                  : t("Create Account")}
-            </Button>
+              {mutation.isPending ? (
+                <>
+                  <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>
+                  {t("Chargement…")}
+                </>
+              ) : mode === "sign_in" ? (
+                t("Se connecter")
+              ) : (
+                t("Créer mon compte")
+              )}
+            </button>
           </form>
 
-          <div className="mt-5 text-sm text-muted-foreground">
-            {mode === "sign_in" ? t("Need an account?") : t("Already have an account?")}{" "}
+          {/* Toggle */}
+          <div className="mt-6 text-sm text-[#666666] text-center">
+            {mode === "sign_in" ? t("Pas encore de compte ?") : t("Déjà un compte ?")}{" "}
             <button
               type="button"
-              className="font-medium text-foreground underline underline-offset-2"
+              className="font-semibold text-[#0071E3] hover:underline"
               onClick={() => {
                 setError(null);
                 setMode(mode === "sign_in" ? "sign_up" : "sign_in");
               }}
             >
-              {mode === "sign_in" ? t("Create one") : t("Sign in")}
+              {mode === "sign_in" ? t("Créer un compte") : t("Se connecter")}
             </button>
           </div>
+
+          {/* Terms */}
+          {mode === "sign_up" && (
+            <p className="mt-4 text-[11px] text-[#999999] text-center">
+              {t("En créant un compte tu acceptes nos")}{" "}
+              <button type="button" className="text-[#0071E3] hover:underline">
+                {t("conditions d'utilisation")}
+              </button>
+            </p>
+          )}
         </div>
       </div>
 
-      {/* Right half — ASCII art animation (hidden on mobile) */}
-      <div className="hidden md:block w-1/2 overflow-hidden">
-        <AsciiArtAnimation />
+      {/* Right half — Baaraly branding (hidden on mobile) */}
+      <div className="hidden md:flex w-1/2 bg-gradient-to-br from-[#0071E3] to-[#0056B3] flex-col justify-center px-12 text-white">
+        <div className="max-w-sm">
+          <img src="/baaraly-logo.svg" alt="Baaraly" className="w-16 h-16 mb-8 opacity-90" />
+          <h2 className="text-3xl font-extrabold mb-6 leading-tight">
+            {t("Ton entreprise tourne même quand tu dors")}
+          </h2>
+          <div className="space-y-4 mb-10">
+            {[
+              t("Des agents IA qui travaillent pour toi 24h/24"),
+              t("WhatsApp connecté en quelques minutes"),
+              t("En français et langues locales"),
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <span className="text-[#30D158] font-bold mt-0.5">✓</span>
+                <span className="text-white/90 text-[15px]">{item}</span>
+              </div>
+            ))}
+          </div>
+          <div className="rounded-2xl bg-white/10 backdrop-blur-sm p-5 border border-white/10">
+            <p className="text-sm text-white/90 italic leading-relaxed">
+              "{t("Aminata répond à mes clients même la nuit. J'ai gagné 3 heures par jour.")}"
+            </p>
+            <p className="text-xs text-white/60 mt-3">
+              — {t("Fatima, commerçante à Ouagadougou")}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
