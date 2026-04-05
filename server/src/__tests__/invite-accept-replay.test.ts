@@ -62,14 +62,14 @@ describe("mergeJoinDefaultsPayloadForReplay", () => {
     const merged = mergeJoinDefaultsPayloadForReplay(
       {
         url: "ws://old.example:18789",
-        baaralyApiUrl: "http://host.docker.internal:3100",
+        baaraliApiUrl: "http://host.docker.internal:3100",
         headers: {
           "x-openclaw-token": "old-token-1234567890",
           "x-custom": "keep-me",
         },
       },
       {
-        baaralyApiUrl: "https://baaraly.example.com",
+        baaraliApiUrl: "https://baarali.example.com",
         headers: {
           "x-openclaw-token": "new-token-1234567890",
         },
@@ -83,7 +83,7 @@ describe("mergeJoinDefaultsPayloadForReplay", () => {
     }) as Record<string, unknown>;
 
     expect(normalized.url).toBe("ws://old.example:18789");
-    expect(normalized.baaralyApiUrl).toBe("https://baaraly.example.com");
+    expect(normalized.baaraliApiUrl).toBe("https://baarali.example.com");
     expect(normalized.headers).toMatchObject({
       "x-openclaw-token": "new-token-1234567890",
       "x-custom": "keep-me",

@@ -50,16 +50,16 @@ function pickReadableTextColor(background: string): string {
 }
 
 export function getWorktreeUiBranding(): WorktreeUiBranding | null {
-  if (readMetaContent("baaraly-worktree-enabled") !== "true") return null;
+  if (readMetaContent("baarali-worktree-enabled") !== "true") return null;
 
-  const name = readMetaContent("baaraly-worktree-name");
-  const color = normalizeHexColor(readMetaContent("baaraly-worktree-color"));
+  const name = readMetaContent("baarali-worktree-name");
+  const color = normalizeHexColor(readMetaContent("baarali-worktree-color"));
   if (!name || !color) return null;
 
   return {
     enabled: true,
     name,
     color,
-    textColor: normalizeHexColor(readMetaContent("baaraly-worktree-text-color")) ?? pickReadableTextColor(color),
+    textColor: normalizeHexColor(readMetaContent("baarali-worktree-text-color")) ?? pickReadableTextColor(color),
   };
 }

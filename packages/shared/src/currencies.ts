@@ -1,4 +1,4 @@
-// Devises africaines et internationales supportées par Baaraly
+// Devises africaines et internationales supportées par Baarali
 // Benewende Group SARL — infrastructure tech souveraine africaine
 
 const CURRENCIES = {

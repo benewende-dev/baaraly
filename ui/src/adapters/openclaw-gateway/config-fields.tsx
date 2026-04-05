@@ -134,19 +134,19 @@ export function OpenClawGatewayConfigFields({
 
       {!isCreate && (
         <>
-          <Field label="Baaraly API URL override">
+          <Field label="Baarali API URL override">
             <DraftInput
               value={
                 eff(
                   "adapterConfig",
-                  "baaralyApiUrl",
-                  String(config.baaralyApiUrl ?? ""),
+                  "baaraliApiUrl",
+                  String(config.baaraliApiUrl ?? ""),
                 )
               }
-              onCommit={(v) => mark("adapterConfig", "baaralyApiUrl", v || undefined)}
+              onCommit={(v) => mark("adapterConfig", "baaraliApiUrl", v || undefined)}
               immediate
               className={inputClass}
-              placeholder="https://baaraly.example"
+              placeholder="https://baarali.example"
             />
           </Field>
 
@@ -165,11 +165,11 @@ export function OpenClawGatewayConfigFields({
           {sessionStrategy === "fixed" && (
             <Field label="Session key">
               <DraftInput
-                value={eff("adapterConfig", "sessionKey", String(config.sessionKey ?? "baaraly"))}
+                value={eff("adapterConfig", "sessionKey", String(config.sessionKey ?? "baarali"))}
                 onCommit={(v) => mark("adapterConfig", "sessionKey", v || undefined)}
                 immediate
                 className={inputClass}
-                placeholder="baaraly"
+                placeholder="baarali"
               />
             </Field>
           )}
@@ -226,7 +226,7 @@ export function OpenClawGatewayConfigFields({
 
           <Field label="Device auth">
             <div className="text-xs text-muted-foreground leading-relaxed">
-              Always enabled for gateway agents. Baaraly persists a device key during onboarding so pairing approvals
+              Always enabled for gateway agents. Baarali persists a device key during onboarding so pairing approvals
               remain stable across runs.
             </div>
           </Field>

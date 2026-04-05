@@ -61,10 +61,10 @@ import {
 const MAX_LIVE_LOG_CHUNK_BYTES = 8 * 1024;
 const HEARTBEAT_MAX_CONCURRENT_RUNS_DEFAULT = 1;
 const HEARTBEAT_MAX_CONCURRENT_RUNS_MAX = 10;
-const DEFERRED_WAKE_CONTEXT_KEY = "_baaralyWakeContext";
+const DEFERRED_WAKE_CONTEXT_KEY = "_baaraliWakeContext";
 const DETACHED_PROCESS_ERROR_CODE = "process_detached";
 const startLocksByAgent = new Map<string, Promise<void>>();
-const REPO_ONLY_CWD_SENTINEL = "/__baaraly_repo_only__";
+const REPO_ONLY_CWD_SENTINEL = "/__baarali_repo_only__";
 const MANAGED_WORKSPACE_GIT_CLONE_TIMEOUT_MS = 10 * 60 * 1000;
 const execFile = promisify(execFileCallback);
 const SESSIONED_LOCAL_ADAPTERS = new Set([
@@ -552,7 +552,7 @@ export function shouldResetTaskSessionForWake(
 export function formatRuntimeWorkspaceWarningLog(warning: string) {
   return {
     stream: "stdout" as const,
-    chunk: `[baaraly] ${warning}\n`,
+    chunk: `[baarali] ${warning}\n`,
   };
 }
 
@@ -979,7 +979,7 @@ export function heartbeatService(db: Db) {
       readNonEmptyString(latestRun.error);
 
     const handoffMarkdown = [
-      "Baaraly session handoff:",
+      "Baarali session handoff:",
       `- Previous session: ${sessionId}`,
       issueId ? `- Issue: ${issueId}` : "",
       `- Rotation reason: ${reason}`,
@@ -2058,7 +2058,7 @@ export function heartbeatService(db: Db) {
     const runtimeSkillEntries = await companySkills.listRuntimeSkillEntries(agent.companyId);
     const runtimeConfig = {
       ...resolvedConfig,
-      baaralyRuntimeSkills: runtimeSkillEntries,
+      baaraliRuntimeSkills: runtimeSkillEntries,
     };
     const issueRef = issueContext
       ? {
@@ -2259,7 +2259,7 @@ export function heartbeatService(db: Db) {
           ]
         : []),
     ];
-    context.baaralyWorkspace = {
+    context.baaraliWorkspace = {
       cwd: executionWorkspace.cwd,
       source: executionWorkspace.source,
       mode: executionWorkspaceMode,
@@ -2276,7 +2276,7 @@ export function heartbeatService(db: Db) {
         return home;
       })(),
     };
-    context.baaralyWorkspaces = resolvedWorkspace.workspaceHints;
+    context.baaraliWorkspaces = resolvedWorkspace.workspaceHints;
     const runtimeServiceIntents = (() => {
       const runtimeConfig = parseObject(resolvedConfig.workspaceRuntime);
       return Array.isArray(runtimeConfig.services)
@@ -2286,9 +2286,9 @@ export function heartbeatService(db: Db) {
         : [];
     })();
     if (runtimeServiceIntents.length > 0) {
-      context.baaralyRuntimeServiceIntents = runtimeServiceIntents;
+      context.baaraliRuntimeServiceIntents = runtimeServiceIntents;
     } else {
-      delete context.baaralyRuntimeServiceIntents;
+      delete context.baaraliRuntimeServiceIntents;
     }
     if (executionWorkspace.projectId && !readNonEmptyString(context.projectId)) {
       context.projectId = executionWorkspace.projectId;
@@ -2311,9 +2311,9 @@ export function heartbeatService(db: Db) {
       issueId,
     });
     if (sessionCompaction.rotate) {
-      context.baaralySessionHandoffMarkdown = sessionCompaction.handoffMarkdown;
-      context.baaralySessionRotationReason = sessionCompaction.reason;
-      context.baaralyPreviousSessionId = previousSessionDisplayId ?? runtimeSessionIdForAdapter;
+      context.baaraliSessionHandoffMarkdown = sessionCompaction.handoffMarkdown;
+      context.baaraliSessionRotationReason = sessionCompaction.reason;
+      context.baaraliPreviousSessionId = previousSessionDisplayId ?? runtimeSessionIdForAdapter;
       runtimeSessionIdForAdapter = null;
       runtimeSessionParamsForAdapter = null;
       previousSessionDisplayId = null;
@@ -2323,9 +2323,9 @@ export function heartbeatService(db: Db) {
         );
       }
     } else {
-      delete context.baaralySessionHandoffMarkdown;
-      delete context.baaralySessionRotationReason;
-      delete context.baaralyPreviousSessionId;
+      delete context.baaraliSessionHandoffMarkdown;
+      delete context.baaraliSessionRotationReason;
+      delete context.baaraliPreviousSessionId;
     }
 
     const runtimeForAdapter = {
@@ -2454,8 +2454,8 @@ export function heartbeatService(db: Db) {
         onLog,
       });
       if (runtimeServices.length > 0) {
-        context.baaralyRuntimeServices = runtimeServices;
-        context.baaralyRuntimePrimaryUrl =
+        context.baaraliRuntimeServices = runtimeServices;
+        context.baaraliRuntimePrimaryUrl =
           runtimeServices.find((service) => readNonEmptyString(service.url))?.url ?? null;
         await db
           .update(heartbeatRuns)
@@ -2478,7 +2478,7 @@ export function heartbeatService(db: Db) {
         } catch (err) {
           await onLog(
             "stderr",
-            `[baaraly] Failed to post workspace-ready comment: ${err instanceof Error ? err.message : String(err)}\n`,
+            `[baarali] Failed to post workspace-ready comment: ${err instanceof Error ? err.message : String(err)}\n`,
           );
         }
       }
@@ -2509,7 +2509,7 @@ export function heartbeatService(db: Db) {
             runId: run.id,
             adapterType: agent.adapterType,
           },
-          "local agent jwt secret missing or invalid; running without injected BAARALY_API_KEY",
+          "local agent jwt secret missing or invalid; running without injected BAARALI_API_KEY",
         );
       }
       const adapterResult = await adapter.execute({
@@ -2545,8 +2545,8 @@ export function heartbeatService(db: Db) {
           ...runtimeServices,
           ...adapterManagedRuntimeServices,
         ];
-        context.baaralyRuntimeServices = combinedRuntimeServices;
-        context.baaralyRuntimePrimaryUrl =
+        context.baaraliRuntimeServices = combinedRuntimeServices;
+        context.baaraliRuntimePrimaryUrl =
           combinedRuntimeServices.find((service) => readNonEmptyString(service.url))?.url ?? null;
         await db
           .update(heartbeatRuns)
@@ -2568,7 +2568,7 @@ export function heartbeatService(db: Db) {
           } catch (err) {
             await onLog(
               "stderr",
-              `[baaraly] Failed to post adapter-managed runtime comment: ${err instanceof Error ? err.message : String(err)}\n`,
+              `[baarali] Failed to post adapter-managed runtime comment: ${err instanceof Error ? err.message : String(err)}\n`,
             );
           }
         }

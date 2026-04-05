@@ -422,18 +422,18 @@ describe("openclaw gateway adapter execute", () => {
               issueId: "issue-123",
               wakeReason: "issue_assigned",
               issueIds: ["issue-123"],
-              baaralyWorkspace: {
+              baaraliWorkspace: {
                 cwd: "/tmp/worktrees/pap-123",
                 strategy: "git_worktree",
                 branchName: "pap-123-test",
               },
-              baaralyWorkspaces: [
+              baaraliWorkspaces: [
                 {
                   id: "workspace-1",
                   cwd: "/tmp/project",
                 },
               ],
-              baaralyRuntimeServiceIntents: [
+              baaraliRuntimeServiceIntents: [
                 {
                   name: "preview",
                   lifecycle: "ephemeral",
@@ -452,10 +452,10 @@ describe("openclaw gateway adapter execute", () => {
       const payload = gateway.getAgentPayload();
       expect(payload).toBeTruthy();
       expect(payload?.idempotencyKey).toBe("run-123");
-      expect(payload?.sessionKey).toBe("baaraly:issue:issue-123");
+      expect(payload?.sessionKey).toBe("baarali:issue:issue-123");
       expect(String(payload?.message ?? "")).toContain("wake now");
-      expect(String(payload?.message ?? "")).toContain("BAARALY_RUN_ID=run-123");
-      expect(String(payload?.message ?? "")).toContain("BAARALY_TASK_ID=task-123");
+      expect(String(payload?.message ?? "")).toContain("BAARALI_RUN_ID=run-123");
+      expect(String(payload?.message ?? "")).toContain("BAARALI_TASK_ID=task-123");
 
       expect(logs.some((entry) => entry.includes("[openclaw-gateway:event] run=run-123 stream=assistant"))).toBe(true);
     } finally {

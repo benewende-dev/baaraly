@@ -1,7 +1,7 @@
 import type { Project } from "@paperclipai/shared";
 
-export const PROJECT_ORDER_UPDATED_EVENT = "baaraly:project-order-updated";
-const PROJECT_ORDER_STORAGE_PREFIX = "baaraly.projectOrder";
+export const PROJECT_ORDER_UPDATED_EVENT = "baarali:project-order-updated";
+const PROJECT_ORDER_STORAGE_PREFIX = "baarali.projectOrder";
 const ANONYMOUS_USER_ID = "anonymous";
 
 type ProjectOrderUpdatedDetail = {

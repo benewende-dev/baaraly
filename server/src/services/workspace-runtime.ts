@@ -97,7 +97,7 @@ function stableStringify(value: unknown): string {
 export function sanitizeRuntimeServiceBaseEnv(baseEnv: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
   const env: NodeJS.ProcessEnv = { ...baseEnv };
   for (const key of Object.keys(env)) {
-    if (key.startsWith("BAARALY_")) {
+    if (key.startsWith("BAARALI_")) {
       delete env[key];
     }
   }
@@ -208,7 +208,7 @@ function sanitizeBranchName(value: string): string {
     .replace(/[^A-Za-z0-9._/-]+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^[-/.]+|[-/.]+$/g, "")
-    .slice(0, 120) || "baaraly-work";
+    .slice(0, 120) || "baarali-work";
 }
 
 function isAbsolutePath(value: string) {
@@ -300,24 +300,24 @@ function buildWorkspaceCommandEnv(input: {
   created: boolean;
 }) {
   const env: NodeJS.ProcessEnv = { ...process.env };
-  env.BAARALY_WORKSPACE_CWD = input.worktreePath;
-  env.BAARALY_WORKSPACE_PATH = input.worktreePath;
-  env.BAARALY_WORKSPACE_WORKTREE_PATH = input.worktreePath;
-  env.BAARALY_WORKSPACE_BRANCH = input.branchName;
-  env.BAARALY_WORKSPACE_BASE_CWD = input.base.baseCwd;
-  env.BAARALY_WORKSPACE_REPO_ROOT = input.repoRoot;
-  env.BAARALY_WORKSPACE_SOURCE = input.base.source;
-  env.BAARALY_WORKSPACE_REPO_REF = input.base.repoRef ?? "";
-  env.BAARALY_WORKSPACE_REPO_URL = input.base.repoUrl ?? "";
-  env.BAARALY_WORKSPACE_CREATED = input.created ? "true" : "false";
-  env.BAARALY_PROJECT_ID = input.base.projectId ?? "";
-  env.BAARALY_PROJECT_WORKSPACE_ID = input.base.workspaceId ?? "";
-  env.BAARALY_AGENT_ID = input.agent.id;
-  env.BAARALY_AGENT_NAME = input.agent.name;
-  env.BAARALY_COMPANY_ID = input.agent.companyId;
-  env.BAARALY_ISSUE_ID = input.issue?.id ?? "";
-  env.BAARALY_ISSUE_IDENTIFIER = input.issue?.identifier ?? "";
-  env.BAARALY_ISSUE_TITLE = input.issue?.title ?? "";
+  env.BAARALI_WORKSPACE_CWD = input.worktreePath;
+  env.BAARALI_WORKSPACE_PATH = input.worktreePath;
+  env.BAARALI_WORKSPACE_WORKTREE_PATH = input.worktreePath;
+  env.BAARALI_WORKSPACE_BRANCH = input.branchName;
+  env.BAARALI_WORKSPACE_BASE_CWD = input.base.baseCwd;
+  env.BAARALI_WORKSPACE_REPO_ROOT = input.repoRoot;
+  env.BAARALI_WORKSPACE_SOURCE = input.base.source;
+  env.BAARALI_WORKSPACE_REPO_REF = input.base.repoRef ?? "";
+  env.BAARALI_WORKSPACE_REPO_URL = input.base.repoUrl ?? "";
+  env.BAARALI_WORKSPACE_CREATED = input.created ? "true" : "false";
+  env.BAARALI_PROJECT_ID = input.base.projectId ?? "";
+  env.BAARALI_PROJECT_WORKSPACE_ID = input.base.workspaceId ?? "";
+  env.BAARALI_AGENT_ID = input.agent.id;
+  env.BAARALI_AGENT_NAME = input.agent.name;
+  env.BAARALI_COMPANY_ID = input.agent.companyId;
+  env.BAARALI_ISSUE_ID = input.issue?.id ?? "";
+  env.BAARALI_ISSUE_IDENTIFIER = input.issue?.identifier ?? "";
+  env.BAARALI_ISSUE_TITLE = input.issue?.title ?? "";
   return env;
 }
 
@@ -505,18 +505,18 @@ function buildExecutionWorkspaceCleanupEnv(input: {
   projectWorkspaceCwd?: string | null;
 }) {
   const env: NodeJS.ProcessEnv = sanitizeRuntimeServiceBaseEnv(process.env);
-  env.BAARALY_WORKSPACE_CWD = input.workspace.cwd ?? "";
-  env.BAARALY_WORKSPACE_PATH = input.workspace.cwd ?? "";
-  env.BAARALY_WORKSPACE_WORKTREE_PATH =
+  env.BAARALI_WORKSPACE_CWD = input.workspace.cwd ?? "";
+  env.BAARALI_WORKSPACE_PATH = input.workspace.cwd ?? "";
+  env.BAARALI_WORKSPACE_WORKTREE_PATH =
     input.workspace.providerRef ?? input.workspace.cwd ?? "";
-  env.BAARALY_WORKSPACE_BRANCH = input.workspace.branchName ?? "";
-  env.BAARALY_WORKSPACE_BASE_CWD = input.projectWorkspaceCwd ?? "";
-  env.BAARALY_WORKSPACE_REPO_ROOT = input.projectWorkspaceCwd ?? "";
-  env.BAARALY_WORKSPACE_REPO_URL = input.workspace.repoUrl ?? "";
-  env.BAARALY_WORKSPACE_REPO_REF = input.workspace.baseRef ?? "";
-  env.BAARALY_PROJECT_ID = input.workspace.projectId ?? "";
-  env.BAARALY_PROJECT_WORKSPACE_ID = input.workspace.projectWorkspaceId ?? "";
-  env.BAARALY_ISSUE_ID = input.workspace.sourceIssueId ?? "";
+  env.BAARALI_WORKSPACE_BRANCH = input.workspace.branchName ?? "";
+  env.BAARALI_WORKSPACE_BASE_CWD = input.projectWorkspaceCwd ?? "";
+  env.BAARALI_WORKSPACE_REPO_ROOT = input.projectWorkspaceCwd ?? "";
+  env.BAARALI_WORKSPACE_REPO_URL = input.workspace.repoUrl ?? "";
+  env.BAARALI_WORKSPACE_REPO_REF = input.workspace.baseRef ?? "";
+  env.BAARALI_PROJECT_ID = input.workspace.projectId ?? "";
+  env.BAARALI_PROJECT_WORKSPACE_ID = input.workspace.projectWorkspaceId ?? "";
+  env.BAARALI_ISSUE_ID = input.workspace.sourceIssueId ?? "";
   return env;
 }
 
@@ -573,7 +573,7 @@ export async function realizeExecutionWorkspace(input: {
   const configuredParentDir = asString(rawStrategy.worktreeParentDir, "");
   const worktreeParentDir = configuredParentDir
     ? resolveConfiguredPath(configuredParentDir, repoRoot)
-    : path.join(repoRoot, ".baaraly", "worktrees");
+    : path.join(repoRoot, ".baarali", "worktrees");
   const worktreePath = path.join(worktreeParentDir, branchName);
   const baseRef = asString(rawStrategy.baseRef, input.base.repoRef ?? "HEAD");
 

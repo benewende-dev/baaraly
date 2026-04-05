@@ -109,7 +109,7 @@ function createDbStub() {
         where: vi.fn().mockReturnValue({
           then: vi.fn().mockResolvedValue([{
             id: companyId,
-            name: "Baaraly",
+            name: "Baarali",
             requireBoardApprovalForNewAgents: false,
           }]),
         }),

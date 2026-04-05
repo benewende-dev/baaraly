@@ -36,7 +36,7 @@ describeEmbeddedPostgres("routine service live-execution coalescing", () => {
   let tempDb: Awaited<ReturnType<typeof startEmbeddedPostgresTestDatabase>> | null = null;
 
   beforeAll(async () => {
-    tempDb = await startEmbeddedPostgresTestDatabase("baaraly-routines-service-");
+    tempDb = await startEmbeddedPostgresTestDatabase("baarali-routines-service-");
     db = createDb(tempDb.connectionString);
   }, 20_000);
 
@@ -91,7 +91,7 @@ describeEmbeddedPostgres("routine service live-execution coalescing", () => {
 
     await db.insert(companies).values({
       id: companyId,
-      name: "Baaraly",
+      name: "Baarali",
       issuePrefix,
       requireBoardApprovalForNewAgents: false,
     });

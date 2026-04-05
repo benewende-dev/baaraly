@@ -149,8 +149,8 @@ async function callOpenRouter(
     headers: {
       "Authorization": `Bearer ${apiKey}`,
       "Content-Type": "application/json",
-      "HTTP-Referer": process.env.BAARALY_APP_URL ?? "https://baaraly.com",
-      "X-Title": "Baaraly",
+      "HTTP-Referer": process.env.BAARALI_APP_URL ?? "https://baarali.com",
+      "X-Title": "Baarali",
     },
     body: JSON.stringify(body),
   });
@@ -288,11 +288,11 @@ export async function generateText(
 }
 
 // TÂCHE 8 — Viral Loop signature
-export const BAARALY_SIGNATURE = "\n\n---\nEnvoyé avec Baaraly \uD83E\uDD16";
+export const BAARALI_SIGNATURE = "\n\n---\nEnvoyé avec Baarali \uD83E\uDD16";
 
 /**
- * Append Baaraly viral signature to outgoing text.
+ * Append Baarali viral signature to outgoing text.
  */
 export function withSignature(text: string): string {
-  return text + BAARALY_SIGNATURE;
+  return text + BAARALI_SIGNATURE;
 }

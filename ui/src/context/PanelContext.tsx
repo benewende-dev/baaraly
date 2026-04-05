@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useState, type ReactNode } from "react";
 
-const STORAGE_KEY = "baaraly:panel-visible";
+const STORAGE_KEY = "baarali:panel-visible";
 
 interface PanelContextValue {
   panelContent: ReactNode | null;

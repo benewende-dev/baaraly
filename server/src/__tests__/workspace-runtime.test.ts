@@ -26,10 +26,10 @@ async function runGit(cwd: string, args: string[]) {
 }
 
 async function createTempRepo() {
-  const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-worktree-repo-"));
+  const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-worktree-repo-"));
   await runGit(repoRoot, ["init"]);
-  await runGit(repoRoot, ["config", "user.email", "baaraly@example.com"]);
-  await runGit(repoRoot, ["config", "user.name", "Baaraly Test"]);
+  await runGit(repoRoot, ["config", "user.email", "baarali@example.com"]);
+  await runGit(repoRoot, ["config", "user.name", "Baarali Test"]);
   await fs.writeFile(path.join(repoRoot, "README.md"), "hello\n", "utf8");
   await runGit(repoRoot, ["add", "README.md"]);
   await runGit(repoRoot, ["commit", "-m", "Initial commit"]);
@@ -123,10 +123,10 @@ afterEach(async () => {
       leasedRunIds.delete(runId);
     }),
   );
-  delete process.env.BAARALY_CONFIG;
-  delete process.env.BAARALY_HOME;
-  delete process.env.BAARALY_INSTANCE_ID;
-  delete process.env.BAARALY_WORKTREES_DIR;
+  delete process.env.BAARALI_CONFIG;
+  delete process.env.BAARALI_HOME;
+  delete process.env.BAARALI_INSTANCE_ID;
+  delete process.env.BAARALI_WORKTREES_DIR;
   delete process.env.DATABASE_URL;
 });
 
@@ -164,7 +164,7 @@ describe("realizeExecutionWorkspace", () => {
     expect(first.strategy).toBe("git_worktree");
     expect(first.created).toBe(true);
     expect(first.branchName).toBe("PAP-447-add-worktree-support");
-    expect(first.cwd).toContain(path.join(".baaraly", "worktrees"));
+    expect(first.cwd).toContain(path.join(".baarali", "worktrees"));
     await expect(fs.stat(path.join(first.cwd, ".git"))).resolves.toBeTruthy();
 
     const second = await realizeExecutionWorkspace({
@@ -207,9 +207,9 @@ describe("realizeExecutionWorkspace", () => {
       [
         "#!/usr/bin/env bash",
         "set -euo pipefail",
-        "printf '%s\\n' \"$BAARALY_WORKSPACE_BRANCH\" > .baaraly-provision-branch",
-        "printf '%s\\n' \"$BAARALY_WORKSPACE_BASE_CWD\" > .baaraly-provision-base",
-        "printf '%s\\n' \"$BAARALY_WORKSPACE_CREATED\" > .baaraly-provision-created",
+        "printf '%s\\n' \"$BAARALI_WORKSPACE_BRANCH\" > .baarali-provision-branch",
+        "printf '%s\\n' \"$BAARALI_WORKSPACE_BASE_CWD\" > .baarali-provision-base",
+        "printf '%s\\n' \"$BAARALI_WORKSPACE_CREATED\" > .baarali-provision-created",
       ].join("\n"),
       "utf8",
     );
@@ -244,13 +244,13 @@ describe("realizeExecutionWorkspace", () => {
       },
     });
 
-    await expect(fs.readFile(path.join(workspace.cwd, ".baaraly-provision-branch"), "utf8")).resolves.toBe(
+    await expect(fs.readFile(path.join(workspace.cwd, ".baarali-provision-branch"), "utf8")).resolves.toBe(
       "PAP-448-run-provision-command\n",
     );
-    await expect(fs.readFile(path.join(workspace.cwd, ".baaraly-provision-base"), "utf8")).resolves.toBe(
+    await expect(fs.readFile(path.join(workspace.cwd, ".baarali-provision-base"), "utf8")).resolves.toBe(
       `${repoRoot}\n`,
     );
-    await expect(fs.readFile(path.join(workspace.cwd, ".baaraly-provision-created"), "utf8")).resolves.toBe(
+    await expect(fs.readFile(path.join(workspace.cwd, ".baarali-provision-created"), "utf8")).resolves.toBe(
       "true\n",
     );
 
@@ -282,22 +282,22 @@ describe("realizeExecutionWorkspace", () => {
       },
     });
 
-    await expect(fs.readFile(path.join(reused.cwd, ".baaraly-provision-created"), "utf8")).resolves.toBe("false\n");
+    await expect(fs.readFile(path.join(reused.cwd, ".baarali-provision-created"), "utf8")).resolves.toBe("false\n");
   });
 
-  it("writes an isolated repo-local Baaraly config and worktree branding when provisioning", async () => {
+  it("writes an isolated repo-local Baarali config and worktree branding when provisioning", async () => {
     const repoRoot = await createTempRepo();
     const previousCwd = process.cwd();
-    const baaralyHome = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-worktree-home-"));
-    const isolatedWorktreeHome = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-worktrees-"));
+    const baaraliHome = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-worktree-home-"));
+    const isolatedWorktreeHome = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-worktrees-"));
     const instanceId = "worktree-base";
-    const sharedConfigDir = path.join(baaralyHome, "instances", instanceId);
+    const sharedConfigDir = path.join(baaraliHome, "instances", instanceId);
     const sharedConfigPath = path.join(sharedConfigDir, "config.json");
     const sharedEnvPath = path.join(sharedConfigDir, ".env");
 
-    process.env.BAARALY_HOME = baaralyHome;
-    process.env.BAARALY_INSTANCE_ID = instanceId;
-    process.env.BAARALY_WORKTREES_DIR = isolatedWorktreeHome;
+    process.env.BAARALI_HOME = baaraliHome;
+    process.env.BAARALI_INSTANCE_ID = instanceId;
+    process.env.BAARALI_WORKTREES_DIR = isolatedWorktreeHome;
 
     await fs.mkdir(sharedConfigDir, { recursive: true });
     await fs.writeFile(
@@ -361,7 +361,7 @@ describe("realizeExecutionWorkspace", () => {
       ) + "\n",
       "utf8",
     );
-    await fs.writeFile(sharedEnvPath, 'DATABASE_URL="postgres://worktree:test@db.example.com:6543/baaraly"\n', "utf8");
+    await fs.writeFile(sharedEnvPath, 'DATABASE_URL="postgres://worktree:test@db.example.com:6543/baarali"\n', "utf8");
 
     await fs.mkdir(path.join(repoRoot, "scripts"), { recursive: true });
     await fs.copyFile(
@@ -400,8 +400,8 @@ describe("realizeExecutionWorkspace", () => {
         },
       });
 
-      const configPath = path.join(workspace.cwd, ".baaraly", "config.json");
-      const envPath = path.join(workspace.cwd, ".baaraly", ".env");
+      const configPath = path.join(workspace.cwd, ".baarali", "config.json");
+      const envPath = path.join(workspace.cwd, ".baarali", ".env");
       const envContents = await fs.readFile(envPath, "utf8");
       const configContents = JSON.parse(await fs.readFile(configPath, "utf8"));
       const configStats = await fs.lstat(configPath);
@@ -420,12 +420,12 @@ describe("realizeExecutionWorkspace", () => {
         path.join(expectedInstanceRoot, "secrets", "master.key"),
       );
       expect(envContents).not.toContain("DATABASE_URL=");
-      expect(envContents).toContain(`BAARALY_HOME=${JSON.stringify(isolatedWorktreeHome)}`);
-      expect(envContents).toContain(`BAARALY_INSTANCE_ID=${JSON.stringify(expectedInstanceId)}`);
-      expect(envContents).toContain(`BAARALY_CONFIG=${JSON.stringify(configPath)}`);
-      expect(envContents).toContain("BAARALY_IN_WORKTREE=true");
+      expect(envContents).toContain(`BAARALI_HOME=${JSON.stringify(isolatedWorktreeHome)}`);
+      expect(envContents).toContain(`BAARALI_INSTANCE_ID=${JSON.stringify(expectedInstanceId)}`);
+      expect(envContents).toContain(`BAARALI_CONFIG=${JSON.stringify(configPath)}`);
+      expect(envContents).toContain("BAARALI_IN_WORKTREE=true");
       expect(envContents).toContain(
-        `BAARALY_WORKTREE_NAME=${JSON.stringify("PAP-885-show-worktree-banner")}`,
+        `BAARALI_WORKTREE_NAME=${JSON.stringify("PAP-885-show-worktree-banner")}`,
       );
 
       process.chdir(workspace.cwd);
@@ -736,7 +736,7 @@ describe("realizeExecutionWorkspace", () => {
 
 describe("ensureRuntimeServicesForRun", () => {
   it("reuses shared runtime services across runs and starts a new service after release", async () => {
-    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-runtime-workspace-"));
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-runtime-workspace-"));
     const workspace = buildWorkspace(workspaceRoot);
     const serviceCommand =
       "node -e \"require('node:http').createServer((req,res)=>res.end('ok')).listen(Number(process.env.PORT), '127.0.0.1')\"";
@@ -834,8 +834,8 @@ describe("ensureRuntimeServicesForRun", () => {
     expect(third[0]?.id).not.toBe(first[0]?.id);
   });
 
-  it("does not leak parent Baaraly instance env into runtime service commands", async () => {
-    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-runtime-env-"));
+  it("does not leak parent Baarali instance env into runtime service commands", async () => {
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-runtime-env-"));
     const workspace = buildWorkspace(workspaceRoot);
     const envCapturePath = path.join(workspaceRoot, "captured-env.json");
     const serviceCommand = [
@@ -844,9 +844,9 @@ describe("ensureRuntimeServicesForRun", () => {
         [
           "const fs = require('node:fs');",
           `fs.writeFileSync(${JSON.stringify(envCapturePath)}, JSON.stringify({`,
-          "baaralyConfig: process.env.BAARALY_CONFIG ?? null,",
-          "baaralyHome: process.env.BAARALY_HOME ?? null,",
-          "baaralyInstanceId: process.env.BAARALY_INSTANCE_ID ?? null,",
+          "baaraliConfig: process.env.BAARALI_CONFIG ?? null,",
+          "baaraliHome: process.env.BAARALI_HOME ?? null,",
+          "baaraliInstanceId: process.env.BAARALI_INSTANCE_ID ?? null,",
           "databaseUrl: process.env.DATABASE_URL ?? null,",
           "customEnv: process.env.RUNTIME_CUSTOM_ENV ?? null,",
           "port: process.env.PORT ?? null,",
@@ -856,10 +856,10 @@ describe("ensureRuntimeServicesForRun", () => {
       ),
     ].join(" ");
 
-    process.env.BAARALY_CONFIG = "/tmp/base-baaraly-config.json";
-    process.env.BAARALY_HOME = "/tmp/base-baaraly-home";
-    process.env.BAARALY_INSTANCE_ID = "base-instance";
-    process.env.DATABASE_URL = "postgres://shared-db.example.com/baaraly";
+    process.env.BAARALI_CONFIG = "/tmp/base-baarali-config.json";
+    process.env.BAARALI_HOME = "/tmp/base-baarali-home";
+    process.env.BAARALI_INSTANCE_ID = "base-instance";
+    process.env.DATABASE_URL = "postgres://shared-db.example.com/baarali";
 
     const runId = "run-env";
     leasedRunIds.add(runId);
@@ -903,9 +903,9 @@ describe("ensureRuntimeServicesForRun", () => {
 
     expect(services).toHaveLength(1);
     const captured = JSON.parse(await fs.readFile(envCapturePath, "utf8")) as Record<string, string | null>;
-    expect(captured.baaralyConfig).toBeNull();
-    expect(captured.baaralyHome).toBeNull();
-    expect(captured.baaralyInstanceId).toBeNull();
+    expect(captured.baaraliConfig).toBeNull();
+    expect(captured.baaraliHome).toBeNull();
+    expect(captured.baaraliInstanceId).toBeNull();
     expect(captured.databaseUrl).toBeNull();
     expect(captured.customEnv).toBe("from-adapter");
     expect(captured.port).toMatch(/^\d+$/);
@@ -915,7 +915,7 @@ describe("ensureRuntimeServicesForRun", () => {
   });
 
   it("stops execution workspace runtime services by executionWorkspaceId", async () => {
-    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-runtime-stop-"));
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-runtime-stop-"));
     const workspace = buildWorkspace(workspaceRoot);
     const runId = "run-stop";
     leasedRunIds.add(runId);
@@ -969,7 +969,7 @@ describe("ensureRuntimeServicesForRun", () => {
   });
 
   it("does not stop services in sibling directories when matching by workspace cwd", async () => {
-    const workspaceParent = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-runtime-sibling-"));
+    const workspaceParent = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-runtime-sibling-"));
     const targetWorkspaceRoot = path.join(workspaceParent, "project");
     const siblingWorkspaceRoot = path.join(workspaceParent, "project-extended", "service");
     await fs.mkdir(targetWorkspaceRoot, { recursive: true });

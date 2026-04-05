@@ -2,7 +2,7 @@ import { readConfigFile } from "./config-file.js";
 import { existsSync, realpathSync } from "node:fs";
 import { resolve } from "node:path";
 import { config as loadDotenv } from "dotenv";
-import { resolveBaaralyEnvPath } from "./paths.js";
+import { resolveBaaraliEnvPath } from "./paths.js";
 import { maybeRepairLegacyWorktreeConfigAndEnvFiles } from "./worktree-config.js";
 import {
   AUTH_BASE_URL_MODES,
@@ -24,15 +24,15 @@ import {
   resolveHomeAwarePath,
 } from "./home-paths.js";
 
-const BAARALY_ENV_FILE_PATH = resolveBaaralyEnvPath();
-if (existsSync(BAARALY_ENV_FILE_PATH)) {
-  loadDotenv({ path: BAARALY_ENV_FILE_PATH, override: false, quiet: true });
+const BAARALI_ENV_FILE_PATH = resolveBaaraliEnvPath();
+if (existsSync(BAARALI_ENV_FILE_PATH)) {
+  loadDotenv({ path: BAARALI_ENV_FILE_PATH, override: false, quiet: true });
 }
 
 const CWD_ENV_PATH = resolve(process.cwd(), ".env");
-const isSameFile = existsSync(CWD_ENV_PATH) && existsSync(BAARALY_ENV_FILE_PATH)
-  ? realpathSync(CWD_ENV_PATH) === realpathSync(BAARALY_ENV_FILE_PATH)
-  : CWD_ENV_PATH === BAARALY_ENV_FILE_PATH;
+const isSameFile = existsSync(CWD_ENV_PATH) && existsSync(BAARALI_ENV_FILE_PATH)
+  ? realpathSync(CWD_ENV_PATH) === realpathSync(BAARALI_ENV_FILE_PATH)
+  : CWD_ENV_PATH === BAARALI_ENV_FILE_PATH;
 if (!isSameFile && existsSync(CWD_ENV_PATH)) {
   loadDotenv({ path: CWD_ENV_PATH, override: false, quiet: true });
 }
@@ -88,13 +88,13 @@ export function loadConfig(): Config {
   const fileDatabaseBackup = fileConfig?.database.backup;
   const fileSecrets = fileConfig?.secrets;
   const fileStorage = fileConfig?.storage;
-  const strictModeFromEnv = process.env.BAARALY_SECRETS_STRICT_MODE;
+  const strictModeFromEnv = process.env.BAARALI_SECRETS_STRICT_MODE;
   const secretsStrictMode =
     strictModeFromEnv !== undefined
       ? strictModeFromEnv === "true"
       : (fileSecrets?.strictMode ?? false);
 
-  const providerFromEnvRaw = process.env.BAARALY_SECRETS_PROVIDER;
+  const providerFromEnvRaw = process.env.BAARALI_SECRETS_PROVIDER;
   const providerFromEnv =
     providerFromEnvRaw && SECRET_PROVIDERS.includes(providerFromEnvRaw as SecretProvider)
       ? (providerFromEnvRaw as SecretProvider)
@@ -102,33 +102,33 @@ export function loadConfig(): Config {
   const providerFromFile = fileSecrets?.provider;
   const secretsProvider: SecretProvider = providerFromEnv ?? providerFromFile ?? "local_encrypted";
 
-  const storageProviderFromEnvRaw = process.env.BAARALY_STORAGE_PROVIDER;
+  const storageProviderFromEnvRaw = process.env.BAARALI_STORAGE_PROVIDER;
   const storageProviderFromEnv =
     storageProviderFromEnvRaw && STORAGE_PROVIDERS.includes(storageProviderFromEnvRaw as StorageProvider)
       ? (storageProviderFromEnvRaw as StorageProvider)
       : null;
   const storageProvider: StorageProvider = storageProviderFromEnv ?? fileStorage?.provider ?? "local_disk";
   const storageLocalDiskBaseDir = resolveHomeAwarePath(
-    process.env.BAARALY_STORAGE_LOCAL_DIR ??
+    process.env.BAARALI_STORAGE_LOCAL_DIR ??
       fileStorage?.localDisk?.baseDir ??
       resolveDefaultStorageDir(),
   );
-  const storageS3Bucket = process.env.BAARALY_STORAGE_S3_BUCKET ?? fileStorage?.s3?.bucket ?? "paperclip";
-  const storageS3Region = process.env.BAARALY_STORAGE_S3_REGION ?? fileStorage?.s3?.region ?? "us-east-1";
-  const storageS3Endpoint = process.env.BAARALY_STORAGE_S3_ENDPOINT ?? fileStorage?.s3?.endpoint ?? undefined;
-  const storageS3Prefix = process.env.BAARALY_STORAGE_S3_PREFIX ?? fileStorage?.s3?.prefix ?? "";
+  const storageS3Bucket = process.env.BAARALI_STORAGE_S3_BUCKET ?? fileStorage?.s3?.bucket ?? "paperclip";
+  const storageS3Region = process.env.BAARALI_STORAGE_S3_REGION ?? fileStorage?.s3?.region ?? "us-east-1";
+  const storageS3Endpoint = process.env.BAARALI_STORAGE_S3_ENDPOINT ?? fileStorage?.s3?.endpoint ?? undefined;
+  const storageS3Prefix = process.env.BAARALI_STORAGE_S3_PREFIX ?? fileStorage?.s3?.prefix ?? "";
   const storageS3ForcePathStyle =
-    process.env.BAARALY_STORAGE_S3_FORCE_PATH_STYLE !== undefined
-      ? process.env.BAARALY_STORAGE_S3_FORCE_PATH_STYLE === "true"
+    process.env.BAARALI_STORAGE_S3_FORCE_PATH_STYLE !== undefined
+      ? process.env.BAARALI_STORAGE_S3_FORCE_PATH_STYLE === "true"
       : (fileStorage?.s3?.forcePathStyle ?? false);
 
-  const deploymentModeFromEnvRaw = process.env.BAARALY_DEPLOYMENT_MODE;
+  const deploymentModeFromEnvRaw = process.env.BAARALI_DEPLOYMENT_MODE;
   const deploymentModeFromEnv =
     deploymentModeFromEnvRaw && DEPLOYMENT_MODES.includes(deploymentModeFromEnvRaw as DeploymentMode)
       ? (deploymentModeFromEnvRaw as DeploymentMode)
       : null;
   const deploymentMode: DeploymentMode = deploymentModeFromEnv ?? fileConfig?.server.deploymentMode ?? "local_trusted";
-  const deploymentExposureFromEnvRaw = process.env.BAARALY_DEPLOYMENT_EXPOSURE;
+  const deploymentExposureFromEnvRaw = process.env.BAARALI_DEPLOYMENT_EXPOSURE;
   const deploymentExposureFromEnv =
     deploymentExposureFromEnvRaw &&
     DEPLOYMENT_EXPOSURES.includes(deploymentExposureFromEnvRaw as DeploymentExposure)
@@ -138,15 +138,15 @@ export function loadConfig(): Config {
     deploymentMode === "local_trusted"
       ? "private"
       : (deploymentExposureFromEnv ?? fileConfig?.server.exposure ?? "private");
-  const authBaseUrlModeFromEnvRaw = process.env.BAARALY_AUTH_BASE_URL_MODE;
+  const authBaseUrlModeFromEnvRaw = process.env.BAARALI_AUTH_BASE_URL_MODE;
   const authBaseUrlModeFromEnv =
     authBaseUrlModeFromEnvRaw &&
     AUTH_BASE_URL_MODES.includes(authBaseUrlModeFromEnvRaw as AuthBaseUrlMode)
       ? (authBaseUrlModeFromEnvRaw as AuthBaseUrlMode)
       : null;
-  const publicUrlFromEnv = process.env.BAARALY_PUBLIC_URL;
+  const publicUrlFromEnv = process.env.BAARALI_PUBLIC_URL;
   const authPublicBaseUrlRaw =
-    process.env.BAARALY_AUTH_PUBLIC_BASE_URL ??
+    process.env.BAARALI_AUTH_PUBLIC_BASE_URL ??
     process.env.BETTER_AUTH_URL ??
     process.env.BETTER_AUTH_BASE_URL ??
     publicUrlFromEnv ??
@@ -156,17 +156,17 @@ export function loadConfig(): Config {
     authBaseUrlModeFromEnv ??
     fileConfig?.auth?.baseUrlMode ??
     (authPublicBaseUrl ? "explicit" : "auto");
-  const disableSignUpFromEnv = process.env.BAARALY_AUTH_DISABLE_SIGN_UP;
+  const disableSignUpFromEnv = process.env.BAARALI_AUTH_DISABLE_SIGN_UP;
   const authDisableSignUp: boolean =
     disableSignUpFromEnv !== undefined
       ? disableSignUpFromEnv === "true"
       : (fileConfig?.auth?.disableSignUp ?? false);
-  const openRegistrationFromEnv = process.env.BAARALY_OPEN_REGISTRATION;
+  const openRegistrationFromEnv = process.env.BAARALI_OPEN_REGISTRATION;
   const openRegistration: boolean =
     openRegistrationFromEnv !== undefined
       ? openRegistrationFromEnv === "true"
       : true;
-  const allowedHostnamesFromEnvRaw = process.env.BAARALY_ALLOWED_HOSTNAMES;
+  const allowedHostnamesFromEnvRaw = process.env.BAARALI_ALLOWED_HOSTNAMES;
   const allowedHostnamesFromEnv = allowedHostnamesFromEnvRaw
     ? allowedHostnamesFromEnvRaw
       .split(",")
@@ -192,29 +192,29 @@ export function loadConfig(): Config {
         .filter(Boolean),
     ),
   );
-  const companyDeletionEnvRaw = process.env.BAARALY_ENABLE_COMPANY_DELETION;
+  const companyDeletionEnvRaw = process.env.BAARALI_ENABLE_COMPANY_DELETION;
   const companyDeletionEnabled =
     companyDeletionEnvRaw !== undefined
       ? companyDeletionEnvRaw === "true"
       : deploymentMode === "local_trusted";
   const databaseBackupEnabled =
-    process.env.BAARALY_DB_BACKUP_ENABLED !== undefined
-      ? process.env.BAARALY_DB_BACKUP_ENABLED === "true"
+    process.env.BAARALI_DB_BACKUP_ENABLED !== undefined
+      ? process.env.BAARALI_DB_BACKUP_ENABLED === "true"
       : (fileDatabaseBackup?.enabled ?? true);
   const databaseBackupIntervalMinutes = Math.max(
     1,
-    Number(process.env.BAARALY_DB_BACKUP_INTERVAL_MINUTES) ||
+    Number(process.env.BAARALI_DB_BACKUP_INTERVAL_MINUTES) ||
       fileDatabaseBackup?.intervalMinutes ||
       60,
   );
   const databaseBackupRetentionDays = Math.max(
     1,
-    Number(process.env.BAARALY_DB_BACKUP_RETENTION_DAYS) ||
+    Number(process.env.BAARALI_DB_BACKUP_RETENTION_DAYS) ||
       fileDatabaseBackup?.retentionDays ||
       30,
   );
   const databaseBackupDir = resolveHomeAwarePath(
-    process.env.BAARALY_DB_BACKUP_DIR ??
+    process.env.BAARALI_DB_BACKUP_DIR ??
       fileDatabaseBackup?.dir ??
       resolveDefaultBackupDir(),
   );
@@ -243,12 +243,12 @@ export function loadConfig(): Config {
       process.env.SERVE_UI !== undefined
         ? process.env.SERVE_UI === "true"
         : fileConfig?.server.serveUi ?? true,
-    uiDevMiddleware: process.env.BAARALY_UI_DEV_MIDDLEWARE === "true" || process.env.PAPERCLIP_UI_DEV_MIDDLEWARE === "true",
+    uiDevMiddleware: process.env.BAARALI_UI_DEV_MIDDLEWARE === "true" || process.env.PAPERCLIP_UI_DEV_MIDDLEWARE === "true",
     secretsProvider,
     secretsStrictMode,
     secretsMasterKeyFilePath:
       resolveHomeAwarePath(
-        process.env.BAARALY_SECRETS_MASTER_KEY_FILE ??
+        process.env.BAARALI_SECRETS_MASTER_KEY_FILE ??
           fileSecrets?.localEncrypted.keyFilePath ??
           resolveDefaultSecretsKeyFilePath(),
       ),

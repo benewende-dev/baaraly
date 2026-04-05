@@ -77,7 +77,7 @@ export function AuthPage() {
       });
       // Store PME info for onboarding
       try {
-        sessionStorage.setItem("baaraly.signup.meta", JSON.stringify({
+        sessionStorage.setItem("baarali.signup.meta", JSON.stringify({
           country,
           sector,
           whatsapp: whatsapp.trim(),
@@ -122,10 +122,10 @@ export function AuthPage() {
         <div className="w-full max-w-md mx-auto my-auto px-6 sm:px-8 py-10">
           {/* Logo */}
           <div className="flex items-center gap-3 mb-8">
-            <img src="/baaraly-logo.svg" alt="Baaraly" className="w-10 h-10" />
+            <img src="/baarali-logo.svg" alt="Baarali" className="w-10 h-10" />
             <div>
               <span className="text-xl font-extrabold tracking-tight text-[#1A1A2E]">
-                Baaraly <span className="text-gradient">AI</span>
+                Baarali <span className="text-gradient">AI</span>
               </span>
               <p className="text-[11px] text-[#666666] -mt-0.5">
                 {t("L'IA qui fait prospérer ton entreprise")}
@@ -390,10 +390,10 @@ export function AuthPage() {
         </div>
       </div>
 
-      {/* Right half — Baaraly branding (hidden on mobile) */}
+      {/* Right half — Baarali branding (hidden on mobile) */}
       <div className="hidden md:flex w-1/2 bg-gradient-to-br from-[#0071E3] to-[#0056B3] flex-col justify-center px-12 text-white">
         <div className="max-w-sm">
-          <img src="/baaraly-logo.svg" alt="Baaraly" className="w-16 h-16 mb-8 opacity-90" />
+          <img src="/baarali-logo.svg" alt="Baarali" className="w-16 h-16 mb-8 opacity-90" />
           <h2 className="text-3xl font-extrabold mb-6 leading-tight">
             {t("Ton entreprise tourne même quand tu dors")}
           </h2>

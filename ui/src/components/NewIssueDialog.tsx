@@ -54,7 +54,7 @@ import { MarkdownEditor, type MarkdownEditorRef, type MentionOption } from "./Ma
 import { AgentIcon } from "./AgentIconPicker";
 import { InlineEntitySelector, type InlineEntityOption } from "./InlineEntitySelector";
 
-const DRAFT_KEY = "baaraly:issue-draft";
+const DRAFT_KEY = "baarali:issue-draft";
 const DEBOUNCE_MS = 800;
 
 

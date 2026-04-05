@@ -55,7 +55,7 @@ function MermaidDiagramBlock({ source, darkMode }: { source: string; darkMode: b
           fontFamily: "inherit",
           suppressErrorRendering: true,
         });
-        const rendered = await mermaid.render(`baaraly-mermaid-${renderId}`, source);
+        const rendered = await mermaid.render(`baarali-mermaid-${renderId}`, source);
         if (!active) return;
         setSvg(rendered.svg);
       })
@@ -74,15 +74,15 @@ function MermaidDiagramBlock({ source, darkMode }: { source: string; darkMode: b
   }, [darkMode, renderId, source]);
 
   return (
-    <div className="baaraly-mermaid">
+    <div className="baarali-mermaid">
       {svg ? (
         <div dangerouslySetInnerHTML={{ __html: svg }} />
       ) : (
         <>
-          <p className={cn("baaraly-mermaid-status", error && "baaraly-mermaid-status-error")}>
+          <p className={cn("baarali-mermaid-status", error && "baarali-mermaid-status-error")}>
             {error ? `Unable to render Mermaid diagram: ${error}` : "Rendering Mermaid diagram..."}
           </p>
-          <pre className="baaraly-mermaid-source">
+          <pre className="baarali-mermaid-source">
             <code className="language-mermaid">{source}</code>
           </pre>
         </>
@@ -111,9 +111,9 @@ export function MarkdownBody({ children, className, resolveImageSrc }: MarkdownB
           <a
             href={targetHref}
             className={cn(
-              "baaraly-mention-chip",
-              `baaraly-mention-chip--${parsed.kind}`,
-              parsed.kind === "project" && "baaraly-project-mention-chip",
+              "baarali-mention-chip",
+              `baarali-mention-chip--${parsed.kind}`,
+              parsed.kind === "project" && "baarali-project-mention-chip",
             )}
             data-mention-kind={parsed.kind}
             style={mentionChipInlineStyle(parsed)}
@@ -139,7 +139,7 @@ export function MarkdownBody({ children, className, resolveImageSrc }: MarkdownB
   return (
     <div
       className={cn(
-        "baaraly-markdown prose prose-sm max-w-none break-words overflow-hidden",
+        "baarali-markdown prose prose-sm max-w-none break-words overflow-hidden",
         theme === "dark" && "prose-invert",
         className,
       )}

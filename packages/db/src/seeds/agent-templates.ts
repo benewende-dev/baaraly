@@ -1,7 +1,7 @@
 import { createDb } from "../client.js";
 import { agentTemplates } from "../schema/agent_templates.js";
 import { eq } from "drizzle-orm";
-import { BAARALY_AGENTS } from "@paperclipai/shared/baaraly-agents";
+import { BAARALI_AGENTS } from "@paperclipai/shared/baarali-agents";
 
 const url = process.env.DATABASE_URL;
 if (!url) {
@@ -35,7 +35,7 @@ async function seedAgentTemplates() {
   let created = 0;
   let updated = 0;
 
-  for (const agent of BAARALY_AGENTS) {
+  for (const agent of BAARALI_AGENTS) {
     const slug = slugify(agent.name);
     const price = calculatePrice(agent.tier);
     const isPremium = isPremiumTier(agent.tier);
@@ -62,7 +62,7 @@ async function seedAgentTemplates() {
       version: 1,
       isActive: true,
       isPublic: true,
-      sortIndex: BAARALY_AGENTS.indexOf(agent),
+      sortIndex: BAARALI_AGENTS.indexOf(agent),
     };
 
     if (existing) {

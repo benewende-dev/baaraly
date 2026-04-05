@@ -12,7 +12,7 @@ async function makeTempDir(prefix: string): Promise<string> {
 }
 
 describe("opencode local skill sync", () => {
-  const baaralyKey = "baaralyai/baaraly/baaraly";
+  const baaraliKey = "baaraliai/baarali/baarali";
   const cleanupDirs = new Set<string>();
 
   afterEach(async () => {
@@ -20,8 +20,8 @@ describe("opencode local skill sync", () => {
     cleanupDirs.clear();
   });
 
-  it("reports configured Baaraly skills and installs them into the shared Claude/OpenCode skills home", async () => {
-    const home = await makeTempDir("baaraly-opencode-skill-sync-");
+  it("reports configured Baarali skills and installs them into the shared Claude/OpenCode skills home", async () => {
+    const home = await makeTempDir("baarali-opencode-skill-sync-");
     cleanupDirs.add(home);
 
     const ctx = {
@@ -32,8 +32,8 @@ describe("opencode local skill sync", () => {
         env: {
           HOME: home,
         },
-        baaralySkillSync: {
-          desiredSkills: [baaralyKey],
+        baaraliSkillSync: {
+          desiredSkills: [baaraliKey],
         },
       },
     } as const;
@@ -41,17 +41,17 @@ describe("opencode local skill sync", () => {
     const before = await listOpenCodeSkills(ctx);
     expect(before.mode).toBe("persistent");
     expect(before.warnings).toContain("OpenCode currently uses the shared Claude skills home (~/.claude/skills).");
-    expect(before.desiredSkills).toContain(baaralyKey);
-    expect(before.entries.find((entry) => entry.key === baaralyKey)?.required).toBe(true);
-    expect(before.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("missing");
+    expect(before.desiredSkills).toContain(baaraliKey);
+    expect(before.entries.find((entry) => entry.key === baaraliKey)?.required).toBe(true);
+    expect(before.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("missing");
 
-    const after = await syncOpenCodeSkills(ctx, [baaralyKey]);
-    expect(after.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("installed");
+    const after = await syncOpenCodeSkills(ctx, [baaraliKey]);
+    expect(after.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("installed");
     expect((await fs.lstat(path.join(home, ".claude", "skills", "paperclip"))).isSymbolicLink()).toBe(true);
   });
 
-  it("keeps required bundled Baaraly skills installed even when the desired set is emptied", async () => {
-    const home = await makeTempDir("baaraly-opencode-skill-prune-");
+  it("keeps required bundled Baarali skills installed even when the desired set is emptied", async () => {
+    const home = await makeTempDir("baarali-opencode-skill-prune-");
     cleanupDirs.add(home);
 
     const configuredCtx = {
@@ -62,13 +62,13 @@ describe("opencode local skill sync", () => {
         env: {
           HOME: home,
         },
-        baaralySkillSync: {
-          desiredSkills: [baaralyKey],
+        baaraliSkillSync: {
+          desiredSkills: [baaraliKey],
         },
       },
     } as const;
 
-    await syncOpenCodeSkills(configuredCtx, [baaralyKey]);
+    await syncOpenCodeSkills(configuredCtx, [baaraliKey]);
 
     const clearedCtx = {
       ...configuredCtx,
@@ -76,15 +76,15 @@ describe("opencode local skill sync", () => {
         env: {
           HOME: home,
         },
-        baaralySkillSync: {
+        baaraliSkillSync: {
           desiredSkills: [],
         },
       },
     } as const;
 
     const after = await syncOpenCodeSkills(clearedCtx, []);
-    expect(after.desiredSkills).toContain(baaralyKey);
-    expect(after.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("installed");
+    expect(after.desiredSkills).toContain(baaraliKey);
+    expect(after.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("installed");
     expect((await fs.lstat(path.join(home, ".claude", "skills", "paperclip"))).isSymbolicLink()).toBe(true);
   });
 });

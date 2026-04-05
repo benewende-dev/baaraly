@@ -53,9 +53,9 @@ export function ForgotPasswordPage() {
       <div className="w-full max-w-md mx-4">
         {/* Logo */}
         <div className="flex items-center gap-3 mb-8">
-          <img src="/baaraly-logo.svg" alt="Baaraly" className="w-10 h-10" />
+          <img src="/baarali-logo.svg" alt="Baarali" className="w-10 h-10" />
           <span className="text-xl font-extrabold tracking-tight text-[#1A1A2E]">
-            Baaraly <span className="text-gradient">AI</span>
+            Baarali <span className="text-gradient">AI</span>
           </span>
         </div>
 

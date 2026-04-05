@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
-import { resolvePaperclipConfigPath, resolveBaaralyEnvPath } from "./paths.js";
+import { resolvePaperclipConfigPath, resolveBaaraliEnvPath } from "./paths.js";
 import type { DeploymentExposure, DeploymentMode } from "@paperclipai/shared";
 
 import { parse as parseEnvFileContents } from "dotenv";
@@ -71,7 +71,7 @@ function resolveAgentJwtSecretStatus(
   status: "pass" | "warn";
   message: string;
 } {
-  const envValue = process.env.BAARALY_AGENT_JWT_SECRET?.trim();
+  const envValue = process.env.BAARALI_AGENT_JWT_SECRET?.trim();
   if (envValue) {
     return {
       status: "pass",
@@ -81,7 +81,7 @@ function resolveAgentJwtSecretStatus(
 
   if (existsSync(envFilePath)) {
     const parsed = parseEnvFileContents(readFileSync(envFilePath, "utf-8"));
-    const fileValue = typeof parsed.BAARALY_AGENT_JWT_SECRET === "string" ? parsed.BAARALY_AGENT_JWT_SECRET.trim() : "";
+    const fileValue = typeof parsed.BAARALI_AGENT_JWT_SECRET === "string" ? parsed.BAARALI_AGENT_JWT_SECRET.trim() : "";
     if (fileValue) {
       return {
         status: "warn",
@@ -92,7 +92,7 @@ function resolveAgentJwtSecretStatus(
 
   return {
     status: "warn",
-    message: "missing (run `pnpm baaralyai onboard`)",
+    message: "missing (run `pnpm baaraliai onboard`)",
   };
 }
 
@@ -102,7 +102,7 @@ export function printStartupBanner(opts: StartupBannerOptions): void {
   const apiUrl = `${baseUrl}/api`;
   const uiUrl = opts.uiMode === "none" ? "disabled" : baseUrl;
   const configPath = resolvePaperclipConfigPath();
-  const envFilePath = resolveBaaralyEnvPath();
+  const envFilePath = resolveBaaraliEnvPath();
   const agentJwtSecret = resolveAgentJwtSecretStatus(envFilePath);
 
   const dbMode =

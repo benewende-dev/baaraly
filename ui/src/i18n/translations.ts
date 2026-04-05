@@ -1,4 +1,4 @@
-// Baaraly i18n — traductions FR / EN
+// Baarali i18n — traductions FR / EN
 // Clé = texte anglais de référence, valeur = traduction
 
 export type Language = "fr" | "en";
@@ -23,8 +23,8 @@ export const translations: Record<string, Record<Language, string>> = {
   "Approvals": { fr: "Approbations", en: "Approvals" },
 
   // ── Auth ─────────────────────────────────────────────────────────────────
-  "Sign in to Baaraly": { fr: "Connexion à Baaraly", en: "Sign in to Baaraly" },
-  "Create your Baaraly account": { fr: "Créer votre compte Baaraly", en: "Create your Baaraly account" },
+  "Sign in to Baarali": { fr: "Connexion à Baarali", en: "Sign in to Baarali" },
+  "Create your Baarali account": { fr: "Créer votre compte Baarali", en: "Create your Baarali account" },
   "Use your email and password to access this instance.": {
     fr: "Utilisez votre email et mot de passe pour accéder à cette instance.",
     en: "Use your email and password to access this instance."
@@ -49,9 +49,9 @@ export const translations: Record<string, Record<Language, string>> = {
   "Authentication failed": { fr: "Échec de l'authentification", en: "Authentication failed" },
 
   // ── Dashboard ────────────────────────────────────────────────────────────
-  "Welcome to Baaraly. Set up your first company and agent to get started.": {
-    fr: "Bienvenue sur Baaraly. Créez votre première entreprise et votre premier agent pour commencer.",
-    en: "Welcome to Baaraly. Set up your first company and agent to get started."
+  "Welcome to Baarali. Set up your first company and agent to get started.": {
+    fr: "Bienvenue sur Baarali. Créez votre première entreprise et votre premier agent pour commencer.",
+    en: "Welcome to Baarali. Set up your first company and agent to get started."
   },
   "Create or select a company to view the dashboard.": {
     fr: "Créez ou sélectionnez une entreprise pour afficher le tableau de bord.",
@@ -292,13 +292,13 @@ export const translations: Record<string, Record<Language, string>> = {
 
   // ── App.tsx system strings ────────────────────────────────────────────────
   "Instance setup required": { fr: "Configuration requise", en: "Instance setup required" },
-  "No instance admin exists yet. A bootstrap invite is already active. Check your Baaraly startup logs for the first admin invite URL, or run this command to rotate it:": {
-    fr: "Aucun administrateur n'existe encore. Une invitation de bootstrap est déjà active. Consultez les logs de démarrage de Baaraly pour l'URL d'invitation du premier administrateur, ou exécutez cette commande pour la renouveler :",
-    en: "No instance admin exists yet. A bootstrap invite is already active. Check your Baaraly startup logs for the first admin invite URL, or run this command to rotate it:"
+  "No instance admin exists yet. A bootstrap invite is already active. Check your Baarali startup logs for the first admin invite URL, or run this command to rotate it:": {
+    fr: "Aucun administrateur n'existe encore. Une invitation de bootstrap est déjà active. Consultez les logs de démarrage de Baarali pour l'URL d'invitation du premier administrateur, ou exécutez cette commande pour la renouveler :",
+    en: "No instance admin exists yet. A bootstrap invite is already active. Check your Baarali startup logs for the first admin invite URL, or run this command to rotate it:"
   },
-  "No instance admin exists yet. Run this command in your Baaraly environment to generate the first admin invite URL:": {
-    fr: "Aucun administrateur n'existe encore. Exécutez cette commande dans votre environnement Baaraly pour générer l'URL d'invitation du premier administrateur :",
-    en: "No instance admin exists yet. Run this command in your Baaraly environment to generate the first admin invite URL:"
+  "No instance admin exists yet. Run this command in your Baarali environment to generate the first admin invite URL:": {
+    fr: "Aucun administrateur n'existe encore. Exécutez cette commande dans votre environnement Baarali pour générer l'URL d'invitation du premier administrateur :",
+    en: "No instance admin exists yet. Run this command in your Baarali environment to generate the first admin invite URL:"
   },
   "Failed to load app state": { fr: "Échec du chargement de l'application", en: "Failed to load app state" },
   "Create your first company": { fr: "Créer votre première entreprise", en: "Create your first company" },
@@ -479,9 +479,9 @@ export const translations: Record<string, Record<Language, string>> = {
   },
   "Failed to update routine": { fr: "Échec de la mise à jour de la routine", en: "Failed to update routine" },
   "Routine run failed": { fr: "Échec de l'exécution de la routine", en: "Routine run failed" },
-  "After creation, Baaraly takes you directly to the trigger configuration.": {
-    fr: "Après création, Baaraly vous amène directement à la configuration des déclencheurs.",
-    en: "After creation, Baaraly takes you directly to the trigger configuration."
+  "After creation, Baarali takes you directly to the trigger configuration.": {
+    fr: "Après création, Baarali vous amène directement à la configuration des déclencheurs.",
+    en: "After creation, Baarali takes you directly to the trigger configuration."
   },
   "Creating...": { fr: "Création...", en: "Creating..." },
   "Failed to create routine": { fr: "Échec de la création de la routine", en: "Failed to create routine" },
@@ -812,9 +812,9 @@ export const translations: Record<string, Record<Language, string>> = {
   "Skill import failed": { fr: "Échec de l'import de compétence", en: "Skill import failed" },
   "Failed to import skill source.": { fr: "Échec de l'import de la source de compétence.", en: "Failed to import skill source." },
   "Skill created": { fr: "Compétence créée", en: "Skill created" },
-  "is now editable in the Baaraly workspace.": {
-    fr: "est maintenant modifiable dans l'espace de travail Baaraly.",
-    en: "is now editable in the Baaraly workspace."
+  "is now editable in the Baarali workspace.": {
+    fr: "est maintenant modifiable dans l'espace de travail Baarali.",
+    en: "is now editable in the Baarali workspace."
   },
   "Skill creation failed": { fr: "Échec de la création de compétence", en: "Skill creation failed" },
   "Failed to create skill.": { fr: "Échec de la création de la compétence.", en: "Failed to create skill." },
@@ -852,9 +852,9 @@ export const translations: Record<string, Record<Language, string>> = {
   "Choisir un agent": { fr: "Choisir un agent", en: "Choose an agent" },
   "Ouvrir": { fr: "Ouvrir", en: "Open" },
   "Lancer un agent": { fr: "Lancer un agent", en: "Launch an agent" },
-  "Bienvenue sur Baaraly ! Configure ton premier assistant.": {
-    fr: "Bienvenue sur Baaraly ! Configure ton premier assistant.",
-    en: "Welcome to Baaraly! Set up your first assistant."
+  "Bienvenue sur Baarali ! Configure ton premier assistant.": {
+    fr: "Bienvenue sur Baarali ! Configure ton premier assistant.",
+    en: "Welcome to Baarali! Set up your first assistant."
   },
   "Commencer": { fr: "Commencer", en: "Get Started" },
   "Sélectionne une entreprise pour commencer.": {
@@ -962,7 +962,7 @@ export const translations: Record<string, Record<Language, string>> = {
   "Impossible de sauvegarder l'agent": { fr: "Impossible de sauvegarder l'agent", en: "Could not save agent" },
   "Supprimer": { fr: "Supprimer", en: "Delete" },
 
-  // ── Baaraly Dashboard ─────────────────────────────────────────────────
+  // ── Baarali Dashboard ─────────────────────────────────────────────────
   "Essai gratuit": { fr: "Essai gratuit", en: "Free Trial" },
   "Il reste": { fr: "Il reste", en: "You have" },
   "jours": { fr: "jours", en: "days left" },
@@ -1004,7 +1004,7 @@ export const translations: Record<string, Record<Language, string>> = {
   "Suggestion envoyée !": { fr: "Suggestion envoyée !", en: "Suggestion sent!" },
   "Merci pour ta proposition": { fr: "Merci pour ta proposition", en: "Thanks for your suggestion" },
 
-  // ── Baaraly Onboarding ────────────────────────────────────────────────
+  // ── Baarali Onboarding ────────────────────────────────────────────────
   "Connecter WhatsApp": { fr: "Connecter WhatsApp", en: "Connect WhatsApp" },
   "Numéro WhatsApp": { fr: "Numéro WhatsApp", en: "WhatsApp Number" },
   "Confirmer le numéro": { fr: "Confirmer le numéro", en: "Confirm number" },
@@ -1017,7 +1017,7 @@ export const translations: Record<string, Record<Language, string>> = {
     en: "Receive agent notifications on WhatsApp"
   },
 
-  // ── Baaraly Company Settings ──────────────────────────────────────────
+  // ── Baarali Company Settings ──────────────────────────────────────────
   "Zone de danger": { fr: "Zone de danger", en: "Danger Zone" },
   "Archiver l'entreprise": { fr: "Archiver l'entreprise", en: "Archive company" },
   "Cache l'entreprise de la barre latérale. Les données sont conservées.": {
@@ -1047,7 +1047,7 @@ export const translations: Record<string, Record<Language, string>> = {
   },
   "Échec de la suppression": { fr: "Échec de la suppression", en: "Failed to delete" },
 
-  // ── Baaraly Credits ───────────────────────────────────────────────────
+  // ── Baarali Credits ───────────────────────────────────────────────────
   "Solde": { fr: "Solde", en: "Balance" },
   "Solde épuisé": { fr: "Solde épuisé", en: "Balance exhausted" },
   "Solde bas": { fr: "Solde bas", en: "Low balance" },
@@ -1101,9 +1101,9 @@ export const translations: Record<string, Record<Language, string>> = {
 
   // ═══ Agent API Keys ═══
   "Créer une clé API": { fr: "Créer une clé API", en: "Create API key" },
-  "Les clés API permettent à cet agent de s'authentifier auprès du serveur Baaraly.": {
-    fr: "Les clés API permettent à cet agent de s'authentifier auprès du serveur Baaraly.",
-    en: "API keys allow this agent to authenticate with the Baaraly server."
+  "Les clés API permettent à cet agent de s'authentifier auprès du serveur Baarali.": {
+    fr: "Les clés API permettent à cet agent de s'authentifier auprès du serveur Baarali.",
+    en: "API keys allow this agent to authenticate with the Baarali server."
   },
   "Nom de la clé (ex. production)": { fr: "Nom de la clé (ex. production)", en: "Key name (e.g. production)" },
   "Chargement des clés...": { fr: "Chargement des clés...", en: "Loading keys..." },
@@ -1210,9 +1210,9 @@ export const translations: Record<string, Record<Language, string>> = {
   "jours gratuits": { fr: "jours gratuits", en: "free days" },
   "Ton entreprise tourne": { fr: "Ton entreprise tourne", en: "Your business runs" },
   "même quand tu dors": { fr: "même quand tu dors", en: "even while you sleep" },
-  "Baaraly met à ta disposition des agents IA spécialisés qui gèrent tes clients, ton stock et tes finances — 24h/24, en français et en langues locales.": {
-    fr: "Baaraly met à ta disposition des agents IA spécialisés qui gèrent tes clients, ton stock et tes finances — 24h/24, en français et en langues locales.",
-    en: "Baaraly gives you specialized AI agents that manage your clients, inventory and finances — 24/7, in French and local languages.",
+  "Baarali met à ta disposition des agents IA spécialisés qui gèrent tes clients, ton stock et tes finances — 24h/24, en français et en langues locales.": {
+    fr: "Baarali met à ta disposition des agents IA spécialisés qui gèrent tes clients, ton stock et tes finances — 24h/24, en français et en langues locales.",
+    en: "Baarali gives you specialized AI agents that manage your clients, inventory and finances — 24/7, in French and local languages.",
   },
   "Essayer gratuitement 7 jours": { fr: "Essayer gratuitement 7 jours", en: "Try free for 7 days" },
   "Voir comment ça marche": { fr: "Voir comment ça marche", en: "See how it works" },
@@ -1229,7 +1229,7 @@ export const translations: Record<string, Record<Language, string>> = {
   "Tu ne sais plus qui a payé, ce qui manque, ni où va l'argent": { fr: "Tu ne sais plus qui a payé, ce qui manque, ni où va l'argent", en: "You don't know who paid, what's missing, or where the money goes" },
   "Trouver de nouveaux clients chaque semaine": { fr: "Trouver de nouveaux clients chaque semaine", en: "Finding new clients every week" },
   "Sans prospection, ton chiffre d'affaires stagne": { fr: "Sans prospection, ton chiffre d'affaires stagne", en: "Without prospecting, your revenue stagnates" },
-  "Baaraly s'occupe de tout ça pour toi.": { fr: "Baaraly s'occupe de tout ça pour toi.", en: "Baaraly takes care of all that for you." },
+  "Baarali s'occupe de tout ça pour toi.": { fr: "Baarali s'occupe de tout ça pour toi.", en: "Baarali takes care of all that for you." },
   "Processus": { fr: "Processus", en: "Process" },
   "Simple comme bonjour": { fr: "Simple comme bonjour", en: "Simple as hello" },
   "Tu décris ton activité": { fr: "Tu décris ton activité", en: "Describe your business" },
@@ -1268,10 +1268,10 @@ export const translations: Record<string, Record<Language, string>> = {
   },
   "Commencer maintenant": { fr: "Commencer maintenant", en: "Start now" },
   "Questions fréquentes": { fr: "Questions fréquentes", en: "Frequently asked questions" },
-  "C'est quoi Baaraly exactement ?": { fr: "C'est quoi Baaraly exactement ?", en: "What exactly is Baaraly?" },
-  "Baaraly est une plateforme d'agents IA spécialisés qui travaillent pour ton entreprise 24h/24. Chaque agent a un rôle précis : gestion de boutique, comptabilité, prospection, support client...": {
-    fr: "Baaraly est une plateforme d'agents IA spécialisés qui travaillent pour ton entreprise 24h/24. Chaque agent a un rôle précis : gestion de boutique, comptabilité, prospection, support client...",
-    en: "Baaraly is a platform of specialized AI agents that work for your business 24/7. Each agent has a specific role: shop management, accounting, prospecting, customer support...",
+  "C'est quoi Baarali exactement ?": { fr: "C'est quoi Baarali exactement ?", en: "What exactly is Baarali?" },
+  "Baarali est une plateforme d'agents IA spécialisés qui travaillent pour ton entreprise 24h/24. Chaque agent a un rôle précis : gestion de boutique, comptabilité, prospection, support client...": {
+    fr: "Baarali est une plateforme d'agents IA spécialisés qui travaillent pour ton entreprise 24h/24. Chaque agent a un rôle précis : gestion de boutique, comptabilité, prospection, support client...",
+    en: "Baarali is a platform of specialized AI agents that work for your business 24/7. Each agent has a specific role: shop management, accounting, prospecting, customer support...",
   },
   "Comment fonctionne l'essai gratuit ?": { fr: "Comment fonctionne l'essai gratuit ?", en: "How does the free trial work?" },
   "Tu as accès à": { fr: "Tu as accès à", en: "You get access to" },
@@ -1287,13 +1287,13 @@ export const translations: Record<string, Record<Language, string>> = {
     en: "You top up your account. No mandatory subscription. Payment via Orange Money, Wave, MTN, Moov, M-Pesa, Stripe, PayPal or Crypto.",
   },
   "Est-ce que ça marche dans mon pays ?": { fr: "Est-ce que ça marche dans mon pays ?", en: "Does it work in my country?" },
-  "Baaraly fonctionne dans toute l'Afrique de l'Ouest et Centrale : Burkina Faso, Mali, Sénégal, Côte d'Ivoire, Niger, Bénin, Togo, Ghana, Cameroun, Gabon, et plus encore.": {
-    fr: "Baaraly fonctionne dans toute l'Afrique de l'Ouest et Centrale : Burkina Faso, Mali, Sénégal, Côte d'Ivoire, Niger, Bénin, Togo, Ghana, Cameroun, Gabon, et plus encore.",
-    en: "Baaraly works throughout West and Central Africa: Burkina Faso, Mali, Senegal, Côte d'Ivoire, Niger, Benin, Togo, Ghana, Cameroon, Gabon, and more.",
+  "Baarali fonctionne dans toute l'Afrique de l'Ouest et Centrale : Burkina Faso, Mali, Sénégal, Côte d'Ivoire, Niger, Bénin, Togo, Ghana, Cameroun, Gabon, et plus encore.": {
+    fr: "Baarali fonctionne dans toute l'Afrique de l'Ouest et Centrale : Burkina Faso, Mali, Sénégal, Côte d'Ivoire, Niger, Bénin, Togo, Ghana, Cameroun, Gabon, et plus encore.",
+    en: "Baarali works throughout West and Central Africa: Burkina Faso, Mali, Senegal, Côte d'Ivoire, Niger, Benin, Togo, Ghana, Cameroon, Gabon, and more.",
   },
   "Puis-je essayer gratuitement ?": { fr: "Puis-je essayer gratuitement ?", en: "Can I try for free?" },
   "Oui !": { fr: "Oui !", en: "Yes!" },
-  "jours gratuits sans carte bancaire pour tester Baaraly": { fr: "jours gratuits sans carte bancaire pour tester Baaraly", en: "free days without a credit card to test Baaraly" },
+  "jours gratuits sans carte bancaire pour tester Baarali": { fr: "jours gratuits sans carte bancaire pour tester Baarali", en: "free days without a credit card to test Baarali" },
   "Prêt à faire grandir ton business ?": { fr: "Prêt à faire grandir ton business ?", en: "Ready to grow your business?" },
   "Rejoins les entrepreneurs qui utilisent l'IA pour grandir": { fr: "Rejoins les entrepreneurs qui utilisent l'IA pour grandir", en: "Join entrepreneurs who use AI to grow" },
   "Essayer maintenant": { fr: "Essayer maintenant", en: "Try now" },

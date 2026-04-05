@@ -128,7 +128,7 @@ function createTwilioProvider(config: WhatsAppProviderConfig): WhatsAppProvider 
     async sendOtp(to: string) {
       try {
         const service = await getClient().verify.v2.services.create({
-          friendlyName: "Baaraly OTP",
+          friendlyName: "Baarali OTP",
         });
         const verification = await getClient().verify.v2
           .services(service.sid)
@@ -143,12 +143,12 @@ function createTwilioProvider(config: WhatsAppProviderConfig): WhatsAppProvider 
       try {
         // In production, you'd store the service SID. For now, list and check.
         const services = await getClient().verify.v2.services.list({ limit: 10 });
-        const baaralyService = services.find(
-          (s: any) => s.friendlyName === "Baaraly OTP",
+        const baaraliService = services.find(
+          (s: any) => s.friendlyName === "Baarali OTP",
         );
-        if (!baaralyService) return { valid: false };
+        if (!baaraliService) return { valid: false };
         const check = await getClient().verify.v2
-          .services(baaralyService.sid)
+          .services(baaraliService.sid)
           .verificationChecks.create({ to: `whatsapp:${to}`, code });
         return { valid: check.status === "approved" };
       } catch (err) {

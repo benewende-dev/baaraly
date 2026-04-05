@@ -67,10 +67,10 @@ export function deriveAuthTrustedOrigins(config: Config): string[] {
 
 export function createBetterAuthInstance(db: Db, config: Config, trustedOrigins?: string[]): BetterAuthInstance {
   const baseUrl = config.authBaseUrlMode === "explicit" ? config.authPublicBaseUrl : undefined;
-  const secret = process.env.BETTER_AUTH_SECRET ?? process.env.BAARALY_AGENT_JWT_SECRET ?? "baaraly-dev-secret";
+  const secret = process.env.BETTER_AUTH_SECRET ?? process.env.BAARALI_AGENT_JWT_SECRET ?? "baarali-dev-secret";
   const effectiveTrustedOrigins = trustedOrigins ?? deriveAuthTrustedOrigins(config);
 
-  const publicUrl = process.env.BAARALY_PUBLIC_URL ?? baseUrl;
+  const publicUrl = process.env.BAARALI_PUBLIC_URL ?? baseUrl;
   const isHttpOnly = publicUrl ? publicUrl.startsWith("http://") : false;
 
   const authConfig = {

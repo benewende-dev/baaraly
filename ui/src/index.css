@@ -486,8 +486,8 @@
 }
 
 /* MDXEditor Apple Theme */
-.baaraly-mdxeditor-scope,
-.baaraly-mdxeditor {
+.baarali-mdxeditor-scope,
+.baarali-mdxeditor {
   --baseBase: var(--background);
   --baseBg: transparent;
   --baseBgSubtle: color-mix(in oklab, var(--accent) 30%, transparent);
@@ -518,73 +518,73 @@
   color: var(--foreground);
 }
 
-.baaraly-mdxeditor-scope [class*="_iconButton_"],
-.baaraly-mdxeditor [class*="_iconButton_"] {
+.baarali-mdxeditor-scope [class*="_iconButton_"],
+.baarali-mdxeditor [class*="_iconButton_"] {
   color: var(--baseText);
   border-radius: var(--radius-md);
 }
 
-.baaraly-mdxeditor-scope [class*="_iconButton_"]:hover,
-.baaraly-mdxeditor [class*="_iconButton_"]:hover {
+.baarali-mdxeditor-scope [class*="_iconButton_"]:hover,
+.baarali-mdxeditor [class*="_iconButton_"]:hover {
   color: var(--baseTextContrast);
   background: color-mix(in oklab, var(--accent) 50%, transparent);
 }
 
-.baaraly-mdxeditor .mdxeditor-root-contenteditable {
+.baarali-mdxeditor .mdxeditor-root-contenteditable {
   min-height: 3rem;
   padding: 12px 16px;
   line-height: 1.6;
   border-radius: var(--radius-lg);
 }
 
-.baaraly-mdxeditor [class*="_contentEditable_"] {
+.baarali-mdxeditor [class*="_contentEditable_"] {
   padding: 12px 16px !important;
   border-radius: var(--radius-lg);
 }
 
-.baaraly-mdxeditor--borderless [class*="_contentEditable_"] {
+.baarali-mdxeditor--borderless [class*="_contentEditable_"] {
   padding: 0 !important;
 }
 
-.baaraly-mdxeditor [class*="_placeholder_"] {
+.baarali-mdxeditor [class*="_placeholder_"] {
   font-family: inherit;
   font-size: 1rem;
   line-height: 1.6;
   color: var(--muted-foreground);
 }
 
-.baaraly-mdxeditor-content {
+.baarali-mdxeditor-content {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
   color: inherit;
 }
 
-.baaraly-edit-in-place-content {
+.baarali-edit-in-place-content {
   font-size: 1.0625rem;
   line-height: 1.8rem;
 }
 
-.baaraly-mdxeditor-content > *:first-child {
+.baarali-mdxeditor-content > *:first-child {
   margin-top: 0;
 }
 
-.baaraly-mdxeditor-content > *:last-child {
+.baarali-mdxeditor-content > *:last-child {
   margin-bottom: 0;
 }
 
-.baaraly-mdxeditor-content p {
+.baarali-mdxeditor-content p {
   margin: 0;
   line-height: inherit;
 }
 
-.baaraly-mdxeditor-content p + p {
+.baarali-mdxeditor-content p + p {
   margin-top: 1.25em;
 }
 
 /* Mention chips - Apple style */
-.baaraly-mdxeditor-content a.baaraly-mention-chip,
-.baaraly-mdxeditor-content a.baaraly-project-mention-chip {
+.baarali-mdxeditor-content a.baarali-mention-chip,
+.baarali-mdxeditor-content a.baarali-project-mention-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
@@ -601,68 +601,68 @@
   transition: all 200ms ease-out;
 }
 
-.baaraly-mention-chip::before {
+.baarali-mention-chip::before {
   content: "";
   flex: none;
 }
 
-a.baaraly-mention-chip:hover {
+a.baarali-mention-chip:hover {
   background: color-mix(in oklab, var(--accent) 50%, transparent);
   border-color: var(--primary);
 }
 
-.baaraly-mdxeditor-content ul,
-.baaraly-mdxeditor-content ol {
+.baarali-mdxeditor-content ul,
+.baarali-mdxeditor-content ol {
   margin: 1.25em 0;
   padding-left: 1.75em;
 }
 
-.baaraly-mdxeditor-content ul {
+.baarali-mdxeditor-content ul {
   list-style: disc;
 }
 
-.baaraly-mdxeditor-content ol {
+.baarali-mdxeditor-content ol {
   list-style: decimal;
 }
 
-.baaraly-mdxeditor-content li {
+.baarali-mdxeditor-content li {
   display: list-item;
   margin: 0.4em 0;
   line-height: inherit;
 }
 
-.baaraly-mdxeditor-content li::marker {
+.baarali-mdxeditor-content li::marker {
   color: var(--muted-foreground);
 }
 
-.baaraly-mdxeditor-content h1 {
+.baarali-mdxeditor-content h1 {
   margin: 1.6em 0 1em;
   font-size: 1.875em;
   font-weight: 700;
   line-height: 1.2;
 }
 
-.baaraly-mdxeditor-content h2 {
+.baarali-mdxeditor-content h2 {
   margin: 1.4em 0 0.9em;
   font-size: 1.5em;
   font-weight: 600;
   line-height: 1.25;
 }
 
-.baaraly-mdxeditor-content h3 {
+.baarali-mdxeditor-content h3 {
   margin: 1.25em 0 0.75em;
   font-size: 1.25em;
   font-weight: 600;
   line-height: 1.3;
 }
 
-.baaraly-mdxeditor-content img {
+.baarali-mdxeditor-content img {
   max-height: 20rem;
   border-radius: var(--radius-lg);
   box-shadow: 0 4px 20px -4px rgba(0,0,0,0.1);
 }
 
-.baaraly-mdxeditor-content blockquote {
+.baarali-mdxeditor-content blockquote {
   margin: 1.25em 0;
   padding-left: 1.25em;
   border-left: 4px solid var(--primary);
@@ -673,7 +673,7 @@ a.baaraly-mention-chip:hover {
   line-height: inherit;
 }
 
-.baaraly-mdxeditor-content code {
+.baarali-mdxeditor-content code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 0.9em;
   padding: 0.15em 0.4em;
@@ -681,7 +681,7 @@ a.baaraly-mention-chip:hover {
   border-radius: var(--radius-sm);
 }
 
-.baaraly-mdxeditor-content pre {
+.baarali-mdxeditor-content pre {
   margin: 0.5rem 0;
   padding: 0;
   border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
@@ -692,55 +692,55 @@ a.baaraly-mention-chip:hover {
 }
 
 /* CodeMirror Apple Theme */
-.baaraly-mdxeditor .cm-editor {
+.baarali-mdxeditor .cm-editor {
   background-color: #1e1e2e !important;
   color: #cdd6f4 !important;
   font-size: 0.9375em;
   border-radius: var(--radius-lg);
 }
 
-.baaraly-mdxeditor .cm-gutters {
+.baarali-mdxeditor .cm-gutters {
   background-color: #181825 !important;
   color: #585b70 !important;
   border-right: 1px solid #313244 !important;
   border-radius: var(--radius-lg) 0 0 var(--radius-lg);
 }
 
-.baaraly-mdxeditor .cm-activeLineGutter {
+.baarali-mdxeditor .cm-activeLineGutter {
   background-color: #1e1e2e !important;
 }
 
-.baaraly-mdxeditor .cm-activeLine {
+.baarali-mdxeditor .cm-activeLine {
   background-color: color-mix(in oklab, #cdd6f4 5%, transparent) !important;
 }
 
-.baaraly-mdxeditor .cm-cursor,
-.baaraly-mdxeditor .cm-dropCursor {
+.baarali-mdxeditor .cm-cursor,
+.baarali-mdxeditor .cm-dropCursor {
   border-left-color: #cdd6f4 !important;
   border-left-width: 2px;
 }
 
-.baaraly-mdxeditor .cm-selectionBackground {
+.baarali-mdxeditor .cm-selectionBackground {
   background-color: color-mix(in oklab, #89b4fa 25%, transparent) !important;
   border-radius: var(--radius-sm);
 }
 
-.baaraly-mdxeditor .cm-focused .cm-selectionBackground {
+.baarali-mdxeditor .cm-focused .cm-selectionBackground {
   background-color: color-mix(in oklab, #89b4fa 30%, transparent) !important;
 }
 
-.baaraly-mdxeditor .cm-content {
+.baarali-mdxeditor .cm-content {
   caret-color: #cdd6f4;
   padding: 12px 16px;
 }
 
 /* Code block toolbar - show on hover */
-.baaraly-mdxeditor-content [class*="_codeMirrorWrapper_"] {
+.baarali-mdxeditor-content [class*="_codeMirrorWrapper_"] {
   position: relative;
 }
 
-.baaraly-mdxeditor-content [class*="_codeMirrorToolbar_"],
-.baaraly-mdxeditor-content [class*="_codeBlockToolbar_"] {
+.baarali-mdxeditor-content [class*="_codeMirrorToolbar_"],
+.baarali-mdxeditor-content [class*="_codeBlockToolbar_"] {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
@@ -750,8 +750,8 @@ a.baaraly-mention-chip:hover {
   border-radius: var(--radius-md);
 }
 
-.baaraly-mdxeditor-content [class*="_codeMirrorToolbar_"] select,
-.baaraly-mdxeditor-content [class*="_codeBlockToolbar_"] select {
+.baarali-mdxeditor-content [class*="_codeMirrorToolbar_"] select,
+.baarali-mdxeditor-content [class*="_codeBlockToolbar_"] select {
   background-color: #313244;
   color: #cdd6f4;
   border-color: #45475a;
@@ -759,22 +759,22 @@ a.baaraly-mention-chip:hover {
   padding: 4px 8px;
 }
 
-.baaraly-mdxeditor-content [class*="_codeMirrorWrapper_"]:hover [class*="_codeMirrorToolbar_"],
-.baaraly-mdxeditor-content [class*="_codeMirrorWrapper_"]:hover [class*="_codeBlockToolbar_"],
-.baaraly-mdxeditor-content [class*="_codeMirrorWrapper_"]:focus-within [class*="_codeMirrorToolbar_"],
-.baaraly-mdxeditor-content [class*="_codeMirrorWrapper_"]:focus-within [class*="_codeBlockToolbar_"] {
+.baarali-mdxeditor-content [class*="_codeMirrorWrapper_"]:hover [class*="_codeMirrorToolbar_"],
+.baarali-mdxeditor-content [class*="_codeMirrorWrapper_"]:hover [class*="_codeBlockToolbar_"],
+.baarali-mdxeditor-content [class*="_codeMirrorWrapper_"]:focus-within [class*="_codeMirrorToolbar_"],
+.baarali-mdxeditor-content [class*="_codeMirrorWrapper_"]:focus-within [class*="_codeBlockToolbar_"] {
   opacity: 1;
 }
 
 /* Markdown Body - Apple Theme */
-.baaraly-markdown {
+.baarali-markdown {
   --tw-prose-pre-bg: #1e1e2e;
   --tw-prose-pre-code: #cdd6f4;
   --tw-prose-invert-pre-bg: #1e1e2e;
   --tw-prose-invert-pre-code: #cdd6f4;
 }
 
-.baaraly-markdown pre {
+.baarali-markdown pre {
   border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent) !important;
   border-radius: var(--radius-lg) !important;
   background-color: #1e1e2e !important;
@@ -787,12 +787,12 @@ a.baaraly-mention-chip:hover {
   box-shadow: 0 2px 8px -2px rgba(0,0,0,0.15);
 }
 
-.baaraly-markdown code {
+.baarali-markdown code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 0.9em;
 }
 
-.baaraly-markdown pre code {
+.baarali-markdown pre code {
   font-size: inherit;
   color: inherit;
   background: none;
@@ -817,55 +817,55 @@ a.baaraly-mention-chip:hover {
   border-color: #ffffff10;
 }
 
-.baaraly-markdown {
+.baarali-markdown {
   color: var(--foreground);
   font-size: 1rem;
   line-height: 1.7;
 }
 
-.baaraly-markdown > :first-child {
+.baarali-markdown > :first-child {
   margin-top: 0;
 }
 
-.baaraly-markdown > :last-child {
+.baarali-markdown > :last-child {
   margin-bottom: 0;
 }
 
-.baaraly-markdown :where(p, ul, ol, blockquote, pre, table) {
+.baarali-markdown :where(p, ul, ol, blockquote, pre, table) {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
-.baaraly-markdown :where(ul, ol) {
+.baarali-markdown :where(ul, ol) {
   padding-left: 1.5em;
 }
 
-.baaraly-markdown ul {
+.baarali-markdown ul {
   list-style-type: disc;
 }
 
-.baaraly-markdown ol {
+.baarali-markdown ol {
   list-style-type: decimal;
 }
 
-.baaraly-markdown li {
+.baarali-markdown li {
   margin: 0.25rem 0;
   padding-left: 0.25rem;
 }
 
-.baaraly-markdown li > :where(p, ul, ol) {
+.baarali-markdown li > :where(p, ul, ol) {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
-.baaraly-markdown li::marker {
+.baarali-markdown li::marker {
   color: var(--muted-foreground);
 }
 
-.baaraly-markdown h1,
-.baaraly-markdown h2,
-.baaraly-markdown h3,
-.baaraly-markdown h4 {
+.baarali-markdown h1,
+.baarali-markdown h2,
+.baarali-markdown h3,
+.baarali-markdown h4 {
   margin-top: 2rem;
   margin-bottom: 0.75rem;
   color: var(--foreground);
@@ -874,50 +874,50 @@ a.baaraly-mention-chip:hover {
   line-height: 1.3;
 }
 
-.baaraly-markdown h1 {
+.baarali-markdown h1 {
   font-size: 1.75rem;
   font-weight: 700;
 }
 
-.baaraly-markdown h2 {
+.baarali-markdown h2 {
   font-size: 1.375rem;
 }
 
-.baaraly-markdown h3 {
+.baarali-markdown h3 {
   font-size: 1.125rem;
 }
 
-.baaraly-markdown h4 {
+.baarali-markdown h4 {
   font-size: 1rem;
 }
 
-.baaraly-markdown :where(strong, b) {
+.baarali-markdown :where(strong, b) {
   color: var(--foreground);
   font-weight: 600;
 }
 
-.baaraly-markdown a {
+.baarali-markdown a {
   color: oklch(0.55 0.2 265);
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: all 200ms ease-out;
 }
 
-.baaraly-markdown a:hover {
+.baarali-markdown a:hover {
   color: oklch(0.65 0.22 265);
   text-decoration: none;
   border-bottom-color: currentColor;
 }
 
-.dark .baaraly-markdown a {
+.dark .baarali-markdown a {
   color: oklch(0.75 0.20 265);
 }
 
-.dark .baaraly-markdown a:hover {
+.dark .baarali-markdown a:hover {
   color: oklch(0.85 0.18 265);
 }
 
-.baaraly-markdown blockquote {
+.baarali-markdown blockquote {
   margin: 1.5rem 0;
   padding: 1rem 1.5rem;
   border-left: 4px solid var(--primary);
@@ -926,26 +926,26 @@ a.baaraly-mention-chip:hover {
   color: var(--muted-foreground);
 }
 
-.baaraly-markdown hr {
+.baarali-markdown hr {
   margin: 2rem 0;
   border-color: var(--border);
   border-top-width: 1px;
 }
 
-.baaraly-markdown img {
+.baarali-markdown img {
   border-radius: var(--radius-lg);
   box-shadow: 0 4px 20px -4px rgba(0,0,0,0.1);
   border: 1px solid var(--border);
 }
 
-.baaraly-markdown table {
+.baarali-markdown table {
   width: 100%;
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--border);
 }
 
-.baaraly-markdown th {
+.baarali-markdown th {
   font-weight: 600;
   text-align: left;
   padding: 12px 16px;
@@ -953,17 +953,17 @@ a.baaraly-mention-chip:hover {
   border-bottom: 1px solid var(--border);
 }
 
-.baaraly-markdown td {
+.baarali-markdown td {
   padding: 12px 16px;
   border-bottom: 1px solid var(--border);
 }
 
-.baaraly-markdown tr:last-child td {
+.baarali-markdown tr:last-child td {
   border-bottom: none;
 }
 
 /* Mermaid - Apple style */
-.baaraly-mermaid {
+.baarali-mermaid {
   margin: 1rem 0;
   padding: 1rem;
   border: 1px solid var(--border);
@@ -973,7 +973,7 @@ a.baaraly-mention-chip:hover {
   box-shadow: 0 2px 8px -2px rgba(0,0,0,0.05);
 }
 
-.baaraly-mermaid svg {
+.baarali-mermaid svg {
   display: block;
   width: max-content;
   max-width: none;
@@ -981,17 +981,17 @@ a.baaraly-mention-chip:hover {
   height: auto;
 }
 
-.baaraly-mermaid-status {
+.baarali-mermaid-status {
   margin: 0 0 0.75rem;
   font-size: 0.8125rem;
   color: var(--muted-foreground);
 }
 
-.baaraly-mermaid-status-error {
+.baarali-mermaid-status-error {
   color: var(--destructive);
 }
 
-.baaraly-mermaid-source {
+.baarali-mermaid-source {
   margin: 0;
   padding: 0;
   border: 0;
@@ -999,8 +999,8 @@ a.baaraly-mention-chip:hover {
 }
 
 /* Project mention chips - Apple style */
-a.baaraly-mention-chip,
-a.baaraly-project-mention-chip {
+a.baarali-mention-chip,
+a.baarali-project-mention-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
@@ -1017,7 +1017,7 @@ a.baaraly-project-mention-chip {
   transition: all 200ms ease-out;
 }
 
-a.baaraly-mention-chip:hover {
+a.baarali-mention-chip:hover {
   background: color-mix(in oklab, var(--accent) 50%, transparent);
   border-color: var(--primary);
 }

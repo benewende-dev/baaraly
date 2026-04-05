@@ -44,8 +44,8 @@ export function resolvePrivateHostnameAllowSet(opts: { allowedHostnames: string[
 
 function blockedHostnameMessage(hostname: string): string {
   return (
-    `Hostname '${hostname}' is not allowed for this Baaraly instance. ` +
-    `If you want to allow this hostname, please run pnpm baaralyai allowed-hostname ${hostname}`
+    `Hostname '${hostname}' is not allowed for this Baarali instance. ` +
+    `If you want to allow this hostname, please run pnpm baaraliai allowed-hostname ${hostname}`
   );
 }
 
@@ -68,7 +68,7 @@ export function privateHostnameGuard(opts: {
     const wantsJson = req.path.startsWith("/api") || req.accepts(["json", "html", "text"]) === "json";
 
     if (!hostname) {
-      const error = "Missing Host header. If you want to allow a hostname, run pnpm baaralyai allowed-hostname <host>.";
+      const error = "Missing Host header. If you want to allow a hostname, run pnpm baaraliai allowed-hostname <host>.";
       if (wantsJson) {
         res.status(403).json({ error });
       } else {

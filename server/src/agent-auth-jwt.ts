@@ -26,14 +26,14 @@ function parseNumber(value: string | undefined, fallback: number) {
 }
 
 function jwtConfig() {
-  const secret = process.env.BAARALY_AGENT_JWT_SECRET;
+  const secret = process.env.BAARALI_AGENT_JWT_SECRET;
   if (!secret) return null;
 
   return {
     secret,
-    ttlSeconds: parseNumber(process.env.BAARALY_AGENT_JWT_TTL_SECONDS, 60 * 60 * 48),
-    issuer: process.env.BAARALY_AGENT_JWT_ISSUER ?? "paperclip",
-    audience: process.env.BAARALY_AGENT_JWT_AUDIENCE ?? "baaraly-api",
+    ttlSeconds: parseNumber(process.env.BAARALI_AGENT_JWT_TTL_SECONDS, 60 * 60 * 48),
+    issuer: process.env.BAARALI_AGENT_JWT_ISSUER ?? "paperclip",
+    audience: process.env.BAARALI_AGENT_JWT_AUDIENCE ?? "baarali-api",
   };
 }
 

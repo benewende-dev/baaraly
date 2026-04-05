@@ -20,7 +20,7 @@ Attends qu'ils répondent.
 ### Démonstration (2 minutes)
 
 1. Sors ton téléphone
-2. Ouvre Baaraly
+2. Ouvre Baarali
 3. Montre ton dashboard avec ton agent
 
 > *"Regarde. Mon agent là, il envoie des messages pour moi. Je dors, il travaille. Le matin j'ai des réponses."*

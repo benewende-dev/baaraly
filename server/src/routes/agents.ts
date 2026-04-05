@@ -93,7 +93,7 @@ export function agentRoutes(db: Db) {
   const companySkills = companySkillService(db);
   const workspaceOperations = workspaceOperationService(db);
   const instanceSettings = instanceSettingsService(db);
-  const strictSecretsMode = process.env.BAARALY_SECRETS_STRICT_MODE === "true";
+  const strictSecretsMode = process.env.BAARALI_SECRETS_STRICT_MODE === "true";
 
   async function getCurrentUserRedactionOptions() {
     return {
@@ -545,7 +545,7 @@ export function agentRoutes(db: Db) {
     });
     return {
       ...config,
-      baaralyRuntimeSkills: runtimeSkillEntries,
+      baaraliRuntimeSkills: runtimeSkillEntries,
     };
   }
 
@@ -810,7 +810,7 @@ export function agentRoutes(db: Db) {
       );
       const runtimeSkillConfig = {
         ...runtimeConfig,
-        baaralyRuntimeSkills: runtimeSkillEntries,
+        baaraliRuntimeSkills: runtimeSkillEntries,
       };
       const snapshot = adapter?.syncSkills
         ? await adapter.syncSkills({

@@ -8,7 +8,7 @@ async function makeTempDir(prefix: string): Promise<string> {
   return fs.mkdtemp(path.join(os.tmpdir(), prefix));
 }
 
-async function createBaaralyRepoSkill(root: string, skillName: string) {
+async function createBaaraliRepoSkill(root: string, skillName: string) {
   await fs.mkdir(path.join(root, "server"), { recursive: true });
   await fs.mkdir(path.join(root, "packages", "adapter-utils"), { recursive: true });
   await fs.mkdir(path.join(root, "skills", skillName), { recursive: true });
@@ -31,7 +31,7 @@ async function createCustomSkill(root: string, skillName: string) {
 }
 
 describe("codex local adapter skill injection", () => {
-  const baaralyKey = "baaralyai/baaraly/baaraly";
+  const baaraliKey = "baaraliai/baarali/baarali";
   const cleanupDirs = new Set<string>();
 
   afterEach(async () => {
@@ -39,16 +39,16 @@ describe("codex local adapter skill injection", () => {
     cleanupDirs.clear();
   });
 
-  it("repairs a Codex Baaraly skill symlink that still points at another live checkout", async () => {
-    const currentRepo = await makeTempDir("baaraly-codex-current-");
-    const oldRepo = await makeTempDir("baaraly-codex-old-");
-    const skillsHome = await makeTempDir("baaraly-codex-home-");
+  it("repairs a Codex Baarali skill symlink that still points at another live checkout", async () => {
+    const currentRepo = await makeTempDir("baarali-codex-current-");
+    const oldRepo = await makeTempDir("baarali-codex-old-");
+    const skillsHome = await makeTempDir("baarali-codex-home-");
     cleanupDirs.add(currentRepo);
     cleanupDirs.add(oldRepo);
     cleanupDirs.add(skillsHome);
 
-    await createBaaralyRepoSkill(currentRepo, "paperclip");
-    await createBaaralyRepoSkill(oldRepo, "paperclip");
+    await createBaaraliRepoSkill(currentRepo, "paperclip");
+    await createBaaraliRepoSkill(oldRepo, "paperclip");
     await fs.symlink(path.join(oldRepo, "skills", "paperclip"), path.join(skillsHome, "paperclip"));
 
     const logs: Array<{ stream: "stdout" | "stderr"; chunk: string }> = [];
@@ -59,7 +59,7 @@ describe("codex local adapter skill injection", () => {
       {
         skillsHome,
         skillsEntries: [{
-          key: baaralyKey,
+          key: baaraliKey,
           runtimeName: "paperclip",
           source: path.join(currentRepo, "skills", "paperclip"),
         }],
@@ -77,22 +77,22 @@ describe("codex local adapter skill injection", () => {
     );
   });
 
-  it("preserves a custom Codex skill symlink outside Baaraly repo checkouts", async () => {
-    const currentRepo = await makeTempDir("baaraly-codex-current-");
-    const customRoot = await makeTempDir("baaraly-codex-custom-");
-    const skillsHome = await makeTempDir("baaraly-codex-home-");
+  it("preserves a custom Codex skill symlink outside Baarali repo checkouts", async () => {
+    const currentRepo = await makeTempDir("baarali-codex-current-");
+    const customRoot = await makeTempDir("baarali-codex-custom-");
+    const skillsHome = await makeTempDir("baarali-codex-home-");
     cleanupDirs.add(currentRepo);
     cleanupDirs.add(customRoot);
     cleanupDirs.add(skillsHome);
 
-    await createBaaralyRepoSkill(currentRepo, "paperclip");
+    await createBaaraliRepoSkill(currentRepo, "paperclip");
     await createCustomSkill(customRoot, "paperclip");
     await fs.symlink(path.join(customRoot, "custom", "paperclip"), path.join(skillsHome, "paperclip"));
 
     await ensureCodexSkillsInjected(async () => {}, {
       skillsHome,
       skillsEntries: [{
-        key: baaralyKey,
+        key: baaraliKey,
         runtimeName: "paperclip",
         source: path.join(currentRepo, "skills", "paperclip"),
       }],
@@ -103,16 +103,16 @@ describe("codex local adapter skill injection", () => {
     );
   });
 
-  it("prunes broken symlinks for unavailable Baaraly repo skills before Codex starts", async () => {
-    const currentRepo = await makeTempDir("baaraly-codex-current-");
-    const oldRepo = await makeTempDir("baaraly-codex-old-");
-    const skillsHome = await makeTempDir("baaraly-codex-home-");
+  it("prunes broken symlinks for unavailable Baarali repo skills before Codex starts", async () => {
+    const currentRepo = await makeTempDir("baarali-codex-current-");
+    const oldRepo = await makeTempDir("baarali-codex-old-");
+    const skillsHome = await makeTempDir("baarali-codex-home-");
     cleanupDirs.add(currentRepo);
     cleanupDirs.add(oldRepo);
     cleanupDirs.add(skillsHome);
 
-    await createBaaralyRepoSkill(currentRepo, "paperclip");
-    await createBaaralyRepoSkill(oldRepo, "agent-browser");
+    await createBaaraliRepoSkill(currentRepo, "paperclip");
+    await createBaaraliRepoSkill(oldRepo, "agent-browser");
     const staleTarget = path.join(oldRepo, "skills", "agent-browser");
     await fs.symlink(staleTarget, path.join(skillsHome, "agent-browser"));
     await fs.rm(staleTarget, { recursive: true, force: true });
@@ -125,7 +125,7 @@ describe("codex local adapter skill injection", () => {
       {
         skillsHome,
         skillsEntries: [{
-          key: baaralyKey,
+          key: baaraliKey,
           runtimeName: "paperclip",
           source: path.join(currentRepo, "skills", "paperclip"),
         }],
@@ -143,14 +143,14 @@ describe("codex local adapter skill injection", () => {
     );
   });
 
-  it("preserves other live Baaraly skill symlinks in the shared workspace skill directory", async () => {
-    const currentRepo = await makeTempDir("baaraly-codex-current-");
-    const skillsHome = await makeTempDir("baaraly-codex-home-");
+  it("preserves other live Baarali skill symlinks in the shared workspace skill directory", async () => {
+    const currentRepo = await makeTempDir("baarali-codex-current-");
+    const skillsHome = await makeTempDir("baarali-codex-home-");
     cleanupDirs.add(currentRepo);
     cleanupDirs.add(skillsHome);
 
-    await createBaaralyRepoSkill(currentRepo, "paperclip");
-    await createBaaralyRepoSkill(currentRepo, "agent-browser");
+    await createBaaraliRepoSkill(currentRepo, "paperclip");
+    await createBaaraliRepoSkill(currentRepo, "agent-browser");
     await fs.symlink(
       path.join(currentRepo, "skills", "agent-browser"),
       path.join(skillsHome, "agent-browser"),
@@ -159,7 +159,7 @@ describe("codex local adapter skill injection", () => {
     await ensureCodexSkillsInjected(async () => {}, {
       skillsHome,
       skillsEntries: [{
-        key: baaralyKey,
+        key: baaraliKey,
         runtimeName: "paperclip",
         source: path.join(currentRepo, "skills", "paperclip"),
       }],

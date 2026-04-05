@@ -96,7 +96,7 @@ export function generateReadme(
   // What's Inside table
   lines.push("## What's Inside");
   lines.push("");
-  lines.push("> This is an [Agent Company](https://agentcompanies.io) package from [Baaraly](https://baaraly.ing)");
+  lines.push("> This is an [Agent Company](https://agentcompanies.io) package from [Baarali](https://baarali.ing)");
   lines.push("");
 
   const counts: Array<[string, number]> = [];
@@ -157,15 +157,15 @@ export function generateReadme(
   lines.push("## Getting Started");
   lines.push("");
   lines.push("```bash");
-  lines.push("pnpm baaralyai company import this-github-url-or-folder");
+  lines.push("pnpm baaraliai company import this-github-url-or-folder");
   lines.push("```");
   lines.push("");
-  lines.push("See [Baaraly](https://baaraly.ing) for more information.");
+  lines.push("See [Baarali](https://baarali.ing) for more information.");
   lines.push("");
 
   // Footer
   lines.push("---");
-  lines.push(`Exported from [Baaraly](https://baaraly.ing) on ${new Date().toISOString().split("T")[0]}`);
+  lines.push(`Exported from [Baarali](https://baarali.ing) on ${new Date().toISOString().split("T")[0]}`);
   lines.push("");
 
   return lines.join("\n");

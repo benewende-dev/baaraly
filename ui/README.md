@@ -1,6 +1,6 @@
-# @baaraly/ui
+# @baarali/ui
 
-Assets statiques de l'interface Baaraly — tableau de bord IA souverain africain.
+Assets statiques de l'interface Baarali — tableau de bord IA souverain africain.
 
 ## Ce qui est publié
 
@@ -8,4 +8,4 @@ Le package npm contient le build de production dans `dist/`. Il n'inclut pas le 
 
 ## Utilisation
 
-Installer le package, puis servir ou copier les fichiers depuis `node_modules/@baaraly/ui/dist`.
+Installer le package, puis servir ou copier les fichiers depuis `node_modules/@baarali/ui/dist`.

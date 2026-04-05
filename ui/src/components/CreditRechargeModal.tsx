@@ -9,11 +9,11 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 import {
-  BAARALY_RECHARGE_PACKS,
+  BAARALI_RECHARGE_PACKS,
   getPaymentProvidersForCountry,
   formatPriceFromEur,
   type PaymentProvider,
-} from "@paperclipai/shared/baaraly-agents";
+} from "@paperclipai/shared/baarali-agents";
 import { ProviderLogo } from "./ProviderLogo";
 
 interface CreditRechargeModalProps {
@@ -54,7 +54,7 @@ export function CreditRechargeModal({ open, onOpenChange, companyId, userCountry
   const [error, setError] = useState<string | null>(null);
 
   const providers = getPaymentProvidersForCountry(userCountry);
-  const pack = BAARALY_RECHARGE_PACKS.find((p) => p.id === selectedPack);
+  const pack = BAARALI_RECHARGE_PACKS.find((p) => p.id === selectedPack);
   const packPriceEur = pack ? pack.fcfa / 655.96 : 0;
   const packPrice = formatPriceFromEur(packPriceEur, userCountry);
 
@@ -158,7 +158,7 @@ export function CreditRechargeModal({ open, onOpenChange, companyId, userCountry
             <div className="space-y-3">
               <h3 className="text-base font-bold">{t("Choisissez votre pack")}</h3>
               <div className="grid grid-cols-2 gap-2.5">
-                {BAARALY_RECHARGE_PACKS.map((p) => {
+                {BAARALI_RECHARGE_PACKS.map((p) => {
                   const isSelected = selectedPack === p.id;
                   const price = formatPriceFromEur(p.fcfa / 655.96, userCountry);
                   return (

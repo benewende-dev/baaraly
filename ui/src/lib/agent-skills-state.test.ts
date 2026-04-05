@@ -9,12 +9,12 @@ describe("applyAgentSkillSnapshot", () => {
         lastSaved: [],
         hasHydratedSnapshot: false,
       },
-      ["baaraly", "para-memory-files"],
+      ["baarali", "para-memory-files"],
     );
 
     expect(result).toEqual({
-      draft: ["baaraly", "para-memory-files"],
-      lastSaved: ["baaraly", "para-memory-files"],
+      draft: ["baarali", "para-memory-files"],
+      lastSaved: ["baarali", "para-memory-files"],
       hasHydratedSnapshot: true,
       shouldSkipAutosave: true,
     });
@@ -23,16 +23,16 @@ describe("applyAgentSkillSnapshot", () => {
   it("keeps unsaved local edits when a fresh snapshot arrives", () => {
     const result = applyAgentSkillSnapshot(
       {
-        draft: ["baaraly", "custom-skill"],
-        lastSaved: ["baaraly"],
+        draft: ["baarali", "custom-skill"],
+        lastSaved: ["baarali"],
         hasHydratedSnapshot: true,
       },
-      ["baaraly"],
+      ["baarali"],
     );
 
     expect(result).toEqual({
-      draft: ["baaraly", "custom-skill"],
-      lastSaved: ["baaraly"],
+      draft: ["baarali", "custom-skill"],
+      lastSaved: ["baarali"],
       hasHydratedSnapshot: true,
       shouldSkipAutosave: false,
     });
@@ -41,16 +41,16 @@ describe("applyAgentSkillSnapshot", () => {
   it("adopts server state after a successful save and skips the follow-up autosave pass", () => {
     const result = applyAgentSkillSnapshot(
       {
-        draft: ["baaraly", "custom-skill"],
-        lastSaved: ["baaraly", "custom-skill"],
+        draft: ["baarali", "custom-skill"],
+        lastSaved: ["baarali", "custom-skill"],
         hasHydratedSnapshot: true,
       },
-      ["baaraly", "custom-skill"],
+      ["baarali", "custom-skill"],
     );
 
     expect(result).toEqual({
-      draft: ["baaraly", "custom-skill"],
-      lastSaved: ["baaraly", "custom-skill"],
+      draft: ["baarali", "custom-skill"],
+      lastSaved: ["baarali", "custom-skill"],
       hasHydratedSnapshot: true,
       shouldSkipAutosave: true,
     });
@@ -64,18 +64,18 @@ describe("applyAgentSkillSnapshot", () => {
       managed: false,
       state: "external",
       origin: "user_installed",
-    }, new Set(["baaraly"]))).toBe(true);
+    }, new Set(["baarali"]))).toBe(true);
   });
 
   it("keeps company-library entries in the managed section even when the adapter reports an external conflict", () => {
     expect(isReadOnlyUnmanagedSkillEntry({
-      key: "baaraly",
-      runtimeName: "baaraly",
+      key: "baarali",
+      runtimeName: "baarali",
       desired: true,
       managed: false,
       state: "external",
       origin: "company_managed",
-    }, new Set(["baaraly"]))).toBe(false);
+    }, new Set(["baarali"]))).toBe(false);
   });
 
   it("falls back to legacy snapshots that only mark unmanaged external entries", () => {

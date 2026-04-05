@@ -1,7 +1,7 @@
 import type { Agent } from "@paperclipai/shared";
 
-export const AGENT_ORDER_UPDATED_EVENT = "baaraly:agent-order-updated";
-const AGENT_ORDER_STORAGE_PREFIX = "baaraly.agentOrder";
+export const AGENT_ORDER_UPDATED_EVENT = "baarali:agent-order-updated";
+const AGENT_ORDER_STORAGE_PREFIX = "baarali.agentOrder";
 const ANONYMOUS_USER_ID = "anonymous";
 
 type AgentOrderUpdatedDetail = {

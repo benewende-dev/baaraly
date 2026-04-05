@@ -144,15 +144,15 @@ export async function loadPluginModuleInSandbox(
     // `(fn)(exports, module, ...)` in the script text, the timeout also covers
     // the actual module body execution — preventing infinite loops from hanging.
     const sandboxArgs = {
-      __baaraly_exports: module.exports,
-      __baaraly_module: module,
-      __baaraly_require: requireInSandbox,
-      __baaraly_filename: realPath,
-      __baaraly_dirname: path.dirname(realPath),
+      __baarali_exports: module.exports,
+      __baarali_module: module,
+      __baarali_require: requireInSandbox,
+      __baarali_filename: realPath,
+      __baarali_dirname: path.dirname(realPath),
     };
     // Temporarily inject args into the context, run, then remove to avoid pollution.
     Object.assign(context, sandboxArgs);
-    const wrapped = `(function (exports, module, require, __filename, __dirname) {\n${code}\n})(__baaraly_exports, __baaraly_module, __baaraly_require, __baaraly_filename, __baaraly_dirname)`;
+    const wrapped = `(function (exports, module, require, __filename, __dirname) {\n${code}\n})(__baarali_exports, __baarali_module, __baarali_require, __baarali_filename, __baarali_dirname)`;
     const script = new vm.Script(wrapped, { filename: realPath });
     try {
       script.runInContext(context, { timeout: timeoutMs });

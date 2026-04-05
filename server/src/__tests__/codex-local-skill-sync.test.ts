@@ -12,7 +12,7 @@ async function makeTempDir(prefix: string): Promise<string> {
 }
 
 describe("codex local skill sync", () => {
-  const baaralyKey = "baaralyai/baaraly/baaraly";
+  const baaraliKey = "baaraliai/baarali/baarali";
   const cleanupDirs = new Set<string>();
 
   afterEach(async () => {
@@ -20,8 +20,8 @@ describe("codex local skill sync", () => {
     cleanupDirs.clear();
   });
 
-  it("reports configured Baaraly skills for workspace injection on the next run", async () => {
-    const codexHome = await makeTempDir("baaraly-codex-skill-sync-");
+  it("reports configured Baarali skills for workspace injection on the next run", async () => {
+    const codexHome = await makeTempDir("baarali-codex-skill-sync-");
     cleanupDirs.add(codexHome);
 
     const ctx = {
@@ -32,22 +32,22 @@ describe("codex local skill sync", () => {
         env: {
           CODEX_HOME: codexHome,
         },
-        baaralySkillSync: {
-          desiredSkills: [baaralyKey],
+        baaraliSkillSync: {
+          desiredSkills: [baaraliKey],
         },
       },
     } as const;
 
     const before = await listCodexSkills(ctx);
     expect(before.mode).toBe("ephemeral");
-    expect(before.desiredSkills).toContain(baaralyKey);
-    expect(before.entries.find((entry) => entry.key === baaralyKey)?.required).toBe(true);
-    expect(before.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("configured");
-    expect(before.entries.find((entry) => entry.key === baaralyKey)?.detail).toContain("CODEX_HOME/skills/");
+    expect(before.desiredSkills).toContain(baaraliKey);
+    expect(before.entries.find((entry) => entry.key === baaraliKey)?.required).toBe(true);
+    expect(before.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("configured");
+    expect(before.entries.find((entry) => entry.key === baaraliKey)?.detail).toContain("CODEX_HOME/skills/");
   });
 
-  it("does not persist Baaraly skills into CODEX_HOME during sync", async () => {
-    const codexHome = await makeTempDir("baaraly-codex-skill-prune-");
+  it("does not persist Baarali skills into CODEX_HOME during sync", async () => {
+    const codexHome = await makeTempDir("baarali-codex-skill-prune-");
     cleanupDirs.add(codexHome);
 
     const configuredCtx = {
@@ -58,22 +58,22 @@ describe("codex local skill sync", () => {
         env: {
           CODEX_HOME: codexHome,
         },
-        baaralySkillSync: {
-          desiredSkills: [baaralyKey],
+        baaraliSkillSync: {
+          desiredSkills: [baaraliKey],
         },
       },
     } as const;
 
-    const after = await syncCodexSkills(configuredCtx, [baaralyKey]);
+    const after = await syncCodexSkills(configuredCtx, [baaraliKey]);
     expect(after.mode).toBe("ephemeral");
-    expect(after.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("configured");
+    expect(after.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("configured");
     await expect(fs.lstat(path.join(codexHome, "skills", "paperclip"))).rejects.toMatchObject({
       code: "ENOENT",
     });
   });
 
-  it("keeps required bundled Baaraly skills configured even when the desired set is emptied", async () => {
-    const codexHome = await makeTempDir("baaraly-codex-skill-required-");
+  it("keeps required bundled Baarali skills configured even when the desired set is emptied", async () => {
+    const codexHome = await makeTempDir("baarali-codex-skill-required-");
     cleanupDirs.add(codexHome);
 
     const configuredCtx = {
@@ -84,19 +84,19 @@ describe("codex local skill sync", () => {
         env: {
           CODEX_HOME: codexHome,
         },
-        baaralySkillSync: {
+        baaraliSkillSync: {
           desiredSkills: [],
         },
       },
     } as const;
 
     const after = await syncCodexSkills(configuredCtx, []);
-    expect(after.desiredSkills).toContain(baaralyKey);
-    expect(after.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("configured");
+    expect(after.desiredSkills).toContain(baaraliKey);
+    expect(after.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("configured");
   });
 
-  it("normalizes legacy flat Baaraly skill refs before reporting configured state", async () => {
-    const codexHome = await makeTempDir("baaraly-codex-legacy-skill-sync-");
+  it("normalizes legacy flat Baarali skill refs before reporting configured state", async () => {
+    const codexHome = await makeTempDir("baarali-codex-legacy-skill-sync-");
     cleanupDirs.add(codexHome);
 
     const snapshot = await listCodexSkills({
@@ -107,16 +107,16 @@ describe("codex local skill sync", () => {
         env: {
           CODEX_HOME: codexHome,
         },
-        baaralySkillSync: {
+        baaraliSkillSync: {
           desiredSkills: ["paperclip"],
         },
       },
     });
 
     expect(snapshot.warnings).toEqual([]);
-    expect(snapshot.desiredSkills).toContain(baaralyKey);
+    expect(snapshot.desiredSkills).toContain(baaraliKey);
     expect(snapshot.desiredSkills).not.toContain("paperclip");
-    expect(snapshot.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("configured");
+    expect(snapshot.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("configured");
     expect(snapshot.entries.find((entry) => entry.key === "paperclip")).toBeUndefined();
   });
 });

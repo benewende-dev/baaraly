@@ -8,7 +8,7 @@ import {
 } from "react";
 import { translate, type Language } from "../i18n/translations";
 
-const LANGUAGE_KEY = "baaraly.language";
+const LANGUAGE_KEY = "baarali.language";
 
 interface LanguageContextValue {
   language: Language;

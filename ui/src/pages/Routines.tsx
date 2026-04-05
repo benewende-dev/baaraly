@@ -466,7 +466,7 @@ export function Routines() {
 
           <div className="flex flex-col gap-3 border-t border-border/60 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="text-sm text-muted-foreground">
-              {t("After creation, Baaraly takes you directly to the trigger configuration.")}
+              {t("After creation, Baarali takes you directly to the trigger configuration.")}
             </div>
             <div className="flex flex-col gap-2 sm:items-end">
               <Button

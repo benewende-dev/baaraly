@@ -86,7 +86,7 @@ export async function testEnvironment(
           code: "http_endpoint_probe_unexpected_status",
           level: "warn",
           message: `Endpoint probe returned HTTP ${response.status}.`,
-          hint: "Verify the endpoint is reachable from the Baaraly server host.",
+          hint: "Verify the endpoint is reachable from the Baarali server host.",
         });
       } else {
         checks.push({

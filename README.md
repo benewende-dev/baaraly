@@ -1,4 +1,4 @@
-# Baaraly 🌍
+# Baarali 🌍
 
 > L'IA qui fait prospérer ton entreprise
 

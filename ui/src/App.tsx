@@ -2,7 +2,10 @@ import { Navigate, Outlet, Route, Routes, useLocation, useParams } from "@/lib/r
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "./context/LanguageContext";
+import { useMode } from "./context/ModeContext";
 import { Layout } from "./components/Layout";
+import { SimpleLayout } from "./components/SimpleLayout";
+import { SimpleDashboard } from "./pages/SimpleDashboard";
 import { OnboardingWizard } from "./components/OnboardingWizard";
 import { authApi } from "./api/auth";
 import { healthApi } from "./api/health";
@@ -40,7 +43,7 @@ import { OrgChart } from "./pages/OrgChart";
 import { NewAgent } from "./pages/NewAgent";
 import { AgentTemplates } from "./pages/AgentTemplates";
 import { Pricing } from "./pages/Pricing";
-import { BaaralyOnboarding } from "./pages/BaaralyOnboarding";
+import { BaaraliOnboarding } from "./pages/BaaraliOnboarding";
 import { Landing } from "./pages/Landing";
 import { AuthPage } from "./pages/Auth";
 import { ForgotPasswordPage } from "./pages/ForgotPassword";
@@ -62,11 +65,11 @@ function BootstrapPendingPage({ hasActiveInvite = false }: { hasActiveInvite?: b
         <h1 className="text-xl font-semibold">{t("Instance setup required")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           {hasActiveInvite
-            ? t("No instance admin exists yet. A bootstrap invite is already active. Check your Baaraly startup logs for the first admin invite URL, or run this command to rotate it:")
-            : t("No instance admin exists yet. Run this command in your Baaraly environment to generate the first admin invite URL:")}
+            ? t("No instance admin exists yet. A bootstrap invite is already active. Check your Baarali startup logs for the first admin invite URL, or run this command to rotate it:")
+            : t("No instance admin exists yet. Run this command in your Baarali environment to generate the first admin invite URL:")}
         </p>
         <pre className="mt-4 overflow-x-auto rounded-md border border-border bg-muted/30 p-3 text-xs">
-{`pnpm baaralyai auth bootstrap-ceo`}
+{`pnpm baaraliai auth bootstrap-ceo`}
         </pre>
       </div>
     </div>
@@ -242,6 +245,7 @@ function CompanyRootRedirect() {
   const { companies, selectedCompany, loading } = useCompany();
   const location = useLocation();
   const { t } = useLanguage();
+  const { isSimple } = useMode();
 
   if (loading) {
     return <div className="mx-auto max-w-xl py-10 text-sm text-muted-foreground">{t("Loading...")}</div>;
@@ -258,6 +262,10 @@ function CompanyRootRedirect() {
       return <Navigate to="/landing" replace />;
     }
     return <Navigate to="/landing" replace />;
+  }
+
+  if (isSimple) {
+    return <Navigate to="/simple/dashboard" replace />;
   }
 
   return <Navigate to={`/${targetCompany.issuePrefix}/dashboard`} replace />;
@@ -285,9 +293,6 @@ function UnprefixedBoardRedirect() {
   );
 }
 
-function NoCompaniesStartPage() {
-  return <Navigate to="/landing" replace />;
-}
 
 export function App() {
   return (
@@ -303,7 +308,11 @@ export function App() {
 
         <Route element={<CloudAccessGate />}>
           <Route index element={<CompanyRootRedirect />} />
-          <Route path="welcome" element={<BaaralyOnboarding />} />
+          <Route path="simple" element={<SimpleLayout />}>
+            <Route path="dashboard" element={<SimpleDashboard />} />
+            <Route index element={<Navigate to="dashboard" replace />} />
+          </Route>
+          <Route path="welcome" element={<BaaraliOnboarding />} />
           <Route path="onboarding" element={<OnboardingRoutePage />} />
           <Route path="instance" element={<Navigate to="/instance/settings/general" replace />} />
           <Route path="instance/settings" element={<Layout />}>

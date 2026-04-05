@@ -9,9 +9,9 @@ import type {
 export const RECENT_ISSUES_LIMIT = 100;
 export const FAILED_RUN_STATUSES = new Set(["failed", "timed_out"]);
 export const ACTIONABLE_APPROVAL_STATUSES = new Set(["pending", "revision_requested"]);
-export const DISMISSED_KEY = "baaraly:inbox:dismissed";
-export const READ_ITEMS_KEY = "baaraly:inbox:read-items";
-export const INBOX_LAST_TAB_KEY = "baaraly:inbox:last-tab";
+export const DISMISSED_KEY = "baarali:inbox:dismissed";
+export const READ_ITEMS_KEY = "baarali:inbox:read-items";
+export const INBOX_LAST_TAB_KEY = "baarali:inbox:last-tab";
 export type InboxTab = "mine" | "recent" | "unread" | "all";
 export type InboxApprovalFilter = "all" | "actionable" | "resolved";
 export type InboxWorkItem =

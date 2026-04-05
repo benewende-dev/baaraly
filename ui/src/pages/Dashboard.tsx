@@ -19,18 +19,18 @@ import { WhatsAppConnectButton } from "../components/WhatsAppConnect";
 import { CheckoutModal } from "../components/CheckoutModal";
 import { AgentDetailModal } from "../components/AgentDetailModal";
 import {
-  BAARALY_AGENTS,
+  BAARALI_AGENTS,
   AGENT_CATEGORIES,
   getBillingPlan,
   getAgentsForPlan,
   getAgentsByTier,
   formatPriceFromEur,
   getCurrencyForCountry,
-  type BaaralyAgentDefinition,
+  type BaaraliAgentDefinition,
   type AgentCategory,
   type AgentTier,
   type BillingPlanId,
-} from "@paperclipai/shared/baaraly-agents";
+} from "@paperclipai/shared/baarali-agents";
 
 /* ─── Category gradient backgrounds ─── */
 const CATEGORY_GRADIENTS: Record<AgentCategory, string> = {
@@ -85,7 +85,7 @@ export function Dashboard() {
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [recruitingAgent, setRecruitingAgent] = useState<string | null>(null);
   const [showCheckout, setShowCheckout] = useState(false);
-  const [selectedAgent, setSelectedAgent] = useState<BaaralyAgentDefinition | null>(null);
+  const [selectedAgent, setSelectedAgent] = useState<BaaraliAgentDefinition | null>(null);
 
   const { data: agents, isLoading } = useQuery({
     queryKey: queryKeys.agents.list(selectedCompanyId!),
@@ -95,7 +95,7 @@ export function Dashboard() {
 
   /* Hire mutation */
   const hireMutation = useMutation({
-    mutationFn: async (agent: BaaralyAgentDefinition) => {
+    mutationFn: async (agent: BaaraliAgentDefinition) => {
       if (!selectedCompanyId) throw new Error("No company selected");
       return agentsApi.hire(selectedCompanyId, {
         name: agent.name,
@@ -111,7 +111,7 @@ export function Dashboard() {
           description: agent.description,
           tools: agent.tools,
           superpowers: agent.superpowers,
-          baaralyTemplate: true,
+          baaraliTemplate: true,
         },
       });
     },
@@ -207,14 +207,14 @@ export function Dashboard() {
 
   /* Filtered agents by category */
   const filteredAgents = useMemo(() => {
-    if (activeCategory === "all") return BAARALY_AGENTS;
-    return BAARALY_AGENTS.filter((a) => a.category === activeCategory);
+    if (activeCategory === "all") return BAARALI_AGENTS;
+    return BAARALI_AGENTS.filter((a) => a.category === activeCategory);
   }, [activeCategory]);
 
   /* Group by category for "all" view */
   const agentsByCategory = useMemo(() => {
     if (activeCategory !== "all") return null;
-    const groups: Record<AgentCategory, BaaralyAgentDefinition[]> = {
+    const groups: Record<AgentCategory, BaaraliAgentDefinition[]> = {
       tech: [],
       marketing: [],
       finance: [],
@@ -224,7 +224,7 @@ export function Dashboard() {
       commerce: [],
       juridique: [],
     };
-    for (const agent of BAARALY_AGENTS) {
+    for (const agent of BAARALI_AGENTS) {
       groups[agent.category].push(agent);
     }
     return groups;
@@ -240,7 +240,7 @@ export function Dashboard() {
       return (
         <EmptyState
           icon={LayoutDashboard}
-          message={t("Bienvenue sur Baaraly ! Configure ton premier assistant.")}
+          message={t("Bienvenue sur Baarali ! Configure ton premier assistant.")}
           action={t("Commencer")}
           onAction={() => navigate("/welcome")}
         />
@@ -258,7 +258,7 @@ export function Dashboard() {
     return <PageSkeleton variant="dashboard" />;
   }
 
-  const handleRecruit = (agent: BaaralyAgentDefinition) => {
+  const handleRecruit = (agent: BaaraliAgentDefinition) => {
     setRecruitingAgent(agent.name);
     hireMutation.mutate(agent);
   };
@@ -350,7 +350,7 @@ export function Dashboard() {
             {t("Catalogue d'agents")}
           </h2>
           <span className="text-xs text-muted-foreground">
-            {BAARALY_AGENTS.length} {t("agents disponibles")}
+            {BAARALI_AGENTS.length} {t("agents disponibles")}
           </span>
         </div>
 
@@ -364,10 +364,10 @@ export function Dashboard() {
                 : "bg-muted text-muted-foreground hover:bg-muted/80"
             }`}
           >
-            {t("Tous")} ({BAARALY_AGENTS.length})
+            {t("Tous")} ({BAARALI_AGENTS.length})
           </button>
           {AGENT_CATEGORIES.map((cat) => {
-            const count = BAARALY_AGENTS.filter((a) => a.category === cat.id).length;
+            const count = BAARALI_AGENTS.filter((a) => a.category === cat.id).length;
             return (
               <button
                 key={cat.id}
@@ -492,7 +492,7 @@ export function Dashboard() {
         onOpenChange={(open) => { if (!open) setSelectedAgent(null); }}
         agent={selectedAgent}
         installed={selectedAgent ? installedMap.get(selectedAgent.name) : undefined}
-        isLocked={selectedAgent ? !planInfo?.availableAgents.find((a: BaaralyAgentDefinition) => a.name === selectedAgent.name) : false}
+        isLocked={selectedAgent ? !planInfo?.availableAgents.find((a: BaaraliAgentDefinition) => a.name === selectedAgent.name) : false}
         canInstall={!!planInfo?.canInstallMore}
         isRecruiting={selectedAgent ? recruitingAgent === selectedAgent.name : false}
         isHiring={hireMutation.isPending}
@@ -606,13 +606,13 @@ function AgentBentoCard({
   popular,
   planInfo,
 }: {
-  agent: BaaralyAgentDefinition;
+  agent: BaaraliAgentDefinition;
   installed?: Agent;
   isRecruiting: boolean;
   isHiring: boolean;
   onRecruit: () => void;
-  onOpen: (agent: BaaralyAgentDefinition) => void;
-  onCardClick: (agent: BaaralyAgentDefinition) => void;
+  onOpen: (agent: BaaraliAgentDefinition) => void;
+  onCardClick: (agent: BaaraliAgentDefinition) => void;
   popular: boolean;
   planInfo: any;
 }) {
@@ -620,7 +620,7 @@ function AgentBentoCard({
   const isActive = installed && installed.status === "active";
   const isPaused = installed && installed.status === "paused";
   const isInstalled = !!installed;
-  const isLocked = planInfo && !planInfo.availableAgents.find((a: BaaralyAgentDefinition) => a.name === agent.name);
+  const isLocked = planInfo && !planInfo.availableAgents.find((a: BaaraliAgentDefinition) => a.name === agent.name);
   const canInstall = planInfo?.canInstallMore && !isLocked;
 
   const tierBadge = agent.tier === 3 ? "🏆 Expert" : agent.tier === 2 ? "⭐ Avancé" : null;

@@ -45,12 +45,12 @@ describe("codex_local ui stdout parser", () => {
       parseCodexStdoutLine(
         JSON.stringify({
           type: "item.completed",
-          item: { id: "item_1", type: "reasoning", text: "**Preparing to use baaraly skill**" },
+          item: { id: "item_1", type: "reasoning", text: "**Preparing to use baarali skill**" },
         }),
         ts,
       ),
     ).toEqual([
-      { kind: "thinking", ts, text: "**Preparing to use baaraly skill**" },
+      { kind: "thinking", ts, text: "**Preparing to use baarali skill**" },
     ]);
   });
 
@@ -107,7 +107,7 @@ describe("codex_local ui stdout parser", () => {
           item: {
             id: "item_52",
             type: "file_change",
-            changes: [{ path: "/Users/baaralyuser/project/ui/src/pages/AgentDetail.tsx", kind: "update" }],
+            changes: [{ path: "/Users/baaraliuser/project/ui/src/pages/AgentDetail.tsx", kind: "update" }],
             status: "completed",
           },
         }),
@@ -117,7 +117,7 @@ describe("codex_local ui stdout parser", () => {
       {
         kind: "system",
         ts,
-        text: "file changes: update /Users/baaralyuser/project/ui/src/pages/AgentDetail.tsx",
+        text: "file changes: update /Users/baaraliuser/project/ui/src/pages/AgentDetail.tsx",
       },
     ]);
   });

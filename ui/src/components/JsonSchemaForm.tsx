@@ -494,7 +494,7 @@ const SecretField = React.memo(({
       label={label}
       description={
         description ||
-        "This secret is stored securely via the Baaraly secret provider."
+        "This secret is stored securely via the Baarali secret provider."
       }
       required={isRequired}
       error={error}

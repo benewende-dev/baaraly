@@ -25,15 +25,15 @@ function makeAgent(adapterConfig: Record<string, unknown>): TestAgent {
 }
 
 describe("agent instructions service", () => {
-  const originalBaaralyHome = process.env.BAARALY_HOME;
-  const originalBaaralyInstanceId = process.env.BAARALY_INSTANCE_ID;
+  const originalBaaraliHome = process.env.BAARALI_HOME;
+  const originalBaaraliInstanceId = process.env.BAARALI_INSTANCE_ID;
   const cleanupDirs = new Set<string>();
 
   afterEach(async () => {
-    if (originalBaaralyHome === undefined) delete process.env.BAARALY_HOME;
-    else process.env.BAARALY_HOME = originalBaaralyHome;
-    if (originalBaaralyInstanceId === undefined) delete process.env.BAARALY_INSTANCE_ID;
-    else process.env.BAARALY_INSTANCE_ID = originalBaaralyInstanceId;
+    if (originalBaaraliHome === undefined) delete process.env.BAARALI_HOME;
+    else process.env.BAARALI_HOME = originalBaaraliHome;
+    if (originalBaaraliInstanceId === undefined) delete process.env.BAARALI_INSTANCE_ID;
+    else process.env.BAARALI_INSTANCE_ID = originalBaaraliInstanceId;
 
     await Promise.all([...cleanupDirs].map(async (dir) => {
       await fs.rm(dir, { recursive: true, force: true });
@@ -42,12 +42,12 @@ describe("agent instructions service", () => {
   });
 
   it("copies the existing bundle into the managed root when switching to managed mode", async () => {
-    const baaralyHome = await makeTempDir("baaraly-agent-instructions-home-");
-    const externalRoot = await makeTempDir("baaraly-agent-instructions-external-");
-    cleanupDirs.add(baaralyHome);
+    const baaraliHome = await makeTempDir("baarali-agent-instructions-home-");
+    const externalRoot = await makeTempDir("baarali-agent-instructions-external-");
+    cleanupDirs.add(baaraliHome);
     cleanupDirs.add(externalRoot);
-    process.env.BAARALY_HOME = baaralyHome;
-    process.env.BAARALY_INSTANCE_ID = "test-instance";
+    process.env.BAARALI_HOME = baaraliHome;
+    process.env.BAARALI_INSTANCE_ID = "test-instance";
 
     await fs.writeFile(path.join(externalRoot, "AGENTS.md"), "# External Agent\n", "utf8");
     await fs.mkdir(path.join(externalRoot, "docs"), { recursive: true });
@@ -66,7 +66,7 @@ describe("agent instructions service", () => {
     expect(result.bundle.mode).toBe("managed");
     expect(result.bundle.managedRootPath).toBe(
       path.join(
-        baaralyHome,
+        baaraliHome,
         "instances",
         "test-instance",
         "companies",
@@ -82,9 +82,9 @@ describe("agent instructions service", () => {
   });
 
   it("creates the target entry file when switching to a new external root", async () => {
-    const baaralyHome = await makeTempDir("baaraly-agent-instructions-home-");
+    const baaraliHome = await makeTempDir("baarali-agent-instructions-home-");
     const managedRoot = path.join(
-      baaralyHome,
+      baaraliHome,
       "instances",
       "test-instance",
       "companies",
@@ -93,11 +93,11 @@ describe("agent instructions service", () => {
       "agent-1",
       "instructions",
     );
-    const externalRoot = await makeTempDir("baaraly-agent-instructions-new-external-");
-    cleanupDirs.add(baaralyHome);
+    const externalRoot = await makeTempDir("baarali-agent-instructions-new-external-");
+    cleanupDirs.add(baaraliHome);
     cleanupDirs.add(externalRoot);
-    process.env.BAARALY_HOME = baaralyHome;
-    process.env.BAARALY_INSTANCE_ID = "test-instance";
+    process.env.BAARALI_HOME = baaraliHome;
+    process.env.BAARALI_INSTANCE_ID = "test-instance";
 
     await fs.mkdir(managedRoot, { recursive: true });
     await fs.writeFile(path.join(managedRoot, "AGENTS.md"), "# Managed Agent\n", "utf8");
@@ -122,7 +122,7 @@ describe("agent instructions service", () => {
   });
 
   it("filters junk files, dependency bundles, and python caches from bundle listings and exports", async () => {
-    const externalRoot = await makeTempDir("baaraly-agent-instructions-ignore-");
+    const externalRoot = await makeTempDir("baarali-agent-instructions-ignore-");
     cleanupDirs.add(externalRoot);
 
     await fs.writeFile(path.join(externalRoot, "AGENTS.md"), "# External Agent\n", "utf8");
@@ -163,13 +163,13 @@ describe("agent instructions service", () => {
   });
 
   it("recovers a managed bundle from disk when bundle config metadata is missing", async () => {
-    const baaralyHome = await makeTempDir("baaraly-agent-instructions-recover-");
-    cleanupDirs.add(baaralyHome);
-    process.env.BAARALY_HOME = baaralyHome;
-    process.env.BAARALY_INSTANCE_ID = "test-instance";
+    const baaraliHome = await makeTempDir("baarali-agent-instructions-recover-");
+    cleanupDirs.add(baaraliHome);
+    process.env.BAARALI_HOME = baaraliHome;
+    process.env.BAARALI_INSTANCE_ID = "test-instance";
 
     const managedRoot = path.join(
-      baaralyHome,
+      baaraliHome,
       "instances",
       "test-instance",
       "companies",
@@ -194,15 +194,15 @@ describe("agent instructions service", () => {
   });
 
   it("prefers the managed bundle on disk when managed metadata points at a stale root", async () => {
-    const baaralyHome = await makeTempDir("baaraly-agent-instructions-stale-managed-");
-    const staleRoot = await makeTempDir("baaraly-agent-instructions-stale-root-");
-    cleanupDirs.add(baaralyHome);
+    const baaraliHome = await makeTempDir("baarali-agent-instructions-stale-managed-");
+    const staleRoot = await makeTempDir("baarali-agent-instructions-stale-root-");
+    cleanupDirs.add(baaraliHome);
     cleanupDirs.add(staleRoot);
-    process.env.BAARALY_HOME = baaralyHome;
-    process.env.BAARALY_INSTANCE_ID = "test-instance";
+    process.env.BAARALI_HOME = baaraliHome;
+    process.env.BAARALI_INSTANCE_ID = "test-instance";
 
     const managedRoot = path.join(
-      baaralyHome,
+      baaraliHome,
       "instances",
       "test-instance",
       "companies",
@@ -237,15 +237,15 @@ describe("agent instructions service", () => {
   });
 
   it("heals stale managed metadata when writing bundle files", async () => {
-    const baaralyHome = await makeTempDir("baaraly-agent-instructions-heal-write-");
-    const staleRoot = await makeTempDir("baaraly-agent-instructions-heal-write-stale-");
-    cleanupDirs.add(baaralyHome);
+    const baaraliHome = await makeTempDir("baarali-agent-instructions-heal-write-");
+    const staleRoot = await makeTempDir("baarali-agent-instructions-heal-write-stale-");
+    cleanupDirs.add(baaraliHome);
     cleanupDirs.add(staleRoot);
-    process.env.BAARALY_HOME = baaralyHome;
-    process.env.BAARALY_INSTANCE_ID = "test-instance";
+    process.env.BAARALI_HOME = baaraliHome;
+    process.env.BAARALI_INSTANCE_ID = "test-instance";
 
     const managedRoot = path.join(
-      baaralyHome,
+      baaraliHome,
       "instances",
       "test-instance",
       "companies",
@@ -277,15 +277,15 @@ describe("agent instructions service", () => {
   });
 
   it("heals stale managed metadata when deleting bundle files", async () => {
-    const baaralyHome = await makeTempDir("baaraly-agent-instructions-heal-delete-");
-    const staleRoot = await makeTempDir("baaraly-agent-instructions-heal-delete-stale-");
-    cleanupDirs.add(baaralyHome);
+    const baaraliHome = await makeTempDir("baarali-agent-instructions-heal-delete-");
+    const staleRoot = await makeTempDir("baarali-agent-instructions-heal-delete-stale-");
+    cleanupDirs.add(baaraliHome);
     cleanupDirs.add(staleRoot);
-    process.env.BAARALY_HOME = baaralyHome;
-    process.env.BAARALY_INSTANCE_ID = "test-instance";
+    process.env.BAARALI_HOME = baaraliHome;
+    process.env.BAARALI_INSTANCE_ID = "test-instance";
 
     const managedRoot = path.join(
-      baaralyHome,
+      baaraliHome,
       "instances",
       "test-instance",
       "companies",
@@ -319,15 +319,15 @@ describe("agent instructions service", () => {
   });
 
   it("recovers the managed bundle when stale root metadata is present but mode is missing", async () => {
-    const baaralyHome = await makeTempDir("baaraly-agent-instructions-partial-managed-");
-    const staleRoot = await makeTempDir("baaraly-agent-instructions-partial-root-");
-    cleanupDirs.add(baaralyHome);
+    const baaraliHome = await makeTempDir("baarali-agent-instructions-partial-managed-");
+    const staleRoot = await makeTempDir("baarali-agent-instructions-partial-root-");
+    cleanupDirs.add(baaraliHome);
     cleanupDirs.add(staleRoot);
-    process.env.BAARALY_HOME = baaralyHome;
-    process.env.BAARALY_INSTANCE_ID = "test-instance";
+    process.env.BAARALI_HOME = baaraliHome;
+    process.env.BAARALI_INSTANCE_ID = "test-instance";
 
     const managedRoot = path.join(
-      baaralyHome,
+      baaraliHome,
       "instances",
       "test-instance",
       "companies",

@@ -6,7 +6,7 @@ import { useToast } from "../context/ToastContext";
 import { agentTemplatesApi } from "../api/agent-templates";
 import { queryKeys } from "../lib/queryKeys";
 import type { AgentTemplate, CreateTemplateInput, UpdateTemplateInput } from "../api/agent-templates";
-import { AGENT_CATEGORIES } from "@paperclipai/shared/baaraly-agents";
+import { AGENT_CATEGORIES } from "@paperclipai/shared/baarali-agents";
 
 export function AgentTemplates() {
   const { t } = useLanguage();

@@ -8,7 +8,7 @@ import {
   sanitizeRememberedPathForCompany,
 } from "../lib/company-page-memory";
 
-const STORAGE_KEY = "baaraly.companyPaths";
+const STORAGE_KEY = "baarali.companyPaths";
 
 function getCompanyPaths(): Record<string, string> {
   try {

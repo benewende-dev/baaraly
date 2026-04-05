@@ -34,16 +34,16 @@ describe("MarkdownBody", () => {
     const html = renderToStaticMarkup(
       <ThemeProvider>
         <MarkdownBody>
-          {`[@CodexCoder](${buildAgentMentionHref("agent-123", "code")}) [@Baaraly App](${buildProjectMentionHref("project-456", "#336699")})`}
+          {`[@CodexCoder](${buildAgentMentionHref("agent-123", "code")}) [@Baarali App](${buildProjectMentionHref("project-456", "#336699")})`}
         </MarkdownBody>
       </ThemeProvider>,
     );
 
     expect(html).toContain('href="/agents/agent-123"');
     expect(html).toContain('data-mention-kind="agent"');
-    expect(html).toContain("--baaraly-mention-icon-mask");
+    expect(html).toContain("--baarali-mention-icon-mask");
     expect(html).toContain('href="/projects/project-456"');
     expect(html).toContain('data-mention-kind="project"');
-    expect(html).toContain("--baaraly-mention-project-color:#336699");
+    expect(html).toContain("--baarali-mention-project-color:#336699");
   });
 });

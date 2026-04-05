@@ -73,14 +73,14 @@ export interface StartedServer {
 
 export async function startServer(): Promise<StartedServer> {
   let config = loadConfig();
-  if (process.env.BAARALY_SECRETS_PROVIDER === undefined) {
-    process.env.BAARALY_SECRETS_PROVIDER = config.secretsProvider;
+  if (process.env.BAARALI_SECRETS_PROVIDER === undefined) {
+    process.env.BAARALI_SECRETS_PROVIDER = config.secretsProvider;
   }
-  if (process.env.BAARALY_SECRETS_STRICT_MODE === undefined) {
-    process.env.BAARALY_SECRETS_STRICT_MODE = config.secretsStrictMode ? "true" : "false";
+  if (process.env.BAARALI_SECRETS_STRICT_MODE === undefined) {
+    process.env.BAARALI_SECRETS_STRICT_MODE = config.secretsStrictMode ? "true" : "false";
   }
-  if (process.env.BAARALY_SECRETS_MASTER_KEY_FILE === undefined) {
-    process.env.BAARALY_SECRETS_MASTER_KEY_FILE = config.secretsMasterKeyFilePath;
+  if (process.env.BAARALI_SECRETS_MASTER_KEY_FILE === undefined) {
+    process.env.BAARALI_SECRETS_MASTER_KEY_FILE = config.secretsMasterKeyFilePath;
   }
   
   type MigrationSummary =
@@ -97,8 +97,8 @@ export async function startServer(): Promise<StartedServer> {
   }
   
   async function promptApplyMigrations(migrations: string[]): Promise<boolean> {
-    if (process.env.BAARALY_MIGRATION_AUTO_APPLY === "true") return true;
-    if (process.env.BAARALY_MIGRATION_PROMPT === "never") return false;
+    if (process.env.BAARALI_MIGRATION_AUTO_APPLY === "true") return true;
+    if (process.env.BAARALI_MIGRATION_PROMPT === "never") return false;
     if (!stdin.isTTY || !stdout.isTTY) return true;
   
     const prompt = createInterface({ input: stdin, output: stdout });
@@ -144,7 +144,7 @@ export async function startServer(): Promise<StartedServer> {
       if (!apply) {
         throw new Error(
           `${label} has pending migrations (${formatPendingMigrationSummary(state.pendingMigrations)}). ` +
-            "Refusing to start against a stale schema. Run pnpm db:migrate or set BAARALY_MIGRATION_AUTO_APPLY=true.",
+            "Refusing to start against a stale schema. Run pnpm db:migrate or set BAARALI_MIGRATION_AUTO_APPLY=true.",
         );
       }
   
@@ -157,7 +157,7 @@ export async function startServer(): Promise<StartedServer> {
     if (!apply) {
       throw new Error(
         `${label} has pending migrations (${formatPendingMigrationSummary(state.pendingMigrations)}). ` +
-          "Refusing to start against a stale schema. Run pnpm db:migrate or set BAARALY_MIGRATION_AUTO_APPLY=true.",
+          "Refusing to start against a stale schema. Run pnpm db:migrate or set BAARALI_MIGRATION_AUTO_APPLY=true.",
       );
     }
   
@@ -184,7 +184,7 @@ export async function startServer(): Promise<StartedServer> {
   }
   
   const LOCAL_BOARD_USER_ID = "local-board";
-  const LOCAL_BOARD_USER_EMAIL = "local@baaraly.local";
+  const LOCAL_BOARD_USER_EMAIL = "local@baarali.local";
   const LOCAL_BOARD_USER_NAME = "Board";
   
   async function ensureLocalTrustedBoardPrincipal(db: any): Promise<void> {
@@ -275,7 +275,7 @@ export async function startServer(): Promise<StartedServer> {
     const configuredPort = config.embeddedPostgresPort;
     let port = configuredPort;
     const logBuffer = createEmbeddedPostgresLogBuffer(120);
-    const verboseEmbeddedPostgresLogs = process.env.BAARALY_EMBEDDED_POSTGRES_VERBOSE === "true";
+    const verboseEmbeddedPostgresLogs = process.env.BAARALI_EMBEDDED_POSTGRES_VERBOSE === "true";
     const appendEmbeddedPostgresLog = (message: unknown) => {
       logBuffer.append(message);
       if (!verboseEmbeddedPostgresLogs) {
@@ -468,10 +468,10 @@ export async function startServer(): Promise<StartedServer> {
       resolveBetterAuthSessionFromHeaders,
     } = await import("./auth/better-auth.js");
     const betterAuthSecret =
-      process.env.BETTER_AUTH_SECRET?.trim() ?? process.env.BAARALY_AGENT_JWT_SECRET?.trim();
+      process.env.BETTER_AUTH_SECRET?.trim() ?? process.env.BAARALI_AGENT_JWT_SECRET?.trim();
     if (!betterAuthSecret) {
       throw new Error(
-        "authenticated mode requires BETTER_AUTH_SECRET (or BAARALY_AGENT_JWT_SECRET) to be set",
+        "authenticated mode requires BETTER_AUTH_SECRET (or BAARALI_AGENT_JWT_SECRET) to be set",
       );
     }
     const derivedTrustedOrigins = deriveAuthTrustedOrigins(config);
@@ -540,9 +540,9 @@ export async function startServer(): Promise<StartedServer> {
     runtimeListenHost === "0.0.0.0" || runtimeListenHost === "::"
       ? "localhost"
       : runtimeListenHost;
-  process.env.BAARALY_LISTEN_HOST = runtimeListenHost;
-  process.env.BAARALY_LISTEN_PORT = String(listenPort);
-  process.env.BAARALY_API_URL = `http://${runtimeApiHost}:${listenPort}`;
+  process.env.BAARALI_LISTEN_HOST = runtimeListenHost;
+  process.env.BAARALI_LISTEN_PORT = String(listenPort);
+  process.env.BAARALI_API_URL = `http://${runtimeApiHost}:${listenPort}`;
   
   setupLiveEventsWebSocketServer(server, db as any, {
     deploymentMode: config.deploymentMode,
@@ -666,7 +666,7 @@ export async function startServer(): Promise<StartedServer> {
     server.listen(listenPort, config.host, () => {
       server.off("error", onError);
       logger.info(`Server listening on ${config.host}:${listenPort}`);
-      if (process.env.BAARALY_OPEN_ON_LISTEN === "true") {
+      if (process.env.BAARALI_OPEN_ON_LISTEN === "true") {
         const openHost = config.host === "0.0.0.0" || config.host === "::" ? "127.0.0.1" : config.host;
         const url = `http://${openHost}:${listenPort}`;
         void import("open")
@@ -740,7 +740,7 @@ export async function startServer(): Promise<StartedServer> {
     server,
     host: config.host,
     listenPort,
-    apiUrl: process.env.BAARALY_API_URL ?? `http://${runtimeApiHost}:${listenPort}`,
+    apiUrl: process.env.BAARALI_API_URL ?? `http://${runtimeApiHost}:${listenPort}`,
     databaseUrl: activeDatabaseConnectionString,
   };
 }
@@ -757,7 +757,7 @@ function isMainModule(metaUrl: string): boolean {
 
 if (isMainModule(import.meta.url)) {
   void startServer().catch((err) => {
-    logger.error({ err }, "Baaraly server failed to start");
+    logger.error({ err }, "Baarali server failed to start");
     process.exit(1);
   });
 }

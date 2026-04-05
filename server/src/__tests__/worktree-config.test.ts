@@ -83,36 +83,36 @@ function buildLegacyConfig(sharedRoot: string) {
 
 describe("worktree config repair", () => {
   it("repairs legacy repo-local worktree config and env files into an isolated instance", async () => {
-    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-worktree-repair-"));
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-worktree-repair-"));
     const worktreeRoot = path.join(tempRoot, "PAP-884-ai-commits-component");
-    const baaralyDir = path.join(worktreeRoot, ".baaraly");
-    const configPath = path.join(baaralyDir, "config.json");
-    const envPath = path.join(baaralyDir, ".env");
-    const sharedRoot = path.join(tempRoot, ".baaraly", "instances", "default");
-    const isolatedHome = path.join(tempRoot, ".baaraly-worktrees");
+    const baaraliDir = path.join(worktreeRoot, ".baarali");
+    const configPath = path.join(baaraliDir, "config.json");
+    const envPath = path.join(baaraliDir, ".env");
+    const sharedRoot = path.join(tempRoot, ".baarali", "instances", "default");
+    const isolatedHome = path.join(tempRoot, ".baarali-worktrees");
 
-    await fs.mkdir(baaralyDir, { recursive: true });
+    await fs.mkdir(baaraliDir, { recursive: true });
     await fs.writeFile(configPath, JSON.stringify(buildLegacyConfig(sharedRoot), null, 2) + "\n", "utf8");
     await fs.writeFile(
       envPath,
       [
-        "# Baaraly environment variables",
-        "BAARALY_IN_WORKTREE=true",
-        "BAARALY_WORKTREE_NAME=PAP-884-ai-commits-component",
-        "BAARALY_AGENT_JWT_SECRET=shared-secret",
+        "# Baarali environment variables",
+        "BAARALI_IN_WORKTREE=true",
+        "BAARALI_WORKTREE_NAME=PAP-884-ai-commits-component",
+        "BAARALI_AGENT_JWT_SECRET=shared-secret",
         "",
       ].join("\n"),
       "utf8",
     );
 
     process.chdir(worktreeRoot);
-    process.env.BAARALY_IN_WORKTREE = "true";
-    process.env.BAARALY_WORKTREE_NAME = "PAP-884-ai-commits-component";
-    process.env.BAARALY_WORKTREES_DIR = isolatedHome;
-    delete process.env.BAARALY_HOME;
-    delete process.env.BAARALY_INSTANCE_ID;
-    delete process.env.BAARALY_CONFIG;
-    delete process.env.BAARALY_CONTEXT;
+    process.env.BAARALI_IN_WORKTREE = "true";
+    process.env.BAARALI_WORKTREE_NAME = "PAP-884-ai-commits-component";
+    process.env.BAARALI_WORKTREES_DIR = isolatedHome;
+    delete process.env.BAARALI_HOME;
+    delete process.env.BAARALI_INSTANCE_ID;
+    delete process.env.BAARALI_CONFIG;
+    delete process.env.BAARALI_CONTEXT;
 
     const result = maybeRepairLegacyWorktreeConfigAndEnvFiles();
 
@@ -130,34 +130,34 @@ describe("worktree config repair", () => {
     expect(repairedConfig.logging.logDir).toBe(path.join(instanceRoot, "logs"));
     expect(repairedConfig.storage.localDisk.baseDir).toBe(path.join(instanceRoot, "data", "storage"));
     expect(repairedConfig.secrets.localEncrypted.keyFilePath).toBe(path.join(instanceRoot, "secrets", "master.key"));
-    expect(repairedEnv).toContain(`BAARALY_HOME=${JSON.stringify(isolatedHome)}`);
-    expect(repairedEnv).toContain('BAARALY_INSTANCE_ID="pap-884-ai-commits-component"');
-    expect(repairedEnv).toContain(`BAARALY_CONFIG=${JSON.stringify(await fs.realpath(configPath))}`);
-    expect(repairedEnv).toContain(`BAARALY_CONTEXT=${JSON.stringify(path.join(isolatedHome, "context.json"))}`);
-    expect(repairedEnv).toContain('BAARALY_AGENT_JWT_SECRET="shared-secret"');
-    expect(process.env.BAARALY_HOME).toBe(isolatedHome);
-    expect(process.env.BAARALY_INSTANCE_ID).toBe("pap-884-ai-commits-component");
+    expect(repairedEnv).toContain(`BAARALI_HOME=${JSON.stringify(isolatedHome)}`);
+    expect(repairedEnv).toContain('BAARALI_INSTANCE_ID="pap-884-ai-commits-component"');
+    expect(repairedEnv).toContain(`BAARALI_CONFIG=${JSON.stringify(await fs.realpath(configPath))}`);
+    expect(repairedEnv).toContain(`BAARALI_CONTEXT=${JSON.stringify(path.join(isolatedHome, "context.json"))}`);
+    expect(repairedEnv).toContain('BAARALI_AGENT_JWT_SECRET="shared-secret"');
+    expect(process.env.BAARALI_HOME).toBe(isolatedHome);
+    expect(process.env.BAARALI_INSTANCE_ID).toBe("pap-884-ai-commits-component");
   });
 
   it("avoids sibling worktree ports when repairing legacy configs", async () => {
-    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-worktree-repair-ports-"));
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-worktree-repair-ports-"));
     const worktreeRoot = path.join(tempRoot, "PAP-880-thumbs-capture-for-evals-feature");
-    const baaralyDir = path.join(worktreeRoot, ".baaraly");
-    const configPath = path.join(baaralyDir, "config.json");
-    const envPath = path.join(baaralyDir, ".env");
-    const sharedRoot = path.join(tempRoot, ".baaraly", "instances", "default");
-    const isolatedHome = path.join(tempRoot, ".baaraly-worktrees");
+    const baaraliDir = path.join(worktreeRoot, ".baarali");
+    const configPath = path.join(baaraliDir, "config.json");
+    const envPath = path.join(baaraliDir, ".env");
+    const sharedRoot = path.join(tempRoot, ".baarali", "instances", "default");
+    const isolatedHome = path.join(tempRoot, ".baarali-worktrees");
     const siblingInstanceRoot = path.join(isolatedHome, "instances", "pap-878-create-a-mine-tab-in-inbox");
 
-    await fs.mkdir(baaralyDir, { recursive: true });
+    await fs.mkdir(baaraliDir, { recursive: true });
     await fs.mkdir(siblingInstanceRoot, { recursive: true });
     await fs.writeFile(configPath, JSON.stringify(buildLegacyConfig(sharedRoot), null, 2) + "\n", "utf8");
     await fs.writeFile(
       envPath,
       [
-        "# Baaraly environment variables",
-        "BAARALY_IN_WORKTREE=true",
-        "BAARALY_WORKTREE_NAME=PAP-880-thumbs-capture-for-evals-feature",
+        "# Baarali environment variables",
+        "BAARALI_IN_WORKTREE=true",
+        "BAARALI_WORKTREE_NAME=PAP-880-thumbs-capture-for-evals-feature",
         "",
       ].join("\n"),
       "utf8",
@@ -194,9 +194,9 @@ describe("worktree config repair", () => {
     );
 
     process.chdir(worktreeRoot);
-    process.env.BAARALY_IN_WORKTREE = "true";
-    process.env.BAARALY_WORKTREE_NAME = "PAP-880-thumbs-capture-for-evals-feature";
-    process.env.BAARALY_WORKTREES_DIR = isolatedHome;
+    process.env.BAARALI_IN_WORKTREE = "true";
+    process.env.BAARALI_WORKTREE_NAME = "PAP-880-thumbs-capture-for-evals-feature";
+    process.env.BAARALI_WORKTREES_DIR = isolatedHome;
 
     const result = maybeRepairLegacyWorktreeConfigAndEnvFiles();
     const repairedConfig = JSON.parse(await fs.readFile(configPath, "utf8"));
@@ -207,19 +207,19 @@ describe("worktree config repair", () => {
   });
 
   it("rebalances duplicate ports for already isolated worktree configs", async () => {
-    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-worktree-rebalance-"));
-    const isolatedHome = path.join(tempRoot, ".baaraly-worktrees");
-    const repoWorktreesRoot = path.join(tempRoot, "repo", ".baaraly", "worktrees");
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-worktree-rebalance-"));
+    const isolatedHome = path.join(tempRoot, ".baarali-worktrees");
+    const repoWorktreesRoot = path.join(tempRoot, "repo", ".baarali", "worktrees");
     const siblingWorktreeRoot = path.join(repoWorktreesRoot, "PAP-878-create-a-mine-tab-in-inbox");
     const siblingInstanceRoot = path.join(isolatedHome, "instances", "pap-878-create-a-mine-tab-in-inbox");
     const currentWorktreeRoot = path.join(repoWorktreesRoot, "PAP-884-ai-commits-component");
-    const baaralyDir = path.join(currentWorktreeRoot, ".baaraly");
-    const configPath = path.join(baaralyDir, "config.json");
-    const envPath = path.join(baaralyDir, ".env");
+    const baaraliDir = path.join(currentWorktreeRoot, ".baarali");
+    const configPath = path.join(baaraliDir, "config.json");
+    const envPath = path.join(baaraliDir, ".env");
     const currentInstanceRoot = path.join(isolatedHome, "instances", "pap-884-ai-commits-component");
-    const siblingConfigPath = path.join(siblingWorktreeRoot, ".baaraly", "config.json");
+    const siblingConfigPath = path.join(siblingWorktreeRoot, ".baarali", "config.json");
 
-    await fs.mkdir(baaralyDir, { recursive: true });
+    await fs.mkdir(baaraliDir, { recursive: true });
     await fs.mkdir(path.dirname(siblingConfigPath), { recursive: true });
     await fs.writeFile(
       configPath,
@@ -277,9 +277,9 @@ describe("worktree config repair", () => {
     await fs.writeFile(
       envPath,
       [
-        "# Baaraly environment variables",
-        "BAARALY_IN_WORKTREE=true",
-        "BAARALY_WORKTREE_NAME=PAP-884-ai-commits-component",
+        "# Baarali environment variables",
+        "BAARALI_IN_WORKTREE=true",
+        "BAARALI_WORKTREE_NAME=PAP-884-ai-commits-component",
         "",
       ].join("\n"),
       "utf8",
@@ -316,9 +316,9 @@ describe("worktree config repair", () => {
     );
 
     process.chdir(currentWorktreeRoot);
-    process.env.BAARALY_IN_WORKTREE = "true";
-    process.env.BAARALY_WORKTREE_NAME = "PAP-884-ai-commits-component";
-    process.env.BAARALY_WORKTREES_DIR = isolatedHome;
+    process.env.BAARALI_IN_WORKTREE = "true";
+    process.env.BAARALI_WORKTREE_NAME = "PAP-884-ai-commits-component";
+    process.env.BAARALI_WORKTREES_DIR = isolatedHome;
 
     const result = maybeRepairLegacyWorktreeConfigAndEnvFiles();
     const repairedConfig = JSON.parse(await fs.readFile(configPath, "utf8"));
@@ -329,14 +329,14 @@ describe("worktree config repair", () => {
   });
 
   it("persists runtime-selected worktree ports back into config", async () => {
-    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-worktree-ports-"));
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-worktree-ports-"));
     const worktreeRoot = path.join(tempRoot, "PAP-878-create-a-mine-tab-in-inbox");
-    const baaralyDir = path.join(worktreeRoot, ".baaraly");
-    const configPath = path.join(baaralyDir, "config.json");
-    const isolatedHome = path.join(tempRoot, ".baaraly-worktrees");
+    const baaraliDir = path.join(worktreeRoot, ".baarali");
+    const configPath = path.join(baaraliDir, "config.json");
+    const isolatedHome = path.join(tempRoot, ".baarali-worktrees");
     const instanceRoot = path.join(isolatedHome, "instances", "pap-878-create-a-mine-tab-in-inbox");
 
-    await fs.mkdir(baaralyDir, { recursive: true });
+    await fs.mkdir(baaraliDir, { recursive: true });
     await fs.writeFile(
       configPath,
       JSON.stringify(
@@ -392,11 +392,11 @@ describe("worktree config repair", () => {
     );
 
     process.chdir(worktreeRoot);
-    process.env.BAARALY_IN_WORKTREE = "true";
-    process.env.BAARALY_WORKTREE_NAME = "PAP-878-create-a-mine-tab-in-inbox";
-    process.env.BAARALY_HOME = isolatedHome;
-    process.env.BAARALY_INSTANCE_ID = "pap-878-create-a-mine-tab-in-inbox";
-    process.env.BAARALY_CONFIG = configPath;
+    process.env.BAARALI_IN_WORKTREE = "true";
+    process.env.BAARALI_WORKTREE_NAME = "PAP-878-create-a-mine-tab-in-inbox";
+    process.env.BAARALI_HOME = isolatedHome;
+    process.env.BAARALI_INSTANCE_ID = "pap-878-create-a-mine-tab-in-inbox";
+    process.env.BAARALI_CONFIG = configPath;
 
     maybePersistWorktreeRuntimePorts({
       serverPort: 3103,

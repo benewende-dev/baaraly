@@ -117,15 +117,15 @@ const REPO_ROOT = path.resolve(__dirname, "../../..");
 const BUNDLED_PLUGIN_EXAMPLES: AvailablePluginExample[] = [
   {
     packageName: "@paperclipai/plugin-hello-world-example",
-    pluginKey: "baaraly.hello-world-example",
+    pluginKey: "baarali.hello-world-example",
     displayName: "Hello World Widget (Example)",
-    description: "Reference UI plugin that adds a simple Hello World widget to the Baaraly dashboard.",
+    description: "Reference UI plugin that adds a simple Hello World widget to the Baarali dashboard.",
     localPath: "packages/plugins/examples/plugin-hello-world-example",
     tag: "example",
   },
   {
     packageName: "@paperclipai/plugin-file-browser-example",
-    pluginKey: "baaraly-file-browser-example",
+    pluginKey: "baarali-file-browser-example",
     displayName: "File Browser (Example)",
     description: "Example plugin that adds a Files link in project navigation plus a project detail file browser.",
     localPath: "packages/plugins/examples/plugin-file-browser-example",
@@ -133,9 +133,9 @@ const BUNDLED_PLUGIN_EXAMPLES: AvailablePluginExample[] = [
   },
   {
     packageName: "@paperclipai/plugin-kitchen-sink-example",
-    pluginKey: "baaraly-kitchen-sink-example",
+    pluginKey: "baarali-kitchen-sink-example",
     displayName: "Kitchen Sink (Example)",
-    description: "Reference plugin that demonstrates the current Baaraly plugin API surface, bridge flows, UI extension surfaces, jobs, webhooks, tools, streams, and trusted local workspace/process demos.",
+    description: "Reference plugin that demonstrates the current Baarali plugin API surface, bridge flows, UI extension surfaces, jobs, webhooks, tools, streams, and trusted local workspace/process demos.",
     localPath: "packages/plugins/examples/plugin-kitchen-sink-example",
     tag: "example",
   },
@@ -419,7 +419,7 @@ export function pluginRoutes(
    * [
    *   {
    *     "pluginId": "plg_123",
-   *     "pluginKey": "baaraly.claude-usage",
+   *     "pluginKey": "baarali.claude-usage",
    *     "displayName": "Claude Usage",
    *     "version": "1.0.0",
    *     "uiEntryFile": "index.js",

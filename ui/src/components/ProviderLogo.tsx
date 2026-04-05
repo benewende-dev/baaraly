@@ -1,4 +1,4 @@
-import { type PaymentProvider } from "@paperclipai/shared/baaraly-agents";
+import { type PaymentProvider } from "@paperclipai/shared/baarali-agents";
 
 interface ProviderLogoProps {
   providerId: string;

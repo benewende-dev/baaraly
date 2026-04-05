@@ -7,12 +7,12 @@ import {
 
 describe("log redaction", () => {
   it("redacts the active username inside home-directory paths", () => {
-    const userName = "baaralyuser";
+    const userName = "baaraliuser";
     const maskedUserName = maskUserNameForLogs(userName);
     const input = [
-      `cwd=/Users/${userName}/baaraly`,
+      `cwd=/Users/${userName}/baarali`,
       `home=/home/${userName}/workspace`,
-      `win=C:\\Users\\${userName}\\baaraly`,
+      `win=C:\\Users\\${userName}\\baarali`,
     ].join("\n");
 
     const result = redactCurrentUserText(input, {
@@ -20,17 +20,17 @@ describe("log redaction", () => {
       homeDirs: [`/Users/${userName}`, `/home/${userName}`, `C:\\Users\\${userName}`],
     });
 
-    expect(result).toContain(`cwd=/Users/${maskedUserName}/baaraly`);
+    expect(result).toContain(`cwd=/Users/${maskedUserName}/baarali`);
     expect(result).toContain(`home=/home/${maskedUserName}/workspace`);
-    expect(result).toContain(`win=C:\\Users\\${maskedUserName}\\baaraly`);
+    expect(result).toContain(`win=C:\\Users\\${maskedUserName}\\baarali`);
     expect(result).not.toContain(userName);
   });
 
   it("redacts standalone username mentions without mangling larger tokens", () => {
-    const userName = "baaralyuser";
+    const userName = "baaraliuser";
     const maskedUserName = maskUserNameForLogs(userName);
     const result = redactCurrentUserText(
-      `user ${userName} said ${userName}/project should stay but abaaralyuserz should not change`,
+      `user ${userName} said ${userName}/project should stay but abaaraliuserz should not change`,
       {
         userNames: [userName],
         homeDirs: [],
@@ -38,16 +38,16 @@ describe("log redaction", () => {
     );
 
     expect(result).toBe(
-      `user ${maskedUserName} said ${maskedUserName}/project should stay but abaaralyuserz should not change`,
+      `user ${maskedUserName} said ${maskedUserName}/project should stay but abaaraliuserz should not change`,
     );
   });
 
   it("recursively redacts nested event payloads", () => {
-    const userName = "baaralyuser";
+    const userName = "baaraliuser";
     const maskedUserName = maskUserNameForLogs(userName);
     const result = redactCurrentUserValue({
-      cwd: `/Users/${userName}/baaraly`,
-      prompt: `open /Users/${userName}/baaraly/ui`,
+      cwd: `/Users/${userName}/baarali`,
+      prompt: `open /Users/${userName}/baarali/ui`,
       nested: {
         author: userName,
       },
@@ -58,8 +58,8 @@ describe("log redaction", () => {
     });
 
     expect(result).toEqual({
-      cwd: `/Users/${maskedUserName}/baaraly`,
-      prompt: `open /Users/${maskedUserName}/baaraly/ui`,
+      cwd: `/Users/${maskedUserName}/baarali`,
+      prompt: `open /Users/${maskedUserName}/baarali/ui`,
       nested: {
         author: maskedUserName,
       },
@@ -68,7 +68,7 @@ describe("log redaction", () => {
   });
 
   it("skips redaction when disabled", () => {
-    const input = "cwd=/Users/baaralyuser/baaraly";
+    const input = "cwd=/Users/baaraliuser/baarali";
     expect(redactCurrentUserText(input, { enabled: false })).toBe(input);
   });
 });

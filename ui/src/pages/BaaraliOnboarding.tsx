@@ -6,8 +6,8 @@ import { agentsApi } from "../api/agents";
 import { useCompany } from "../context/CompanyContext";
 import { useLanguage } from "../context/LanguageContext";
 import { useToast } from "../context/ToastContext";
-import { BAARALY_AGENTS, AGENT_CATEGORIES } from "@paperclipai/shared/baaraly-agents";
-import type { BaaralyAgentDefinition, AgentCategory } from "@paperclipai/shared/baaraly-agents";
+import { BAARALI_AGENTS, AGENT_CATEGORIES } from "@paperclipai/shared/baarali-agents";
+import type { BaaraliAgentDefinition, AgentCategory } from "@paperclipai/shared/baarali-agents";
 import { queryKeys } from "../lib/queryKeys";
 
 const BUSINESS_TYPES = [
@@ -92,7 +92,7 @@ const WHATSAPP_COUNTRIES = [
   { code: "+213", flag: "🇩🇿", name: "Algérie" },
 ];
 
-export function BaaralyOnboarding() {
+export function BaaraliOnboarding() {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const { setSelectedCompanyId } = useCompany();
@@ -113,7 +113,7 @@ export function BaaralyOnboarding() {
   const [country, setCountry] = useState<string | null>(null);
 
   // Step 4 - Agent choice
-  const [selectedAgent, setSelectedAgent] = useState<BaaralyAgentDefinition | null>(null);
+  const [selectedAgent, setSelectedAgent] = useState<BaaraliAgentDefinition | null>(null);
   const [agentCategory, setAgentCategory] = useState<AgentCategory | "all">("all");
 
   // WhatsApp phone
@@ -167,7 +167,7 @@ export function BaaralyOnboarding() {
           description: selectedAgent.description,
           tools: selectedAgent.tools,
           superpowers: selectedAgent.superpowers,
-          baaralyTemplate: true,
+          baaraliTemplate: true,
           // Store business type and country as agent metadata
           businessType: businessType,
           country: country,
@@ -380,10 +380,10 @@ export function BaaralyOnboarding() {
                     : "bg-muted text-muted-foreground hover:bg-accent"
                 }`}
               >
-                {t("Tous")} ({BAARALY_AGENTS.length})
+                {t("Tous")} ({BAARALI_AGENTS.length})
               </button>
               {AGENT_CATEGORIES.map((cat) => {
-                const count = BAARALY_AGENTS.filter((a) => a.category === cat.id).length;
+                const count = BAARALI_AGENTS.filter((a) => a.category === cat.id).length;
                 return (
                   <button
                     key={cat.id}
@@ -406,7 +406,7 @@ export function BaaralyOnboarding() {
                 ? AGENT_CATEGORIES
                 : AGENT_CATEGORIES.filter((c) => c.id === agentCategory)
               ).map((cat) => {
-                const agents = BAARALY_AGENTS.filter((a) => a.category === cat.id);
+                const agents = BAARALI_AGENTS.filter((a) => a.category === cat.id);
                 if (agents.length === 0) return null;
                 return (
                   <div key={cat.id}>

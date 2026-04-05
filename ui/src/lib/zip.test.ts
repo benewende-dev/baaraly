@@ -189,14 +189,14 @@ describe("createZipArchive", () => {
         "COMPANY.md": "# Company\n",
         "agents/ceo/AGENTS.md": "# CEO\n",
       },
-      "baaraly-demo",
+      "baarali-demo",
     );
 
     expect(readUint32(archive, 0)).toBe(0x04034b50);
 
     const firstNameLength = readUint16(archive, 26);
     const firstBodyLength = readUint32(archive, 18);
-    expect(readString(archive, 30, firstNameLength)).toBe("baaraly-demo/agents/ceo/AGENTS.md");
+    expect(readString(archive, 30, firstNameLength)).toBe("baarali-demo/agents/ceo/AGENTS.md");
     expect(readString(archive, 30 + firstNameLength, firstBodyLength)).toBe("# CEO\n");
 
     const secondOffset = 30 + firstNameLength + firstBodyLength;
@@ -204,7 +204,7 @@ describe("createZipArchive", () => {
 
     const secondNameLength = readUint16(archive, secondOffset + 26);
     const secondBodyLength = readUint32(archive, secondOffset + 18);
-    expect(readString(archive, secondOffset + 30, secondNameLength)).toBe("baaraly-demo/COMPANY.md");
+    expect(readString(archive, secondOffset + 30, secondNameLength)).toBe("baarali-demo/COMPANY.md");
     expect(readString(archive, secondOffset + 30 + secondNameLength, secondBodyLength)).toBe("# Company\n");
 
     const endOffset = archive.length - 22;
@@ -213,22 +213,22 @@ describe("createZipArchive", () => {
     expect(readUint16(archive, endOffset + 10)).toBe(2);
   });
 
-  it("reads a Baaraly zip archive back into rootPath and file contents", async () => {
+  it("reads a Baarali zip archive back into rootPath and file contents", async () => {
     const archive = createZipArchive(
       {
         "COMPANY.md": "# Company\n",
         "agents/ceo/AGENTS.md": "# CEO\n",
-        ".baaraly.yaml": "schema: baaraly/v1\n",
+        ".baarali.yaml": "schema: baarali/v1\n",
       },
-      "baaraly-demo",
+      "baarali-demo",
     );
 
     await expect(readZipArchive(archive)).resolves.toEqual({
-      rootPath: "baaraly-demo",
+      rootPath: "baarali-demo",
       files: {
         "COMPANY.md": "# Company\n",
         "agents/ceo/AGENTS.md": "# CEO\n",
-        ".baaraly.yaml": "schema: baaraly/v1\n",
+        ".baarali.yaml": "schema: baarali/v1\n",
       },
     });
   });
@@ -242,11 +242,11 @@ describe("createZipArchive", () => {
           contentType: "image/png",
         },
       },
-      "baaraly-demo",
+      "baarali-demo",
     );
 
     await expect(readZipArchive(archive)).resolves.toEqual({
-      rootPath: "baaraly-demo",
+      rootPath: "baarali-demo",
       files: {
         "images/company-logo.png": {
           encoding: "base64",
@@ -257,17 +257,17 @@ describe("createZipArchive", () => {
     });
   });
 
-  it("reads standard DEFLATE zip archives created outside Baaraly", async () => {
+  it("reads standard DEFLATE zip archives created outside Baarali", async () => {
     const archive = createDeflatedZipArchive(
       {
         "COMPANY.md": "# Company\n",
         "agents/ceo/AGENTS.md": "# CEO\n",
       },
-      "baaraly-demo",
+      "baarali-demo",
     );
 
     await expect(readZipArchive(archive)).resolves.toEqual({
-      rootPath: "baaraly-demo",
+      rootPath: "baarali-demo",
       files: {
         "COMPANY.md": "# Company\n",
         "agents/ceo/AGENTS.md": "# CEO\n",
@@ -276,10 +276,10 @@ describe("createZipArchive", () => {
   });
 
   it("ignores directory entries from standard zip archives", async () => {
-    const archive = createZipArchiveWithDirectoryEntries("baaraly-demo");
+    const archive = createZipArchiveWithDirectoryEntries("baarali-demo");
 
     await expect(readZipArchive(archive)).resolves.toEqual({
-      rootPath: "baaraly-demo",
+      rootPath: "baarali-demo",
       files: {
         "COMPANY.md": "# Company\n",
         "agents/ceo/AGENTS.md": "# CEO\n",

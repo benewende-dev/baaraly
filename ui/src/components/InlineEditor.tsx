@@ -170,7 +170,7 @@ export function InlineEditor({
           placeholder={placeholder}
           bordered={false}
           className="bg-transparent"
-          contentClassName={cn("baaraly-edit-in-place-content", className)}
+          contentClassName={cn("baarali-edit-in-place-content", className)}
           imageUploadHandler={imageUploadHandler}
           mentions={mentions}
           onSubmit={() => {

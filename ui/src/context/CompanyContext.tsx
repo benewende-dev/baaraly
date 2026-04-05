@@ -31,7 +31,7 @@ interface CompanyContextValue {
   }) => Promise<Company>;
 }
 
-const STORAGE_KEY = "baaraly.selectedCompanyId";
+const STORAGE_KEY = "baarali.selectedCompanyId";
 
 const CompanyContext = createContext<CompanyContextValue | null>(null);
 

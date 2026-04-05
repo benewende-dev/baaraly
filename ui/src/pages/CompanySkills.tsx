@@ -160,7 +160,7 @@ function sourceMeta(sourceBadge: CompanySkillSourceBadge, sourceLabel: string | 
     case "local":
       return { icon: Folder, label: sourceLabel ?? "Folder", managedLabel: "Folder managed" };
     case "paperclip":
-      return { icon: Paperclip, label: sourceLabel ?? "Baaraly", managedLabel: "Baaraly" };
+      return { icon: Paperclip, label: sourceLabel ?? "Baarali", managedLabel: "Baarali" };
     default:
       return { icon: Boxes, label: sourceLabel ?? "Catalog", managedLabel: "Catalog managed" };
   }
@@ -886,7 +886,7 @@ export function CompanySkills() {
       pushToast({
         tone: "success",
         title: t("Skill created"),
-        body: `${skill.name} ${t("is now editable in the Baaraly workspace.")}`,
+        body: `${skill.name} ${t("is now editable in the Baarali workspace.")}`,
       });
     },
     onError: (error) => {

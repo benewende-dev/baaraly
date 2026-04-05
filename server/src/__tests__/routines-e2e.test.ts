@@ -90,7 +90,7 @@ describeEmbeddedPostgres("routine routes end-to-end", () => {
   let tempDb: Awaited<ReturnType<typeof startEmbeddedPostgresTestDatabase>> | null = null;
 
   beforeAll(async () => {
-    tempDb = await startEmbeddedPostgresTestDatabase("baaraly-routines-e2e-");
+    tempDb = await startEmbeddedPostgresTestDatabase("baarali-routines-e2e-");
     db = createDb(tempDb.connectionString);
   }, 20_000);
 
@@ -137,7 +137,7 @@ describeEmbeddedPostgres("routine routes end-to-end", () => {
 
     await db.insert(companies).values({
       id: companyId,
-      name: "Baaraly",
+      name: "Baarali",
       issuePrefix,
       requireBoardApprovalForNewAgents: false,
     });

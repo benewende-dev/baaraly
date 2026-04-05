@@ -8,12 +8,12 @@ async function writeFakeCursorCommand(commandPath: string): Promise<void> {
   const script = `#!/usr/bin/env node
 const fs = require("node:fs");
 
-const capturePath = process.env.BAARALY_TEST_CAPTURE_PATH;
+const capturePath = process.env.BAARALI_TEST_CAPTURE_PATH;
 const payload = {
   argv: process.argv.slice(2),
   prompt: fs.readFileSync(0, "utf8"),
-  baaralyEnvKeys: Object.keys(process.env)
-    .filter((key) => key.startsWith("BAARALY_"))
+  baaraliEnvKeys: Object.keys(process.env)
+    .filter((key) => key.startsWith("BAARALI_"))
     .sort(),
 };
 if (capturePath) {
@@ -43,7 +43,7 @@ console.log(JSON.stringify({
 type CapturePayload = {
   argv: string[];
   prompt: string;
-  baaralyEnvKeys: string[];
+  baaraliEnvKeys: string[];
 };
 
 async function createSkillDir(root: string, name: string) {
@@ -54,8 +54,8 @@ async function createSkillDir(root: string, name: string) {
 }
 
 describe("cursor execute", () => {
-  it("injects baaraly env vars and prompt note by default", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-cursor-execute-"));
+  it("injects baarali env vars and prompt note by default", async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-cursor-execute-"));
     const workspace = path.join(root, "workspace");
     const commandPath = path.join(root, "agent");
     const capturePath = path.join(root, "capture.json");
@@ -87,9 +87,9 @@ describe("cursor execute", () => {
           cwd: workspace,
           model: "auto",
           env: {
-            BAARALY_TEST_CAPTURE_PATH: capturePath,
+            BAARALI_TEST_CAPTURE_PATH: capturePath,
           },
-          promptTemplate: "Follow the baaraly heartbeat.",
+          promptTemplate: "Follow the baarali heartbeat.",
         },
         context: {},
         authToken: "run-jwt-token",
@@ -103,22 +103,22 @@ describe("cursor execute", () => {
       expect(result.errorMessage).toBeNull();
 
       const capture = JSON.parse(await fs.readFile(capturePath, "utf8")) as CapturePayload;
-      expect(capture.argv).not.toContain("Follow the baaraly heartbeat.");
+      expect(capture.argv).not.toContain("Follow the baarali heartbeat.");
       expect(capture.argv).not.toContain("--mode");
       expect(capture.argv).not.toContain("ask");
-      expect(capture.baaralyEnvKeys).toEqual(
+      expect(capture.baaraliEnvKeys).toEqual(
         expect.arrayContaining([
-          "BAARALY_AGENT_ID",
-          "BAARALY_API_KEY",
-          "BAARALY_API_URL",
-          "BAARALY_COMPANY_ID",
-          "BAARALY_RUN_ID",
+          "BAARALI_AGENT_ID",
+          "BAARALI_API_KEY",
+          "BAARALI_API_URL",
+          "BAARALI_COMPANY_ID",
+          "BAARALI_RUN_ID",
         ]),
       );
-      expect(capture.prompt).toContain("Baaraly runtime note:");
-      expect(capture.prompt).toContain("BAARALY_API_KEY");
-      expect(invocationPrompt).toContain("Baaraly runtime note:");
-      expect(invocationPrompt).toContain("BAARALY_API_URL");
+      expect(capture.prompt).toContain("Baarali runtime note:");
+      expect(capture.prompt).toContain("BAARALI_API_KEY");
+      expect(invocationPrompt).toContain("Baarali runtime note:");
+      expect(invocationPrompt).toContain("BAARALI_API_URL");
     } finally {
       if (previousHome === undefined) {
         delete process.env.HOME;
@@ -130,7 +130,7 @@ describe("cursor execute", () => {
   });
 
   it("passes --mode when explicitly configured", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-cursor-execute-mode-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-cursor-execute-mode-"));
     const workspace = path.join(root, "workspace");
     const commandPath = path.join(root, "agent");
     const capturePath = path.join(root, "capture.json");
@@ -162,9 +162,9 @@ describe("cursor execute", () => {
           model: "auto",
           mode: "ask",
           env: {
-            BAARALY_TEST_CAPTURE_PATH: capturePath,
+            BAARALI_TEST_CAPTURE_PATH: capturePath,
           },
-          promptTemplate: "Follow the baaraly heartbeat.",
+          promptTemplate: "Follow the baarali heartbeat.",
         },
         context: {},
         authToken: "run-jwt-token",
@@ -188,14 +188,14 @@ describe("cursor execute", () => {
   });
 
   it("injects company-library runtime skills into the Cursor skills home before execution", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-cursor-execute-runtime-skill-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-cursor-execute-runtime-skill-"));
     const workspace = path.join(root, "workspace");
     const commandPath = path.join(root, "agent");
     const runtimeSkillsRoot = path.join(root, "runtime-skills");
     await fs.mkdir(workspace, { recursive: true });
     await writeFakeCursorCommand(commandPath);
 
-    const baaralyDir = await createSkillDir(runtimeSkillsRoot, "paperclip");
+    const baaraliDir = await createSkillDir(runtimeSkillsRoot, "paperclip");
     const asciiHeartDir = await createSkillDir(runtimeSkillsRoot, "ascii-heart");
 
     const previousHome = process.env.HOME;
@@ -221,22 +221,22 @@ describe("cursor execute", () => {
           command: commandPath,
           cwd: workspace,
           model: "auto",
-          baaralyRuntimeSkills: [
+          baaraliRuntimeSkills: [
             {
               name: "paperclip",
-              source: baaralyDir,
+              source: baaraliDir,
               required: true,
-              requiredReason: "Bundled Baaraly skills are always available for local adapters.",
+              requiredReason: "Bundled Baarali skills are always available for local adapters.",
             },
             {
               name: "ascii-heart",
               source: asciiHeartDir,
             },
           ],
-          baaralySkillSync: {
+          baaraliSkillSync: {
             desiredSkills: ["ascii-heart"],
           },
-          promptTemplate: "Follow the baaraly heartbeat.",
+          promptTemplate: "Follow the baarali heartbeat.",
         },
         context: {},
         authToken: "run-jwt-token",

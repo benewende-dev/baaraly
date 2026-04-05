@@ -20,14 +20,14 @@ describe("cursor local adapter skill injection", () => {
     cleanupDirs.clear();
   });
 
-  it("links missing Baaraly skills into Cursor skills home", async () => {
-    const skillsDir = await makeTempDir("baaraly-cursor-skills-src-");
-    const skillsHome = await makeTempDir("baaraly-cursor-skills-home-");
+  it("links missing Baarali skills into Cursor skills home", async () => {
+    const skillsDir = await makeTempDir("baarali-cursor-skills-src-");
+    const skillsHome = await makeTempDir("baarali-cursor-skills-home-");
     cleanupDirs.add(skillsDir);
     cleanupDirs.add(skillsHome);
 
     await createSkillDir(skillsDir, "paperclip");
-    await createSkillDir(skillsDir, "baaraly-create-agent");
+    await createSkillDir(skillsDir, "baarali-create-agent");
     await fs.writeFile(path.join(skillsDir, "README.txt"), "ignore", "utf8");
 
     const logs: string[] = [];
@@ -39,25 +39,25 @@ describe("cursor local adapter skill injection", () => {
     );
 
     const injectedA = path.join(skillsHome, "paperclip");
-    const injectedB = path.join(skillsHome, "baaraly-create-agent");
+    const injectedB = path.join(skillsHome, "baarali-create-agent");
     expect((await fs.lstat(injectedA)).isSymbolicLink()).toBe(true);
     expect((await fs.lstat(injectedB)).isSymbolicLink()).toBe(true);
     expect(await fs.realpath(injectedA)).toBe(await fs.realpath(path.join(skillsDir, "paperclip")));
     expect(await fs.realpath(injectedB)).toBe(
-      await fs.realpath(path.join(skillsDir, "baaraly-create-agent")),
+      await fs.realpath(path.join(skillsDir, "baarali-create-agent")),
     );
     expect(logs.some((line) => line.includes('Injected Cursor skill "paperclip"'))).toBe(true);
-    expect(logs.some((line) => line.includes('Injected Cursor skill "baaraly-create-agent"'))).toBe(true);
+    expect(logs.some((line) => line.includes('Injected Cursor skill "baarali-create-agent"'))).toBe(true);
   });
 
   it("preserves existing targets and only links missing skills", async () => {
-    const skillsDir = await makeTempDir("baaraly-cursor-preserve-src-");
-    const skillsHome = await makeTempDir("baaraly-cursor-preserve-home-");
+    const skillsDir = await makeTempDir("baarali-cursor-preserve-src-");
+    const skillsHome = await makeTempDir("baarali-cursor-preserve-home-");
     cleanupDirs.add(skillsDir);
     cleanupDirs.add(skillsHome);
 
     await createSkillDir(skillsDir, "paperclip");
-    await createSkillDir(skillsDir, "baaraly-create-agent");
+    await createSkillDir(skillsDir, "baarali-create-agent");
 
     const existingTarget = path.join(skillsHome, "paperclip");
     await fs.mkdir(existingTarget, { recursive: true });
@@ -67,12 +67,12 @@ describe("cursor local adapter skill injection", () => {
 
     expect((await fs.lstat(existingTarget)).isDirectory()).toBe(true);
     expect(await fs.readFile(path.join(existingTarget, "keep.txt"), "utf8")).toBe("keep");
-    expect((await fs.lstat(path.join(skillsHome, "baaraly-create-agent"))).isSymbolicLink()).toBe(true);
+    expect((await fs.lstat(path.join(skillsHome, "baarali-create-agent"))).isSymbolicLink()).toBe(true);
   });
 
   it("logs per-skill link failures and continues without throwing", async () => {
-    const skillsDir = await makeTempDir("baaraly-cursor-fail-src-");
-    const skillsHome = await makeTempDir("baaraly-cursor-fail-home-");
+    const skillsDir = await makeTempDir("baarali-cursor-fail-src-");
+    const skillsHome = await makeTempDir("baarali-cursor-fail-home-");
     cleanupDirs.add(skillsDir);
     cleanupDirs.add(skillsHome);
 

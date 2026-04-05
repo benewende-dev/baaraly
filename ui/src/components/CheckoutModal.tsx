@@ -11,12 +11,12 @@ import {
   DialogDescription,
 } from "./ui/dialog";
 import {
-  BAARALY_BILLING_PLANS,
+  BAARALI_BILLING_PLANS,
   getPaymentProvidersForCountry,
   formatPriceFromEur,
   type BillingPlanId,
   type PaymentProvider,
-} from "@paperclipai/shared/baaraly-agents";
+} from "@paperclipai/shared/baarali-agents";
 
 /* ═══════════════════════════════════════════
    Types
@@ -56,12 +56,12 @@ export function CheckoutModal({
   const [paymentError, setPaymentError] = useState<string | null>(null);
 
   const providers = getPaymentProvidersForCountry(userCountry);
-  const plans = BAARALY_BILLING_PLANS.filter((p) => p.id !== "trial" && p.id !== currentPlan);
+  const plans = BAARALI_BILLING_PLANS.filter((p) => p.id !== "trial" && p.id !== currentPlan);
 
   /* ── Real payment handler ── */
   async function handlePayment() {
     if (!selectedProvider) return;
-    const plan = BAARALY_BILLING_PLANS.find((p) => p.id === selectedPlan);
+    const plan = BAARALI_BILLING_PLANS.find((p) => p.id === selectedPlan);
     if (!plan) return;
 
     setIsProcessing(true);
@@ -124,7 +124,7 @@ export function CheckoutModal({
         <p className="text-sm font-medium text-muted-foreground">
           {t("Choisissez votre forfait")}
         </p>
-        {BAARALY_BILLING_PLANS.filter((p) => p.id !== "trial").map((plan) => {
+        {BAARALI_BILLING_PLANS.filter((p) => p.id !== "trial").map((plan) => {
           const isSelected = selectedPlan === plan.id;
           const isCurrentPlan = plan.id === currentPlan;
           const price = formatPriceFromEur(plan.priceEur, userCountry);
@@ -293,7 +293,7 @@ export function CheckoutModal({
   /* ── Payment form step ── */
   function PaymentStep() {
     if (!selectedProvider) return null;
-    const plan = BAARALY_BILLING_PLANS.find((p) => p.id === selectedPlan);
+    const plan = BAARALI_BILLING_PLANS.find((p) => p.id === selectedPlan);
     if (!plan) return null;
     const price = formatPriceFromEur(plan.priceEur, userCountry);
     const isCard = selectedProvider.types.includes("card");

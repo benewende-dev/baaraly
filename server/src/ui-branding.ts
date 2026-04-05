@@ -1,7 +1,7 @@
-const FAVICON_BLOCK_START = "<!-- BAARALY_FAVICON_START -->";
-const FAVICON_BLOCK_END = "<!-- BAARALY_FAVICON_END -->";
-const RUNTIME_BRANDING_BLOCK_START = "<!-- BAARALY_RUNTIME_BRANDING_START -->";
-const RUNTIME_BRANDING_BLOCK_END = "<!-- BAARALY_RUNTIME_BRANDING_END -->";
+const FAVICON_BLOCK_START = "<!-- BAARALI_FAVICON_START -->";
+const FAVICON_BLOCK_END = "<!-- BAARALI_FAVICON_END -->";
+const RUNTIME_BRANDING_BLOCK_START = "<!-- BAARALI_RUNTIME_BRANDING_START -->";
+const RUNTIME_BRANDING_BLOCK_END = "<!-- BAARALI_RUNTIME_BRANDING_END -->";
 
 const DEFAULT_FAVICON_LINKS = [
   '<link rel="icon" href="/favicon.ico" sizes="48x48" />',
@@ -141,7 +141,7 @@ function createFaviconDataUrl(background: string, foreground: string): string {
 }
 
 export function isWorktreeUiBrandingEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
-  return isTruthyEnvValue(env.BAARALY_IN_WORKTREE);
+  return isTruthyEnvValue(env.BAARALI_IN_WORKTREE);
 }
 
 export function getWorktreeUiBranding(env: NodeJS.ProcessEnv = process.env): WorktreeUiBranding {
@@ -155,8 +155,8 @@ export function getWorktreeUiBranding(env: NodeJS.ProcessEnv = process.env): Wor
     };
   }
 
-  const name = nonEmpty(env.BAARALY_WORKTREE_NAME) ?? nonEmpty(env.BAARALY_INSTANCE_ID) ?? "worktree";
-  const color = normalizeHexColor(env.BAARALY_WORKTREE_COLOR) ?? deriveColorFromSeed(name);
+  const name = nonEmpty(env.BAARALI_WORKTREE_NAME) ?? nonEmpty(env.BAARALI_INSTANCE_ID) ?? "worktree";
+  const color = normalizeHexColor(env.BAARALI_WORKTREE_COLOR) ?? deriveColorFromSeed(name);
   const textColor = pickReadableTextColor(color);
 
   return {
@@ -182,10 +182,10 @@ export function renderRuntimeBrandingMeta(branding: WorktreeUiBranding): string 
   if (!branding.enabled || !branding.name || !branding.color || !branding.textColor) return "";
 
   return [
-    '<meta name="baaraly-worktree-enabled" content="true" />',
-    `<meta name="baaraly-worktree-name" content="${escapeHtmlAttribute(branding.name)}" />`,
-    `<meta name="baaraly-worktree-color" content="${escapeHtmlAttribute(branding.color)}" />`,
-    `<meta name="baaraly-worktree-text-color" content="${escapeHtmlAttribute(branding.textColor)}" />`,
+    '<meta name="baarali-worktree-enabled" content="true" />',
+    `<meta name="baarali-worktree-name" content="${escapeHtmlAttribute(branding.name)}" />`,
+    `<meta name="baarali-worktree-color" content="${escapeHtmlAttribute(branding.color)}" />`,
+    `<meta name="baarali-worktree-text-color" content="${escapeHtmlAttribute(branding.textColor)}" />`,
   ].join("\n");
 }
 

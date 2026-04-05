@@ -1,16 +1,16 @@
 {
   "name": "@paperclipai/ui",
   "version": "0.3.1",
-  "description": "Interface utilisateur Baaraly — tableau de bord IA souverain africain.",
+  "description": "Interface utilisateur Baarali — tableau de bord IA souverain africain.",
   "author": "Benewende Group SARL",
   "license": "MIT",
-  "homepage": "https://github.com/benewende/baaraly",
+  "homepage": "https://github.com/benewende/baarali",
   "bugs": {
-    "url": "https://github.com/benewende/baaraly/issues"
+    "url": "https://github.com/benewende/baarali/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/benewende/baaraly",
+    "url": "https://github.com/benewende/baarali",
     "directory": "ui"
   },
   "type": "module",

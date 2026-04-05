@@ -5,13 +5,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import type { BaaralyAgentDefinition, AgentTier } from "@paperclipai/shared/baaraly-agents";
+import type { BaaraliAgentDefinition, AgentTier } from "@paperclipai/shared/baarali-agents";
 import type { Agent } from "@paperclipai/shared";
 
 interface AgentDetailModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  agent: BaaralyAgentDefinition | null;
+  agent: BaaraliAgentDefinition | null;
   installed?: Agent;
   isLocked: boolean;
   canInstall: boolean;

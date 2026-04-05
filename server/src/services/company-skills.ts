@@ -28,7 +28,7 @@ import type {
 } from "@paperclipai/shared";
 import { normalizeAgentUrlKey } from "@paperclipai/shared";
 import { findServerAdapter } from "../adapters/index.js";
-import { resolveBaaralyInstanceRoot } from "../home-paths.js";
+import { resolveBaaraliInstanceRoot } from "../home-paths.js";
 import { notFound, unprocessable } from "../errors.js";
 import { agentService } from "./agents.js";
 import { projectService } from "./projects.js";
@@ -230,7 +230,7 @@ function uniqueImportedSkillKey(companyId: string, baseSlug: string, usedKeys: S
 }
 
 function buildSkillRuntimeName(key: string, slug: string) {
-  if (key.startsWith("baaralyai/baaraly/")) return slug;
+  if (key.startsWith("baaraliai/baarali/")) return slug;
   return `${slug}--${hashSkillValue(key)}`;
 }
 
@@ -240,13 +240,13 @@ function readCanonicalSkillKey(frontmatter: Record<string, unknown>, metadata: R
     ?? asString(frontmatter.skillKey)
     ?? asString(metadata?.skillKey)
     ?? asString(metadata?.canonicalKey)
-    ?? asString(metadata?.baaralySkillKey),
+    ?? asString(metadata?.baaraliSkillKey),
   );
   if (direct) return direct;
-  const baaraly = isPlainRecord(metadata?.baaraly) ? metadata?.baaraly as Record<string, unknown> : null;
+  const baarali = isPlainRecord(metadata?.baarali) ? metadata?.baarali as Record<string, unknown> : null;
   return normalizeSkillKey(
-    asString(baaraly?.skillKey)
-    ?? asString(baaraly?.key),
+    asString(baarali?.skillKey)
+    ?? asString(baarali?.key),
   );
 }
 
@@ -260,8 +260,8 @@ function deriveCanonicalSkillKey(
   if (explicitKey) return explicitKey;
 
   const sourceKind = asString(metadata?.sourceKind);
-  if (sourceKind === "baaraly_bundled") {
-    return `baaralyai/baaraly/${slug}`;
+  if (sourceKind === "baarali_bundled") {
+    return `baaraliai/baarali/${slug}`;
   }
 
   const owner = normalizeSkillSlug(asString(metadata?.owner));
@@ -1279,7 +1279,7 @@ export async function findMissingLocalSkillIds(
 }
 
 function resolveManagedSkillsRoot(companyId: string) {
-  return path.resolve(resolveBaaralyInstanceRoot(), "skills", companyId);
+  return path.resolve(resolveBaaraliInstanceRoot(), "skills", companyId);
 }
 
 function resolveLocalSkillFilePath(skill: CompanySkill, relativePath: string) {
@@ -1325,11 +1325,11 @@ function deriveSkillSourceInfo(skill: CompanySkill): {
 } {
   const metadata = getSkillMeta(skill);
   const localSkillDir = normalizeSkillDirectory(skill);
-  if (metadata.sourceKind === "baaraly_bundled") {
+  if (metadata.sourceKind === "baarali_bundled") {
     return {
       editable: false,
-      editableReason: "Bundled Baaraly skills are read-only.",
-      sourceLabel: "Baaraly bundled",
+      editableReason: "Bundled Baarali skills are read-only.",
+      sourceLabel: "Baarali bundled",
       sourceBadge: "paperclip",
       sourcePath: null,
     };
@@ -1378,7 +1378,7 @@ function deriveSkillSourceInfo(skill: CompanySkill): {
       return {
         editable: true,
         editableReason: null,
-        sourceLabel: "Baaraly workspace",
+        sourceLabel: "Baarali workspace",
         sourceBadge: "paperclip",
         sourcePath: managedRoot,
       };
@@ -1457,12 +1457,12 @@ export function companySkillService(db: Db) {
             ...skill,
             metadata: {
               ...(skill.metadata ?? {}),
-              sourceKind: "baaraly_bundled",
+              sourceKind: "baarali_bundled",
             },
           }),
           metadata: {
             ...(skill.metadata ?? {}),
-            sourceKind: "baaraly_bundled",
+            sourceKind: "baarali_bundled",
           },
         })))
         .catch(() => [] as ImportedSkill[]);
@@ -1580,7 +1580,7 @@ export function companySkillService(db: Db) {
               adapterType: agent.adapterType,
               config: {
                 ...runtimeConfig,
-                baaralyRuntimeSkills: runtimeSkillEntries,
+                baaraliRuntimeSkills: runtimeSkillEntries,
               },
             });
             actualState = snapshot.entries.find((entry) => entry.key === key)?.state
@@ -2054,14 +2054,14 @@ export function companySkillService(db: Db) {
       }
       if (!source) continue;
 
-      const required = sourceKind === "baaraly_bundled";
+      const required = sourceKind === "baarali_bundled";
       out.push({
         key: skill.key,
         runtimeName: buildSkillRuntimeName(skill.key, skill.slug),
         source,
         required,
         requiredReason: required
-          ? "Bundled Baaraly skills are always available for local adapters."
+          ? "Bundled Baarali skills are always available for local adapters."
           : null,
       });
     }
@@ -2202,9 +2202,9 @@ export function companySkillService(db: Db) {
       const incomingKind = asString(incomingMeta.sourceKind);
       if (
         existing
-        && existingMeta.sourceKind === "baaraly_bundled"
+        && existingMeta.sourceKind === "baarali_bundled"
         && incomingKind === "github"
-        && incomingOwner === "baaralyai"
+        && incomingOwner === "baaraliai"
         && incomingRepo === "paperclip"
       ) {
         out.push(existing);

@@ -19,7 +19,7 @@ async function createSkillDir(root: string, name: string) {
 }
 
 describe("cursor local skill sync", () => {
-  const baaralyKey = "baaralyai/baaraly/baaraly";
+  const baaraliKey = "baaraliai/baarali/baarali";
   const cleanupDirs = new Set<string>();
 
   afterEach(async () => {
@@ -27,8 +27,8 @@ describe("cursor local skill sync", () => {
     cleanupDirs.clear();
   });
 
-  it("reports configured Baaraly skills and installs them into the Cursor skills home", async () => {
-    const home = await makeTempDir("baaraly-cursor-skill-sync-");
+  it("reports configured Baarali skills and installs them into the Cursor skills home", async () => {
+    const home = await makeTempDir("baarali-cursor-skill-sync-");
     cleanupDirs.add(home);
 
     const ctx = {
@@ -39,30 +39,30 @@ describe("cursor local skill sync", () => {
         env: {
           HOME: home,
         },
-        baaralySkillSync: {
-          desiredSkills: [baaralyKey],
+        baaraliSkillSync: {
+          desiredSkills: [baaraliKey],
         },
       },
     } as const;
 
     const before = await listCursorSkills(ctx);
     expect(before.mode).toBe("persistent");
-    expect(before.desiredSkills).toContain(baaralyKey);
-    expect(before.entries.find((entry) => entry.key === baaralyKey)?.required).toBe(true);
-    expect(before.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("missing");
+    expect(before.desiredSkills).toContain(baaraliKey);
+    expect(before.entries.find((entry) => entry.key === baaraliKey)?.required).toBe(true);
+    expect(before.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("missing");
 
-    const after = await syncCursorSkills(ctx, [baaralyKey]);
-    expect(after.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("installed");
+    const after = await syncCursorSkills(ctx, [baaraliKey]);
+    expect(after.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("installed");
     expect((await fs.lstat(path.join(home, ".cursor", "skills", "paperclip"))).isSymbolicLink()).toBe(true);
   });
 
-  it("recognizes company-library runtime skills supplied outside the bundled Baaraly directory", async () => {
-    const home = await makeTempDir("baaraly-cursor-runtime-skills-home-");
-    const runtimeSkills = await makeTempDir("baaraly-cursor-runtime-skills-src-");
+  it("recognizes company-library runtime skills supplied outside the bundled Baarali directory", async () => {
+    const home = await makeTempDir("baarali-cursor-runtime-skills-home-");
+    const runtimeSkills = await makeTempDir("baarali-cursor-runtime-skills-src-");
     cleanupDirs.add(home);
     cleanupDirs.add(runtimeSkills);
 
-    const baaralyDir = await createSkillDir(runtimeSkills, "paperclip");
+    const baaraliDir = await createSkillDir(runtimeSkills, "paperclip");
     const asciiHeartDir = await createSkillDir(runtimeSkills, "ascii-heart");
 
     const ctx = {
@@ -73,13 +73,13 @@ describe("cursor local skill sync", () => {
         env: {
           HOME: home,
         },
-        baaralyRuntimeSkills: [
+        baaraliRuntimeSkills: [
           {
             key: "paperclip",
             runtimeName: "paperclip",
-            source: baaralyDir,
+            source: baaraliDir,
             required: true,
-            requiredReason: "Bundled Baaraly skills are always available for local adapters.",
+            requiredReason: "Bundled Baarali skills are always available for local adapters.",
           },
           {
             key: "ascii-heart",
@@ -87,7 +87,7 @@ describe("cursor local skill sync", () => {
             source: asciiHeartDir,
           },
         ],
-        baaralySkillSync: {
+        baaraliSkillSync: {
           desiredSkills: ["ascii-heart"],
         },
       },
@@ -104,8 +104,8 @@ describe("cursor local skill sync", () => {
     expect((await fs.lstat(path.join(home, ".cursor", "skills", "ascii-heart"))).isSymbolicLink()).toBe(true);
   });
 
-  it("keeps required bundled Baaraly skills installed even when the desired set is emptied", async () => {
-    const home = await makeTempDir("baaraly-cursor-skill-prune-");
+  it("keeps required bundled Baarali skills installed even when the desired set is emptied", async () => {
+    const home = await makeTempDir("baarali-cursor-skill-prune-");
     cleanupDirs.add(home);
 
     const configuredCtx = {
@@ -116,13 +116,13 @@ describe("cursor local skill sync", () => {
         env: {
           HOME: home,
         },
-        baaralySkillSync: {
-          desiredSkills: [baaralyKey],
+        baaraliSkillSync: {
+          desiredSkills: [baaraliKey],
         },
       },
     } as const;
 
-    await syncCursorSkills(configuredCtx, [baaralyKey]);
+    await syncCursorSkills(configuredCtx, [baaraliKey]);
 
     const clearedCtx = {
       ...configuredCtx,
@@ -130,15 +130,15 @@ describe("cursor local skill sync", () => {
         env: {
           HOME: home,
         },
-        baaralySkillSync: {
+        baaraliSkillSync: {
           desiredSkills: [],
         },
       },
     } as const;
 
     const after = await syncCursorSkills(clearedCtx, []);
-    expect(after.desiredSkills).toContain(baaralyKey);
-    expect(after.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("installed");
+    expect(after.desiredSkills).toContain(baaraliKey);
+    expect(after.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("installed");
     expect((await fs.lstat(path.join(home, ".cursor", "skills", "paperclip"))).isSymbolicLink()).toBe(true);
   });
 });

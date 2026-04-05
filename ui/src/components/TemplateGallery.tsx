@@ -5,8 +5,8 @@ import { agentsApi } from "../api/agents";
 import { useCompany } from "../context/CompanyContext";
 import { useLanguage } from "../context/LanguageContext";
 import { useToast } from "../context/ToastContext";
-import { BAARALY_AGENTS } from "@paperclipai/shared/baaraly-agents";
-import type { BaaralyAgentDefinition } from "@paperclipai/shared/baaraly-agents";
+import { BAARALI_AGENTS } from "@paperclipai/shared/baarali-agents";
+import type { BaaraliAgentDefinition } from "@paperclipai/shared/baarali-agents";
 import { queryKeys } from "../lib/queryKeys";
 
 export function TemplateGallery() {
@@ -18,7 +18,7 @@ export function TemplateGallery() {
   const [recruitingAgent, setRecruitingAgent] = useState<string | null>(null);
 
   const hireMutation = useMutation({
-    mutationFn: async (agent: BaaralyAgentDefinition) => {
+    mutationFn: async (agent: BaaraliAgentDefinition) => {
       if (!selectedCompanyId) throw new Error("No company selected");
       return agentsApi.hire(selectedCompanyId, {
         name: agent.name,
@@ -37,7 +37,7 @@ export function TemplateGallery() {
           description: agent.description,
           tools: agent.tools,
           superpowers: agent.superpowers,
-          baaralyTemplate: true,
+          baaraliTemplate: true,
         },
       });
     },
@@ -57,7 +57,7 @@ export function TemplateGallery() {
     },
   });
 
-  function handleRecruit(agent: BaaralyAgentDefinition) {
+  function handleRecruit(agent: BaaraliAgentDefinition) {
     setRecruitingAgent(agent.name);
     hireMutation.mutate(agent);
   }
@@ -72,7 +72,7 @@ export function TemplateGallery() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {BAARALY_AGENTS.map((agent) => {
+        {BAARALI_AGENTS.map((agent) => {
           const isRecruiting = recruitingAgent === agent.name;
           return (
             <div

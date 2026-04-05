@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest";
 import { shouldTrackDevServerPath } from "../../../scripts/dev-runner-paths.mjs";
 
 describe("shouldTrackDevServerPath", () => {
-  it("ignores repo-local Baaraly state and common test file paths", () => {
+  it("ignores repo-local Baarali state and common test file paths", () => {
     expect(
       shouldTrackDevServerPath(
-        ".baaraly/worktrees/PAP-712-for-project-configuration-get-rid-of-the-overview-tab-for-now/.agents/skills/baaraly",
+        ".baarali/worktrees/PAP-712-for-project-configuration-get-rid-of-the-overview-tab-for-now/.agents/skills/baarali",
       ),
     ).toBe(false);
     expect(shouldTrackDevServerPath("server/src/__tests__/health.test.ts")).toBe(false);

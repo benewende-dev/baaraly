@@ -19,8 +19,8 @@ async function createSkillDir(root: string, name: string) {
 }
 
 describe("claude local skill sync", () => {
-  const baaralyKey = "baaralyai/baaraly/baaraly";
-  const createAgentKey = "baaralyai/baaraly/baaraly-create-agent";
+  const baaraliKey = "baaraliai/baarali/baarali";
+  const createAgentKey = "baaraliai/baarali/baarali-create-agent";
   const cleanupDirs = new Set<string>();
 
   afterEach(async () => {
@@ -28,7 +28,7 @@ describe("claude local skill sync", () => {
     cleanupDirs.clear();
   });
 
-  it("defaults to mounting all built-in Baaraly skills when no explicit selection exists", async () => {
+  it("defaults to mounting all built-in Baarali skills when no explicit selection exists", async () => {
     const snapshot = await listClaudeSkills({
       agentId: "agent-1",
       companyId: "company-1",
@@ -38,9 +38,9 @@ describe("claude local skill sync", () => {
 
     expect(snapshot.mode).toBe("ephemeral");
     expect(snapshot.supported).toBe(true);
-    expect(snapshot.desiredSkills).toContain(baaralyKey);
-    expect(snapshot.entries.find((entry) => entry.key === baaralyKey)?.required).toBe(true);
-    expect(snapshot.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("configured");
+    expect(snapshot.desiredSkills).toContain(baaraliKey);
+    expect(snapshot.entries.find((entry) => entry.key === baaraliKey)?.required).toBe(true);
+    expect(snapshot.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("configured");
   });
 
   it("respects an explicit desired skill list without mutating a persistent home", async () => {
@@ -49,38 +49,38 @@ describe("claude local skill sync", () => {
       companyId: "company-1",
       adapterType: "claude_local",
       config: {
-        baaralySkillSync: {
-          desiredSkills: [baaralyKey],
+        baaraliSkillSync: {
+          desiredSkills: [baaraliKey],
         },
       },
-    }, [baaralyKey]);
+    }, [baaraliKey]);
 
-    expect(snapshot.desiredSkills).toContain(baaralyKey);
-    expect(snapshot.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("configured");
+    expect(snapshot.desiredSkills).toContain(baaraliKey);
+    expect(snapshot.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("configured");
     expect(snapshot.entries.find((entry) => entry.key === createAgentKey)?.state).toBe("configured");
   });
 
-  it("normalizes legacy flat Baaraly skill refs to canonical keys", async () => {
+  it("normalizes legacy flat Baarali skill refs to canonical keys", async () => {
     const snapshot = await listClaudeSkills({
       agentId: "agent-3",
       companyId: "company-1",
       adapterType: "claude_local",
       config: {
-        baaralySkillSync: {
+        baaraliSkillSync: {
           desiredSkills: ["paperclip"],
         },
       },
     });
 
     expect(snapshot.warnings).toEqual([]);
-    expect(snapshot.desiredSkills).toContain(baaralyKey);
+    expect(snapshot.desiredSkills).toContain(baaraliKey);
     expect(snapshot.desiredSkills).not.toContain("paperclip");
-    expect(snapshot.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("configured");
+    expect(snapshot.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("configured");
     expect(snapshot.entries.find((entry) => entry.key === "paperclip")).toBeUndefined();
   });
 
   it("shows host-level user-installed Claude skills as read-only external entries", async () => {
-    const home = await makeTempDir("baaraly-claude-user-skills-");
+    const home = await makeTempDir("baarali-claude-user-skills-");
     cleanupDirs.add(home);
     await createSkillDir(path.join(home, ".claude", "skills"), "crack-python");
 
@@ -104,7 +104,7 @@ describe("claude local skill sync", () => {
       originLabel: "User-installed",
       locationLabel: "~/.claude/skills",
       readOnly: true,
-      detail: "Installed outside Baaraly management in the Claude skills home.",
+      detail: "Installed outside Baarali management in the Claude skills home.",
     }));
   });
 });

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@/lib/router";
 import { useLanguage } from "../context/LanguageContext";
+import { useMode } from "../context/ModeContext";
 import { ThemeLangToggle } from "../components/ThemeLangToggle";
-import { BAARALY_AGENTS, getBillingPlan } from "@paperclipai/shared/baaraly-agents";
+import { BAARALI_AGENTS, getBillingPlan } from "@paperclipai/shared/baarali-agents";
 
 export function Landing() {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { setMode } = useMode();
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [chatStep, setChatStep] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -15,7 +17,7 @@ export function Landing() {
   const trialDays = trialPlan.trialDays ?? 7;
   const trialProspects = trialPlan.maxProspectsPerDay;
 
-  const featuredAgents = BAARALY_AGENTS.filter((a) =>
+  const featuredAgents = BAARALI_AGENTS.filter((a) =>
     ["Aminata", "Sékou", "Ibrahim", "Mariama", "Aïcha"].includes(a.name),
   );
 
@@ -48,10 +50,10 @@ export function Landing() {
       {/* ── NAV ── */}
       <nav className="flex items-center justify-between px-5 py-4 max-w-5xl mx-auto backdrop-blur-sm sticky top-0 z-50 bg-[#F5F5F7]/80 dark:bg-[#000]/80">
         <div className="flex items-center gap-3">
-          <img src="/baaraly-logo.svg" alt="Baaraly" className="w-10 h-10" />
-          <img src="/baaraly-wordmark-full.svg" alt="Baaraly AI" className="h-9 dark:hidden" />
+          <img src="/baarali-logo.svg" alt="Baarali" className="w-10 h-10" />
+          <img src="/baarali-wordmark-full.svg" alt="Baarali AI" className="h-9 dark:hidden" />
           <span className="text-xl font-extrabold tracking-tight hidden dark:inline">
-            Baaraly <span className="text-gradient">AI</span>
+            Baarali <span className="text-gradient">AI</span>
           </span>
         </div>
         <div className="flex items-center gap-3">
@@ -79,20 +81,20 @@ export function Landing() {
               <span className="text-gradient">{t("même quand tu dors")}</span>
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed">
-              {t("Baaraly met à ta disposition des agents IA spécialisés qui gèrent tes clients, ton stock et tes finances — 24h/24, en français et en langues locales.")}
+              {t("Baarali met à ta disposition des agents IA spécialisés qui gèrent tes clients, ton stock et tes finances — 24h/24, en français et en langues locales.")}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
               <button
-                onClick={() => navigate("/welcome")}
-                className="rounded-2xl px-8 py-4 text-base font-bold text-white shadow-xl shadow-[#0071E3]/20 transition-all hover:shadow-2xl hover:shadow-[#0071E3]/30 hover:-translate-y-1 active:scale-[0.98] bg-gradient-to-r from-[#0071E3] to-[#5E5CE6]"
+                onClick={() => { setMode("simple"); navigate("/welcome"); }}
+                className="rounded-2xl px-7 py-4 text-sm font-bold text-white shadow-xl shadow-[#0071E3]/20 transition-all hover:shadow-2xl hover:shadow-[#0071E3]/30 hover:-translate-y-1 active:scale-[0.98] bg-gradient-to-r from-[#0071E3] to-[#5E5CE6]"
               >
-                {t("Essayer gratuitement 7 jours")} →
+                ⚡ {t("Mode Simple")} — {t("Solo / TPE")} →
               </button>
               <button
-                onClick={() => document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })}
-                className="rounded-2xl px-8 py-4 text-base font-semibold border-2 border-[#0071E3]/30 text-[#0071E3] transition-all hover:bg-[#0071E3]/5"
+                onClick={() => { setMode("pro"); navigate("/welcome"); }}
+                className="rounded-2xl px-7 py-4 text-sm font-bold border-2 border-[#5E5CE6] text-[#5E5CE6] transition-all hover:bg-[#5E5CE6]/5 hover:-translate-y-1 active:scale-[0.98]"
               >
-                {t("Voir comment ça marche")}
+                🚀 {t("Mode Pro")} — {t("PME complète")} →
               </button>
             </div>
             <p className="text-xs text-muted-foreground mt-4">
@@ -155,7 +157,7 @@ export function Landing() {
           ))}
         </div>
         <p className="text-center text-lg font-semibold mt-10 text-[#0071E3]">
-          {t("Baaraly s'occupe de tout ça pour toi.")} 🤖
+          {t("Baarali s'occupe de tout ça pour toi.")} 🤖
         </p>
       </section>
 
@@ -372,12 +374,12 @@ export function Landing() {
         </div>
         <div className="space-y-4">
           {[
-            { q: t("C'est quoi Baaraly exactement ?"), a: t("Baaraly est une plateforme d'agents IA spécialisés qui travaillent pour ton entreprise 24h/24. Chaque agent a un rôle précis : gestion de boutique, comptabilité, prospection, support client...") },
+            { q: t("C'est quoi Baarali exactement ?"), a: t("Baarali est une plateforme d'agents IA spécialisés qui travaillent pour ton entreprise 24h/24. Chaque agent a un rôle précis : gestion de boutique, comptabilité, prospection, support client...") },
             { q: t("Comment fonctionne l'essai gratuit ?"), a: `${t("Tu as accès à")} ${trialDays} ${t("jours gratuits avec")} ${trialProspects} ${t("prospects/jour")}. ${t("Aucune carte bancaire n'est requise.")}` },
             { q: t("Est-ce que c'est vraiment automatique ?"), a: t("Oui. Une fois configuré, ton agent travaille 24h/24 sans intervention de ta part. Tu reçois les résultats sur WhatsApp et dans ton dashboard.") },
             { q: t("Comment je paie ?"), a: t("Tu recharges ton compte. Pas d'abonnement obligatoire. Paiement via Orange Money, Wave, MTN, Moov, M-Pesa, Stripe, PayPal ou Crypto.") },
-            { q: t("Est-ce que ça marche dans mon pays ?"), a: t("Baaraly fonctionne dans toute l'Afrique de l'Ouest et Centrale : Burkina Faso, Mali, Sénégal, Côte d'Ivoire, Niger, Bénin, Togo, Ghana, Cameroun, Gabon, et plus encore.") },
-            { q: t("Puis-je essayer gratuitement ?"), a: `${t("Oui !")} ${trialDays} ${t("jours gratuits sans carte bancaire pour tester Baaraly")}.` },
+            { q: t("Est-ce que ça marche dans mon pays ?"), a: t("Baarali fonctionne dans toute l'Afrique de l'Ouest et Centrale : Burkina Faso, Mali, Sénégal, Côte d'Ivoire, Niger, Bénin, Togo, Ghana, Cameroun, Gabon, et plus encore.") },
+            { q: t("Puis-je essayer gratuitement ?"), a: `${t("Oui !")} ${trialDays} ${t("jours gratuits sans carte bancaire pour tester Baarali")}.` },
           ].map((faq, i) => (
             <div
               key={i}
@@ -424,10 +426,10 @@ export function Landing() {
       <footer className="px-5 py-8 text-center border-t border-gray-200 dark:border-gray-800">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-center gap-3 mb-2">
-            <img src="/baaraly-logo.svg" alt="Baaraly" className="w-8 h-8" />
-            <img src="/baaraly-wordmark-full.svg" alt="Baaraly AI" className="h-7 dark:hidden" />
+            <img src="/baarali-logo.svg" alt="Baarali" className="w-8 h-8" />
+            <img src="/baarali-wordmark-full.svg" alt="Baarali AI" className="h-7 dark:hidden" />
             <p className="text-lg font-extrabold hidden dark:inline">
-              Baaraly <span className="text-gradient">AI</span>
+              Baarali <span className="text-gradient">AI</span>
             </p>
           </div>
           <p className="text-xs text-muted-foreground mb-4">
@@ -441,7 +443,7 @@ export function Landing() {
             <button onClick={() => navigate("/")} className="hover:text-foreground">{t("Contact")}</button>
           </div>
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Baaraly — Benewende Group SARL
+            © {new Date().getFullYear()} Baarali — Benewende Group SARL
           </p>
         </div>
       </footer>

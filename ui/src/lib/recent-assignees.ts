@@ -1,4 +1,4 @@
-const STORAGE_KEY = "baaraly:recent-assignees";
+const STORAGE_KEY = "baarali:recent-assignees";
 const MAX_RECENT = 10;
 
 export function getRecentAssigneeIds(): string[] {

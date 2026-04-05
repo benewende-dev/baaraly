@@ -199,7 +199,7 @@ export function NewAgent() {
     });
   }
 
-  const availableSkills = (companySkills ?? []).filter((skill) => !skill.key.startsWith("baaralyai/baaraly/"));
+  const availableSkills = (companySkills ?? []).filter((skill) => !skill.key.startsWith("baaraliai/baarali/"));
 
   function toggleSkill(key: string, checked: boolean) {
     setSelectedSkillKeys((prev) => {
@@ -293,7 +293,7 @@ export function NewAgent() {
             <div>
               <h2 className="text-sm font-medium">Company skills</h2>
               <p className="mt-1 text-xs text-muted-foreground">
-                Optional skills from the company library. Built-in Baaraly runtime skills are added automatically.
+                Optional skills from the company library. Built-in Baarali runtime skills are added automatically.
               </p>
             </div>
             {availableSkills.length === 0 ? (

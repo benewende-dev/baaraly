@@ -1,16 +1,16 @@
 {
   "name": "@paperclipai/server",
   "version": "0.3.1",
-  "description": "Serveur Baaraly — infrastructure tech souveraine africaine.",
+  "description": "Serveur Baarali — infrastructure tech souveraine africaine.",
   "author": "Benewende Group SARL",
   "license": "MIT",
-  "homepage": "https://github.com/benewende/baaraly",
+  "homepage": "https://github.com/benewende/baarali",
   "bugs": {
-    "url": "https://github.com/benewende/baaraly/issues"
+    "url": "https://github.com/benewende/baarali/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/benewende/baaraly",
+    "url": "https://github.com/benewende/baarali",
     "directory": "server"
   },
   "type": "module",

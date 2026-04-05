@@ -72,12 +72,12 @@ function checkedSlugs(checkedFiles: Set<string>): {
 }
 
 /**
- * Filter .baaraly.yaml content so it only includes entries whose
+ * Filter .baarali.yaml content so it only includes entries whose
  * corresponding files are checked. Works by line-level YAML parsing
  * since the file has a known, simple structure produced by our own
  * renderYamlBlock.
  */
-function filterBaaralyYaml(yaml: string, checkedFiles: Set<string>): string {
+function filterBaaraliYaml(yaml: string, checkedFiles: Set<string>): string {
   const slugs = checkedSlugs(checkedFiles);
   const lines = yaml.split("\n");
   const out: string[] = [];
@@ -429,7 +429,7 @@ function generateReadmeFromSelection(
 
   lines.push("## What's Inside");
   lines.push("");
-  lines.push("This is an [Agent Company](https://baaraly.ing) package.");
+  lines.push("This is an [Agent Company](https://baarali.ing) package.");
   lines.push("");
 
   const counts: Array<[string, number]> = [];
@@ -473,13 +473,13 @@ function generateReadmeFromSelection(
   lines.push("## Getting Started");
   lines.push("");
   lines.push("```bash");
-  lines.push("pnpm baaralyai company import this-github-url-or-folder");
+  lines.push("pnpm baaraliai company import this-github-url-or-folder");
   lines.push("```");
   lines.push("");
-  lines.push("See [Baaraly](https://baaraly.ing) for more information.");
+  lines.push("See [Baarali](https://baarali.ing) for more information.");
   lines.push("");
   lines.push("---");
-  lines.push(`Exported from [Baaraly](https://baaraly.ing) on ${new Date().toISOString().split("T")[0]}`);
+  lines.push(`Exported from [Baarali](https://baarali.ing) on ${new Date().toISOString().split("T")[0]}`);
   lines.push("");
 
   return lines.join("\n");
@@ -775,16 +775,16 @@ export function CompanyExport() {
     };
   }, [tree, treeSearch, checkedFiles, taskLimit]);
 
-  // Recompute .baaraly.yaml and README.md content whenever checked files
+  // Recompute .baarali.yaml and README.md content whenever checked files
   // change so the preview & download always reflect the current selection.
   const effectiveFiles = useMemo(() => {
     if (!exportData) return {} as Record<string, CompanyPortabilityFileEntry>;
     const filtered = { ...exportData.files };
 
-    // Filter .baaraly.yaml
+    // Filter .baarali.yaml
     const yamlPath = exportData.paperclipExtensionPath;
     if (yamlPath && typeof exportData.files[yamlPath] === "string") {
-      filtered[yamlPath] = filterBaaralyYaml(exportData.files[yamlPath], checkedFiles);
+      filtered[yamlPath] = filterBaaraliYaml(exportData.files[yamlPath], checkedFiles);
     }
 
     // Regenerate README.md based on checked selection

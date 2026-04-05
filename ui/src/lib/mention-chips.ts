@@ -45,13 +45,13 @@ export function mentionChipInlineStyle(mention: ParsedMentionChip): CSSPropertie
   if (mention.kind === "project" && mention.color) {
     const projectStyle = projectMentionColors(mention.color);
     Object.assign(style, projectStyle);
-    style["--baaraly-mention-project-color"] = mention.color;
+    style["--baarali-mention-project-color"] = mention.color;
   }
 
   if (mention.kind === "agent") {
     const iconMask = buildAgentIconMask(mention.icon);
     if (iconMask) {
-      style["--baaraly-mention-icon-mask"] = iconMask;
+      style["--baarali-mention-icon-mask"] = iconMask;
     }
   }
 
@@ -62,9 +62,9 @@ export function applyMentionChipDecoration(element: HTMLElement, mention: Parsed
   clearMentionChipDecoration(element);
   element.dataset.mentionKind = mention.kind;
   element.setAttribute("contenteditable", "false");
-  element.classList.add("baaraly-mention-chip", `baaraly-mention-chip--${mention.kind}`);
+  element.classList.add("baarali-mention-chip", `baarali-mention-chip--${mention.kind}`);
   if (mention.kind === "project") {
-    element.classList.add("baaraly-project-mention-chip");
+    element.classList.add("baarali-project-mention-chip");
   }
 
   const style = mentionChipInlineStyle(mention);
@@ -83,17 +83,17 @@ export function applyMentionChipDecoration(element: HTMLElement, mention: Parsed
 export function clearMentionChipDecoration(element: HTMLElement) {
   delete element.dataset.mentionKind;
   element.classList.remove(
-    "baaraly-mention-chip",
-    "baaraly-mention-chip--agent",
-    "baaraly-mention-chip--project",
-    "baaraly-project-mention-chip",
+    "baarali-mention-chip",
+    "baarali-mention-chip--agent",
+    "baarali-mention-chip--project",
+    "baarali-project-mention-chip",
   );
   element.removeAttribute("contenteditable");
   element.style.removeProperty("border-color");
   element.style.removeProperty("background-color");
   element.style.removeProperty("color");
-  element.style.removeProperty("--baaraly-mention-project-color");
-  element.style.removeProperty("--baaraly-mention-icon-mask");
+  element.style.removeProperty("--baarali-mention-project-color");
+  element.style.removeProperty("--baarali-mention-icon-mask");
 }
 
 function projectMentionColors(color: string): Pick<CSSProperties, "borderColor" | "backgroundColor" | "color"> {

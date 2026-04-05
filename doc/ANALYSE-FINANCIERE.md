@@ -1,4 +1,4 @@
-# Analyse financière Baaraly — Modèles gratuits & low-cost
+# Analyse financière Baarali — Modèles gratuits & low-cost
 
 ## 1. Prix réels des modèles (OpenRouter, 2026)
 

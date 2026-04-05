@@ -1955,7 +1955,7 @@ function PromptsTab({
                       <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
                     </TooltipTrigger>
                     <TooltipContent side="right" sideOffset={4}>
-                      Managed: Baaraly stores and serves the instructions bundle. External: you provide a path on disk where the instructions live.
+                      Managed: Baarali stores and serves the instructions bundle. External: you provide a path on disk where the instructions live.
                     </TooltipContent>
                   </Tooltip>
                 </span>
@@ -2010,7 +2010,7 @@ function PromptsTab({
                       <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
                     </TooltipTrigger>
                     <TooltipContent side="right" sideOffset={4}>
-                      The absolute directory on disk where the instructions bundle lives. In managed mode this is set by Baaraly automatically.
+                      The absolute directory on disk where the instructions bundle lives. In managed mode this is set by Baarali automatically.
                     </TooltipContent>
                   </Tooltip>
                 </span>
@@ -2541,9 +2541,9 @@ function AgentSkillsTab({
   const unsupportedSkillMessage = useMemo(() => {
     if (skillSnapshot?.mode !== "unsupported") return null;
     if (agent.adapterType === "openclaw_gateway") {
-      return "Baaraly ne peut pas g\u00e9rer les comp\u00e9tences OpenClaw ici. Rendez-vous dans votre instance OpenClaw.";
+      return "Baarali ne peut pas g\u00e9rer les comp\u00e9tences OpenClaw ici. Rendez-vous dans votre instance OpenClaw.";
     }
-    return "Baaraly ne peut pas encore g\u00e9rer les comp\u00e9tences pour cet adaptateur. G\u00e9rez-les directement dans l'adaptateur.";
+    return "Baarali ne peut pas encore g\u00e9rer les comp\u00e9tences pour cet adaptateur. G\u00e9rez-les directement dans l'adaptateur.";
   }, [agent.adapterType, skillSnapshot?.mode]);
   const hasUnsavedChanges = !arraysEqual(skillDraft, lastSavedSkills);
   const saveStatusLabel = syncSkills.isPending
@@ -2701,7 +2701,7 @@ function AgentSkillsTab({
                   <section className="border-y border-border">
                     <div className="border-b border-border bg-muted/40 px-3 py-2">
                       <span className="text-xs font-medium text-muted-foreground">
-                        Requis par Baaraly
+                        Requis par Baarali
                       </span>
                     </div>
                     {requiredSkillRows.map(renderSkillRow)}
@@ -2718,7 +2718,7 @@ function AgentSkillsTab({
                       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setUnmanagedOpen((v) => !v); } }}
                     >
                       <span className="text-xs font-medium text-muted-foreground">
-                        ({unmanagedSkillRows.length}) Comp\u00e9tences install\u00e9es par l'utilisateur, non g\u00e9r\u00e9es par Baaraly
+                        ({unmanagedSkillRows.length}) Comp\u00e9tences install\u00e9es par l'utilisateur, non g\u00e9r\u00e9es par Baarali
                       </span>
                       {unmanagedOpen ? <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" /> : <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />}
                     </div>
@@ -4006,7 +4006,7 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
           {t("Créer une clé API")}
         </h3>
         <p className="text-xs text-muted-foreground">
-          {t("Les clés API permettent à cet agent de s'authentifier auprès du serveur Baaraly.")}
+          {t("Les clés API permettent à cet agent de s'authentifier auprès du serveur Baarali.")}
         </p>
         <div className="flex items-center gap-2">
           <Input

@@ -12,7 +12,7 @@ async function makeTempDir(prefix: string): Promise<string> {
 }
 
 describe("pi local skill sync", () => {
-  const baaralyKey = "baaralyai/baaraly/baaraly";
+  const baaraliKey = "baaraliai/baarali/baarali";
   const cleanupDirs = new Set<string>();
 
   afterEach(async () => {
@@ -20,8 +20,8 @@ describe("pi local skill sync", () => {
     cleanupDirs.clear();
   });
 
-  it("reports configured Baaraly skills and installs them into the Pi skills home", async () => {
-    const home = await makeTempDir("baaraly-pi-skill-sync-");
+  it("reports configured Baarali skills and installs them into the Pi skills home", async () => {
+    const home = await makeTempDir("baarali-pi-skill-sync-");
     cleanupDirs.add(home);
 
     const ctx = {
@@ -32,25 +32,25 @@ describe("pi local skill sync", () => {
         env: {
           HOME: home,
         },
-        baaralySkillSync: {
-          desiredSkills: [baaralyKey],
+        baaraliSkillSync: {
+          desiredSkills: [baaraliKey],
         },
       },
     } as const;
 
     const before = await listPiSkills(ctx);
     expect(before.mode).toBe("persistent");
-    expect(before.desiredSkills).toContain(baaralyKey);
-    expect(before.entries.find((entry) => entry.key === baaralyKey)?.required).toBe(true);
-    expect(before.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("missing");
+    expect(before.desiredSkills).toContain(baaraliKey);
+    expect(before.entries.find((entry) => entry.key === baaraliKey)?.required).toBe(true);
+    expect(before.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("missing");
 
-    const after = await syncPiSkills(ctx, [baaralyKey]);
-    expect(after.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("installed");
+    const after = await syncPiSkills(ctx, [baaraliKey]);
+    expect(after.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("installed");
     expect((await fs.lstat(path.join(home, ".pi", "agent", "skills", "paperclip"))).isSymbolicLink()).toBe(true);
   });
 
-  it("keeps required bundled Baaraly skills installed even when the desired set is emptied", async () => {
-    const home = await makeTempDir("baaraly-pi-skill-prune-");
+  it("keeps required bundled Baarali skills installed even when the desired set is emptied", async () => {
+    const home = await makeTempDir("baarali-pi-skill-prune-");
     cleanupDirs.add(home);
 
     const configuredCtx = {
@@ -61,13 +61,13 @@ describe("pi local skill sync", () => {
         env: {
           HOME: home,
         },
-        baaralySkillSync: {
-          desiredSkills: [baaralyKey],
+        baaraliSkillSync: {
+          desiredSkills: [baaraliKey],
         },
       },
     } as const;
 
-    await syncPiSkills(configuredCtx, [baaralyKey]);
+    await syncPiSkills(configuredCtx, [baaraliKey]);
 
     const clearedCtx = {
       ...configuredCtx,
@@ -75,15 +75,15 @@ describe("pi local skill sync", () => {
         env: {
           HOME: home,
         },
-        baaralySkillSync: {
+        baaraliSkillSync: {
           desiredSkills: [],
         },
       },
     } as const;
 
     const after = await syncPiSkills(clearedCtx, []);
-    expect(after.desiredSkills).toContain(baaralyKey);
-    expect(after.entries.find((entry) => entry.key === baaralyKey)?.state).toBe("installed");
+    expect(after.desiredSkills).toContain(baaraliKey);
+    expect(after.entries.find((entry) => entry.key === baaraliKey)?.state).toBe("installed");
     expect((await fs.lstat(path.join(home, ".pi", "agent", "skills", "paperclip"))).isSymbolicLink()).toBe(true);
   });
 });

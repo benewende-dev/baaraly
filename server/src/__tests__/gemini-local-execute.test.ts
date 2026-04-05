@@ -8,11 +8,11 @@ async function writeFakeGeminiCommand(commandPath: string): Promise<void> {
   const script = `#!/usr/bin/env node
 const fs = require("node:fs");
 
-const capturePath = process.env.BAARALY_TEST_CAPTURE_PATH;
+const capturePath = process.env.BAARALI_TEST_CAPTURE_PATH;
 const payload = {
   argv: process.argv.slice(2),
-  baaralyEnvKeys: Object.keys(process.env)
-    .filter((key) => key.startsWith("BAARALY_"))
+  baaraliEnvKeys: Object.keys(process.env)
+    .filter((key) => key.startsWith("BAARALI_"))
     .sort(),
 };
 if (capturePath) {
@@ -41,12 +41,12 @@ console.log(JSON.stringify({
 
 type CapturePayload = {
   argv: string[];
-  baaralyEnvKeys: string[];
+  baaraliEnvKeys: string[];
 };
 
 describe("gemini execute", () => {
-  it("passes prompt via --prompt and injects baaraly env vars", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-gemini-execute-"));
+  it("passes prompt via --prompt and injects baarali env vars", async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-gemini-execute-"));
     const workspace = path.join(root, "workspace");
     const commandPath = path.join(root, "gemini");
     const capturePath = path.join(root, "capture.json");
@@ -78,9 +78,9 @@ describe("gemini execute", () => {
           cwd: workspace,
           model: "gemini-2.5-pro",
           env: {
-            BAARALY_TEST_CAPTURE_PATH: capturePath,
+            BAARALI_TEST_CAPTURE_PATH: capturePath,
           },
-          promptTemplate: "Follow the baaraly heartbeat.",
+          promptTemplate: "Follow the baarali heartbeat.",
         },
         context: {},
         authToken: "run-jwt-token",
@@ -101,20 +101,20 @@ describe("gemini execute", () => {
       expect(capture.argv).toContain("yolo");
       const promptFlagIndex = capture.argv.indexOf("--prompt");
       const promptArg = promptFlagIndex >= 0 ? capture.argv[promptFlagIndex + 1] : "";
-      expect(promptArg).toContain("Follow the baaraly heartbeat.");
-      expect(promptArg).toContain("Baaraly runtime note:");
-      expect(capture.baaralyEnvKeys).toEqual(
+      expect(promptArg).toContain("Follow the baarali heartbeat.");
+      expect(promptArg).toContain("Baarali runtime note:");
+      expect(capture.baaraliEnvKeys).toEqual(
         expect.arrayContaining([
-          "BAARALY_AGENT_ID",
-          "BAARALY_API_KEY",
-          "BAARALY_API_URL",
-          "BAARALY_COMPANY_ID",
-          "BAARALY_RUN_ID",
+          "BAARALI_AGENT_ID",
+          "BAARALI_API_KEY",
+          "BAARALI_API_URL",
+          "BAARALI_COMPANY_ID",
+          "BAARALI_RUN_ID",
         ]),
       );
-      expect(invocationPrompt).toContain("Baaraly runtime note:");
-      expect(invocationPrompt).toContain("BAARALY_API_URL");
-      expect(invocationPrompt).toContain("Baaraly API access note:");
+      expect(invocationPrompt).toContain("Baarali runtime note:");
+      expect(invocationPrompt).toContain("BAARALI_API_URL");
+      expect(invocationPrompt).toContain("Baarali API access note:");
       expect(invocationPrompt).toContain("run_shell_command");
       expect(result.question).toBeNull();
     } finally {
@@ -128,7 +128,7 @@ describe("gemini execute", () => {
   });
 
   it("always passes --approval-mode yolo", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "baaraly-gemini-yolo-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "baarali-gemini-yolo-"));
     const workspace = path.join(root, "workspace");
     const commandPath = path.join(root, "gemini");
     const capturePath = path.join(root, "capture.json");
@@ -146,7 +146,7 @@ describe("gemini execute", () => {
         config: {
           command: commandPath,
           cwd: workspace,
-          env: { BAARALY_TEST_CAPTURE_PATH: capturePath },
+          env: { BAARALI_TEST_CAPTURE_PATH: capturePath },
         },
         context: {},
         authToken: "t",

@@ -128,7 +128,7 @@ function resolveSkillConflictStrategy(mode: ImportMode, collisionStrategy: Compa
 function classifyPortableFileKind(pathValue: string): CompanyPortabilityExportPreviewResult["fileInventory"][number]["kind"] {
   const normalized = normalizePortablePath(pathValue);
   if (normalized === "COMPANY.md") return "company";
-  if (normalized === ".baaraly.yaml" || normalized === ".baaraly.yml") return "extension";
+  if (normalized === ".baarali.yaml" || normalized === ".baarali.yml") return "extension";
   if (normalized === "README.md") return "readme";
   if (normalized.startsWith("agents/")) return "agent";
   if (normalized.startsWith("skills/")) return "skill";
@@ -152,15 +152,15 @@ function normalizeSkillKey(value: string | null | undefined) {
 
 function readSkillKey(frontmatter: Record<string, unknown>) {
   const metadata = isPlainRecord(frontmatter.metadata) ? frontmatter.metadata : null;
-  const baaraly = isPlainRecord(metadata?.baaraly) ? metadata?.baaraly as Record<string, unknown> : null;
+  const baarali = isPlainRecord(metadata?.baarali) ? metadata?.baarali as Record<string, unknown> : null;
   return normalizeSkillKey(
     asString(frontmatter.key)
     ?? asString(frontmatter.skillKey)
     ?? asString(metadata?.skillKey)
     ?? asString(metadata?.canonicalKey)
-    ?? asString(metadata?.baaralySkillKey)
-    ?? asString(baaraly?.skillKey)
-    ?? asString(baaraly?.key),
+    ?? asString(metadata?.baaraliSkillKey)
+    ?? asString(baarali?.skillKey)
+    ?? asString(baarali?.key),
   );
 }
 
@@ -180,8 +180,8 @@ function deriveManifestSkillKey(
   if ((sourceType === "github" || sourceType === "skills_sh" || sourceKind === "github" || sourceKind === "skills_sh") && owner && repo) {
     return `${owner}/${repo}/${slug}`;
   }
-  if (sourceKind === "baaraly_bundled") {
-    return `baaralyai/baaraly/${slug}`;
+  if (sourceKind === "baarali_bundled") {
+    return `baaraliai/baarali/${slug}`;
   }
   if (sourceType === "url" || sourceKind === "url") {
     try {
@@ -300,7 +300,7 @@ function deriveSkillExportDirCandidates(
     }
   };
 
-  if (sourceKind === "baaraly_bundled") {
+  if (sourceKind === "baarali_bundled") {
     pushSuffix("paperclip");
   }
 
@@ -400,7 +400,7 @@ type CompanyPackageIncludeEntry = {
   path: string;
 };
 
-type BaaralyExtensionDoc = {
+type BaaraliExtensionDoc = {
   schema?: string;
   company?: Record<string, unknown> | null;
   agents?: Record<string, Record<string, unknown>> | null;
@@ -932,11 +932,11 @@ function buildLegacyRoutineTriggerFromRecurrence(
   const frequency = asString(issue.legacyRecurrence.frequency);
   const interval = asInteger(issue.legacyRecurrence.interval) ?? 1;
   if (!frequency) {
-    errors.push(`Recurring task ${issue.slug} uses legacy recurrence without frequency; add .baaraly.yaml routines.${issue.slug}.triggers.`);
+    errors.push(`Recurring task ${issue.slug} uses legacy recurrence without frequency; add .baarali.yaml routines.${issue.slug}.triggers.`);
     return { trigger: null, warnings, errors };
   }
   if (interval < 1) {
-    errors.push(`Recurring task ${issue.slug} uses legacy recurrence with an invalid interval; add .baaraly.yaml routines.${issue.slug}.triggers.`);
+    errors.push(`Recurring task ${issue.slug} uses legacy recurrence with an invalid interval; add .baarali.yaml routines.${issue.slug}.triggers.`);
     return { trigger: null, warnings, errors };
   }
 
@@ -944,7 +944,7 @@ function buildLegacyRoutineTriggerFromRecurrence(
   const startsAt = asString(schedule?.startsAt);
   const zonedStartsAt = startsAt ? readZonedDateParts(startsAt, timezone) : null;
   if (startsAt && !zonedStartsAt) {
-    errors.push(`Recurring task ${issue.slug} has an invalid legacy startsAt/timezone combination; add .baaraly.yaml routines.${issue.slug}.triggers.`);
+    errors.push(`Recurring task ${issue.slug} has an invalid legacy startsAt/timezone combination; add .baarali.yaml routines.${issue.slug}.triggers.`);
     return { trigger: null, warnings, errors };
   }
 
@@ -952,12 +952,12 @@ function buildLegacyRoutineTriggerFromRecurrence(
   const hour = asInteger(time?.hour) ?? zonedStartsAt?.hour ?? 0;
   const minute = asInteger(time?.minute) ?? zonedStartsAt?.minute ?? 0;
   if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
-    errors.push(`Recurring task ${issue.slug} uses legacy recurrence with an invalid time; add .baaraly.yaml routines.${issue.slug}.triggers.`);
+    errors.push(`Recurring task ${issue.slug} uses legacy recurrence with an invalid time; add .baarali.yaml routines.${issue.slug}.triggers.`);
     return { trigger: null, warnings, errors };
   }
 
   if (issue.legacyRecurrence.until != null || issue.legacyRecurrence.count != null) {
-    warnings.push(`Recurring task ${issue.slug} uses legacy recurrence end bounds; Baaraly will import the routine trigger without those limits.`);
+    warnings.push(`Recurring task ${issue.slug} uses legacy recurrence end bounds; Baarali will import the routine trigger without those limits.`);
   }
 
   let cronExpression: string | null = null;
@@ -971,14 +971,14 @@ function buildLegacyRoutineTriggerFromRecurrence(
     cronExpression = `${minute} ${hourField} * * *`;
   } else if (frequency === "daily") {
     if (Array.isArray(issue.legacyRecurrence.weekdays) || Array.isArray(issue.legacyRecurrence.monthDays) || Array.isArray(issue.legacyRecurrence.months)) {
-      errors.push(`Recurring task ${issue.slug} uses unsupported legacy daily recurrence constraints; add .baaraly.yaml routines.${issue.slug}.triggers.`);
+      errors.push(`Recurring task ${issue.slug} uses unsupported legacy daily recurrence constraints; add .baarali.yaml routines.${issue.slug}.triggers.`);
       return { trigger: null, warnings, errors };
     }
     const dayField = interval === 1 ? "*" : `*/${interval}`;
     cronExpression = `${minute} ${hour} ${dayField} * *`;
   } else if (frequency === "weekly") {
     if (interval !== 1) {
-      errors.push(`Recurring task ${issue.slug} uses legacy weekly recurrence with interval > 1; add .baaraly.yaml routines.${issue.slug}.triggers.`);
+      errors.push(`Recurring task ${issue.slug} uses legacy weekly recurrence with interval > 1; add .baarali.yaml routines.${issue.slug}.triggers.`);
       return { trigger: null, warnings, errors };
     }
     const weekdays = Array.isArray(issue.legacyRecurrence.weekdays)
@@ -993,17 +993,17 @@ function buildLegacyRoutineTriggerFromRecurrence(
       cronWeekdays.push(zonedStartsAt.weekday);
     }
     if (cronWeekdays.length === 0) {
-      errors.push(`Recurring task ${issue.slug} uses legacy weekly recurrence without weekdays; add .baaraly.yaml routines.${issue.slug}.triggers.`);
+      errors.push(`Recurring task ${issue.slug} uses legacy weekly recurrence without weekdays; add .baarali.yaml routines.${issue.slug}.triggers.`);
       return { trigger: null, warnings, errors };
     }
     cronExpression = `${minute} ${hour} * * ${normalizeCronList(cronWeekdays)}`;
   } else if (frequency === "monthly") {
     if (interval !== 1) {
-      errors.push(`Recurring task ${issue.slug} uses legacy monthly recurrence with interval > 1; add .baaraly.yaml routines.${issue.slug}.triggers.`);
+      errors.push(`Recurring task ${issue.slug} uses legacy monthly recurrence with interval > 1; add .baarali.yaml routines.${issue.slug}.triggers.`);
       return { trigger: null, warnings, errors };
     }
     if (Array.isArray(issue.legacyRecurrence.ordinalWeekdays) && issue.legacyRecurrence.ordinalWeekdays.length > 0) {
-      errors.push(`Recurring task ${issue.slug} uses legacy ordinal monthly recurrence; add .baaraly.yaml routines.${issue.slug}.triggers.`);
+      errors.push(`Recurring task ${issue.slug} uses legacy ordinal monthly recurrence; add .baarali.yaml routines.${issue.slug}.triggers.`);
       return { trigger: null, warnings, errors };
     }
     const monthDays = Array.isArray(issue.legacyRecurrence.monthDays)
@@ -1015,7 +1015,7 @@ function buildLegacyRoutineTriggerFromRecurrence(
       monthDays.push(zonedStartsAt.day);
     }
     if (monthDays.length === 0) {
-      errors.push(`Recurring task ${issue.slug} uses legacy monthly recurrence without monthDays; add .baaraly.yaml routines.${issue.slug}.triggers.`);
+      errors.push(`Recurring task ${issue.slug} uses legacy monthly recurrence without monthDays; add .baarali.yaml routines.${issue.slug}.triggers.`);
       return { trigger: null, warnings, errors };
     }
     const months = Array.isArray(issue.legacyRecurrence.months)
@@ -1027,7 +1027,7 @@ function buildLegacyRoutineTriggerFromRecurrence(
     cronExpression = `${minute} ${hour} ${normalizeCronList(monthDays.map(String))} ${monthField} *`;
   } else if (frequency === "yearly") {
     if (interval !== 1) {
-      errors.push(`Recurring task ${issue.slug} uses legacy yearly recurrence with interval > 1; add .baaraly.yaml routines.${issue.slug}.triggers.`);
+      errors.push(`Recurring task ${issue.slug} uses legacy yearly recurrence with interval > 1; add .baarali.yaml routines.${issue.slug}.triggers.`);
       return { trigger: null, warnings, errors };
     }
     const months = Array.isArray(issue.legacyRecurrence.months)
@@ -1047,12 +1047,12 @@ function buildLegacyRoutineTriggerFromRecurrence(
       monthDays.push(zonedStartsAt.day);
     }
     if (months.length === 0 || monthDays.length === 0) {
-      errors.push(`Recurring task ${issue.slug} uses legacy yearly recurrence without month/monthDay anchors; add .baaraly.yaml routines.${issue.slug}.triggers.`);
+      errors.push(`Recurring task ${issue.slug} uses legacy yearly recurrence without month/monthDay anchors; add .baarali.yaml routines.${issue.slug}.triggers.`);
       return { trigger: null, warnings, errors };
     }
     cronExpression = `${minute} ${hour} ${normalizeCronList(monthDays.map(String))} ${normalizeCronList(months.map(String))} *`;
   } else {
-    errors.push(`Recurring task ${issue.slug} uses unsupported legacy recurrence frequency "${frequency}"; add .baaraly.yaml routines.${issue.slug}.triggers.`);
+    errors.push(`Recurring task ${issue.slug} uses unsupported legacy recurrence frequency "${frequency}"; add .baarali.yaml routines.${issue.slug}.triggers.`);
     return { trigger: null, warnings, errors };
   }
 
@@ -1446,10 +1446,10 @@ function filterExportFiles(
   return filtered;
 }
 
-function findBaaralyExtensionPath(files: Record<string, CompanyPortabilityFileEntry>) {
-  if (typeof files[".baaraly.yaml"] === "string") return ".baaraly.yaml";
-  if (typeof files[".baaraly.yml"] === "string") return ".baaraly.yml";
-  return Object.keys(files).find((entry) => entry.endsWith("/.baaraly.yaml") || entry.endsWith("/.baaraly.yml")) ?? null;
+function findBaaraliExtensionPath(files: Record<string, CompanyPortabilityFileEntry>) {
+  if (typeof files[".baarali.yaml"] === "string") return ".baarali.yaml";
+  if (typeof files[".baarali.yml"] === "string") return ".baarali.yml";
+  return Object.keys(files).find((entry) => entry.endsWith("/.baarali.yaml") || entry.endsWith("/.baarali.yml")) ?? null;
 }
 
 function ensureMarkdownPath(pathValue: string) {
@@ -1476,7 +1476,7 @@ function normalizePortableConfig(
       key === "instructionsEntryFile" ||
       key === "promptTemplate" ||
       key === "bootstrapPromptTemplate" || // deprecated — kept for backward compat
-      key === "baaralySkillSync"
+      key === "baaraliSkillSync"
     ) continue;
     if (key === "env") continue;
     next[key] = entry;
@@ -1861,15 +1861,15 @@ async function resolveBundledSkillsCommit() {
 
 async function buildSkillSourceEntry(skill: CompanySkill) {
   const metadata = isPlainRecord(skill.metadata) ? skill.metadata : null;
-  if (asString(metadata?.sourceKind) === "baaraly_bundled") {
+  if (asString(metadata?.sourceKind) === "baarali_bundled") {
     const commit = await resolveBundledSkillsCommit();
     return {
       kind: "github-dir",
-      repo: "baaralyai/baaraly",
+      repo: "baaraliai/baarali",
       path: `skills/${skill.slug}`,
       commit,
       trackingRef: "master",
-      url: `https://github.com/baaralyai/baaraly/tree/master/skills/${skill.slug}`,
+      url: `https://github.com/baaraliai/baarali/tree/master/skills/${skill.slug}`,
     };
   }
 
@@ -1901,7 +1901,7 @@ async function buildSkillSourceEntry(skill: CompanySkill) {
 function shouldReferenceSkillOnExport(skill: CompanySkill, expandReferencedSkills: boolean) {
   if (expandReferencedSkills) return false;
   const metadata = isPlainRecord(skill.metadata) ? skill.metadata : null;
-  if (asString(metadata?.sourceKind) === "baaraly_bundled") return true;
+  if (asString(metadata?.sourceKind) === "baarali_bundled") return true;
   return skill.sourceType === "github" || skill.sourceType === "skills_sh" || skill.sourceType === "url";
 }
 
@@ -1934,9 +1934,9 @@ async function withSkillSourceMetadata(skill: CompanySkill, markdown: string) {
     metadata.sources = [...existingSources, sourceEntry];
   }
   metadata.skillKey = skill.key;
-  metadata.baaralySkillKey = skill.key;
-  metadata.baaraly = {
-    ...(isPlainRecord(metadata.baaraly) ? metadata.baaraly : {}),
+  metadata.baaraliSkillKey = skill.key;
+  metadata.baarali = {
+    ...(isPlainRecord(metadata.baarali) ? metadata.baarali : {}),
     skillKey: skill.key,
     slug: skill.slug,
   };
@@ -2238,16 +2238,16 @@ function buildManifestFromPackageFiles(
   }
   const companyDoc = parseFrontmatterMarkdown(companyMarkdown);
   const companyFrontmatter = companyDoc.frontmatter;
-  const paperclipExtensionPath = findBaaralyExtensionPath(normalizedFiles);
-  const baaralyExtension = paperclipExtensionPath
+  const paperclipExtensionPath = findBaaraliExtensionPath(normalizedFiles);
+  const baaraliExtension = paperclipExtensionPath
     ? parseYamlFile(readPortableTextFile(normalizedFiles, paperclipExtensionPath) ?? "")
     : {};
-  const baaralyCompany = isPlainRecord(baaralyExtension.company) ? baaralyExtension.company : {};
-  const baaralySidebar = normalizePortableSidebarOrder(baaralyExtension.sidebar);
-  const baaralyAgents = isPlainRecord(baaralyExtension.agents) ? baaralyExtension.agents : {};
-  const baaralyProjects = isPlainRecord(baaralyExtension.projects) ? baaralyExtension.projects : {};
-  const baaralyTasks = isPlainRecord(baaralyExtension.tasks) ? baaralyExtension.tasks : {};
-  const baaralyRoutines = isPlainRecord(baaralyExtension.routines) ? baaralyExtension.routines : {};
+  const baaraliCompany = isPlainRecord(baaraliExtension.company) ? baaraliExtension.company : {};
+  const baaraliSidebar = normalizePortableSidebarOrder(baaraliExtension.sidebar);
+  const baaraliAgents = isPlainRecord(baaraliExtension.agents) ? baaraliExtension.agents : {};
+  const baaraliProjects = isPlainRecord(baaraliExtension.projects) ? baaraliExtension.projects : {};
+  const baaraliTasks = isPlainRecord(baaraliExtension.tasks) ? baaraliExtension.tasks : {};
+  const baaraliRoutines = isPlainRecord(baaraliExtension.routines) ? baaraliExtension.routines : {};
   const companyName =
     asString(companyFrontmatter.name)
     ?? opts?.sourceLabel?.companyName
@@ -2302,14 +2302,14 @@ function buildManifestFromPackageFiles(
       path: resolvedCompanyPath,
       name: companyName,
       description: asString(companyFrontmatter.description),
-      brandColor: asString(baaralyCompany.brandColor),
-      logoPath: asString(baaralyCompany.logoPath) ?? asString(baaralyCompany.logo),
+      brandColor: asString(baaraliCompany.brandColor),
+      logoPath: asString(baaraliCompany.logoPath) ?? asString(baaraliCompany.logo),
       requireBoardApprovalForNewAgents:
-        typeof baaralyCompany.requireBoardApprovalForNewAgents === "boolean"
-          ? baaralyCompany.requireBoardApprovalForNewAgents
+        typeof baaraliCompany.requireBoardApprovalForNewAgents === "boolean"
+          ? baaraliCompany.requireBoardApprovalForNewAgents
           : readCompanyApprovalDefault(companyFrontmatter),
     },
-    sidebar: baaralySidebar,
+    sidebar: baaraliSidebar,
     agents: [],
     skills: [],
     projects: [],
@@ -2331,7 +2331,7 @@ function buildManifestFromPackageFiles(
     const frontmatter = agentDoc.frontmatter;
     const fallbackSlug = normalizeAgentUrlKey(path.posix.basename(path.posix.dirname(agentPath))) ?? "agent";
     const slug = asString(frontmatter.slug) ?? fallbackSlug;
-    const extension = isPlainRecord(baaralyAgents[slug]) ? baaralyAgents[slug] : {};
+    const extension = isPlainRecord(baaraliAgents[slug]) ? baaraliAgents[slug] : {};
     const extensionAdapter = isPlainRecord(extension.adapter) ? extension.adapter : null;
     const extensionRuntime = isPlainRecord(extension.runtime) ? extension.runtime : null;
     const extensionPermissions = isPlainRecord(extension.permissions) ? extension.permissions : null;
@@ -2468,7 +2468,7 @@ function buildManifestFromPackageFiles(
       projectPath,
     );
     const slug = asString(frontmatter.slug) ?? fallbackSlug;
-    const extension = isPlainRecord(baaralyProjects[slug]) ? baaralyProjects[slug] : {};
+    const extension = isPlainRecord(baaraliProjects[slug]) ? baaraliProjects[slug] : {};
     const workspaceExtensions = isPlainRecord(extension.workspaces) ? extension.workspaces : {};
     const workspaces = Object.entries(workspaceExtensions)
       .map(([workspaceKey, entry]) => normalizePortableProjectWorkspaceExtension(workspaceKey, entry))
@@ -2504,9 +2504,9 @@ function buildManifestFromPackageFiles(
     const frontmatter = taskDoc.frontmatter;
     const fallbackSlug = normalizeAgentUrlKey(path.posix.basename(path.posix.dirname(taskPath))) ?? "task";
     const slug = asString(frontmatter.slug) ?? fallbackSlug;
-    const extension = isPlainRecord(baaralyTasks[slug]) ? baaralyTasks[slug] : {};
-    const routineExtension = normalizeRoutineExtension(baaralyRoutines[slug]);
-    const routineExtensionRaw = isPlainRecord(baaralyRoutines[slug]) ? baaralyRoutines[slug] : {};
+    const extension = isPlainRecord(baaraliTasks[slug]) ? baaraliTasks[slug] : {};
+    const routineExtension = normalizeRoutineExtension(baaraliRoutines[slug]);
+    const routineExtensionRaw = isPlainRecord(baaraliRoutines[slug]) ? baaraliRoutines[slug] : {};
     const schedule = isPlainRecord(frontmatter.schedule) ? frontmatter.schedule : null;
     const legacyRecurrence = schedule && isPlainRecord(schedule.recurrence)
       ? schedule.recurrence
@@ -2678,8 +2678,8 @@ export function companyPortabilityService(db: Db, storage?: StorageService) {
         return (
           relative.endsWith(".md") ||
           relative.startsWith("skills/") ||
-          relative === ".baaraly.yaml" ||
-          relative === ".baaraly.yml"
+          relative === ".baarali.yaml" ||
+          relative === ".baarali.yml"
         );
       });
     for (const repoPath of candidatePaths) {
@@ -2960,11 +2960,11 @@ export function companyPortabilityService(db: Db, storage?: StorageService) {
       }
     }
 
-    const baaralyAgentsOut: Record<string, Record<string, unknown>> = {};
-    const baaralyProjectsOut: Record<string, Record<string, unknown>> = {};
-    const baaralyTasksOut: Record<string, Record<string, unknown>> = {};
+    const baaraliAgentsOut: Record<string, Record<string, unknown>> = {};
+    const baaraliProjectsOut: Record<string, Record<string, unknown>> = {};
+    const baaraliTasksOut: Record<string, Record<string, unknown>> = {};
     const unportableTaskWorkspaceRefs = new Map<string, { workspaceId: string; taskSlugs: string[] }>();
-    const baaralyRoutinesOut: Record<string, Record<string, unknown>> = {};
+    const baaraliRoutinesOut: Record<string, Record<string, unknown>> = {};
 
     const skillByReference = new Map<string, typeof companySkillRows[number]>();
     for (const skill of companySkillRows) {
@@ -3090,7 +3090,7 @@ export function companyPortabilityService(db: Db, storage?: StorageService) {
             env: buildEnvInputMap(agentEnvInputs),
           };
         }
-        baaralyAgentsOut[slug] = isPlainRecord(extension) ? extension : {};
+        baaraliAgentsOut[slug] = isPlainRecord(extension) ? extension : {};
       }
     }
 
@@ -3120,7 +3120,7 @@ export function companyPortabilityService(db: Db, storage?: StorageService) {
         ) ?? undefined,
         workspaces: portableWorkspaces.extension,
       });
-      baaralyProjectsOut[slug] = isPlainRecord(extension) ? extension : {};
+      baaraliProjectsOut[slug] = isPlainRecord(extension) ? extension : {};
     }
 
     for (const issue of selectedIssueRows) {
@@ -3162,7 +3162,7 @@ export function companyPortabilityService(db: Db, storage?: StorageService) {
         executionWorkspaceSettings: issue.executionWorkspaceSettings ?? undefined,
         assigneeAdapterOverrides: issue.assigneeAdapterOverrides ?? undefined,
       });
-      baaralyTasksOut[taskSlug] = isPlainRecord(extension) ? extension : {};
+      baaraliTasksOut[taskSlug] = isPlainRecord(extension) ? extension : {};
     }
 
     for (const { workspaceId, taskSlugs } of unportableTaskWorkspaceRefs.values()) {
@@ -3202,35 +3202,35 @@ export function companyPortabilityService(db: Db, storage?: StorageService) {
             : undefined,
         })),
       });
-      baaralyRoutinesOut[taskSlug] = isPlainRecord(extension) ? extension : {};
+      baaraliRoutinesOut[taskSlug] = isPlainRecord(extension) ? extension : {};
     }
 
-    const paperclipExtensionPath = ".baaraly.yaml";
-    const baaralyAgents = Object.fromEntries(
-      Object.entries(baaralyAgentsOut).filter(([, value]) => isPlainRecord(value) && Object.keys(value).length > 0),
+    const paperclipExtensionPath = ".baarali.yaml";
+    const baaraliAgents = Object.fromEntries(
+      Object.entries(baaraliAgentsOut).filter(([, value]) => isPlainRecord(value) && Object.keys(value).length > 0),
     );
-    const baaralyProjects = Object.fromEntries(
-      Object.entries(baaralyProjectsOut).filter(([, value]) => isPlainRecord(value) && Object.keys(value).length > 0),
+    const baaraliProjects = Object.fromEntries(
+      Object.entries(baaraliProjectsOut).filter(([, value]) => isPlainRecord(value) && Object.keys(value).length > 0),
     );
-    const baaralyTasks = Object.fromEntries(
-      Object.entries(baaralyTasksOut).filter(([, value]) => isPlainRecord(value) && Object.keys(value).length > 0),
+    const baaraliTasks = Object.fromEntries(
+      Object.entries(baaraliTasksOut).filter(([, value]) => isPlainRecord(value) && Object.keys(value).length > 0),
     );
-    const baaralyRoutines = Object.fromEntries(
-      Object.entries(baaralyRoutinesOut).filter(([, value]) => isPlainRecord(value) && Object.keys(value).length > 0),
+    const baaraliRoutines = Object.fromEntries(
+      Object.entries(baaraliRoutinesOut).filter(([, value]) => isPlainRecord(value) && Object.keys(value).length > 0),
     );
     files[paperclipExtensionPath] = buildYamlFile(
       {
-        schema: "baaraly/v1",
+        schema: "baarali/v1",
         company: stripEmptyValues({
           brandColor: company.brandColor ?? null,
           logoPath: companyLogoPath,
           requireBoardApprovalForNewAgents: company.requireBoardApprovalForNewAgents ? undefined : false,
         }),
         sidebar: stripEmptyValues(sidebarOrder),
-        agents: Object.keys(baaralyAgents).length > 0 ? baaralyAgents : undefined,
-        projects: Object.keys(baaralyProjects).length > 0 ? baaralyProjects : undefined,
-        tasks: Object.keys(baaralyTasks).length > 0 ? baaralyTasks : undefined,
-        routines: Object.keys(baaralyRoutines).length > 0 ? baaralyRoutines : undefined,
+        agents: Object.keys(baaraliAgents).length > 0 ? baaraliAgents : undefined,
+        projects: Object.keys(baaraliProjects).length > 0 ? baaraliProjects : undefined,
+        tasks: Object.keys(baaraliTasks).length > 0 ? baaraliTasks : undefined,
+        routines: Object.keys(baaraliRoutines).length > 0 ? baaraliRoutines : undefined,
       },
       { preserveEmptyStrings: true },
     );

@@ -1,9 +1,9 @@
-// 30 agents Baaraly catégorisés — PME Afrique & Europe
+// 30 agents Baarali catégorisés — PME Afrique & Europe
 // Benewende Group SARL — infrastructure tech souveraine africaine
 
 export type AgentTier = 1 | 2 | 3;
 
-export interface BaaralyAgentDefinition {
+export interface BaaraliAgentDefinition {
   name: string;
   role: string;
   emoji: string;
@@ -39,7 +39,7 @@ export const AGENT_CATEGORIES: { id: AgentCategory; label: string; emoji: string
   { id: "juridique", label: "Juridique & Stratégie", emoji: "📋" },
 ];
 
-export const BAARALY_AGENTS: BaaralyAgentDefinition[] = [
+export const BAARALI_AGENTS: BaaraliAgentDefinition[] = [
   // ═══════════════════════════════════════════
   // 🔧 TECH & DÉVELOPPEMENT (6 agents)
   // ═══════════════════════════════════════════
@@ -930,7 +930,7 @@ Tu connais les tendances des réseaux sociaux en Afrique et en Europe.`,
 ];
 
 /** Credit cost per agent run in FCFA */
-export const BAARALY_CREDIT_CONFIG = {
+export const BAARALI_CREDIT_CONFIG = {
   creditsPerFcfa: 0.1,
   fcfaPerCredit: 10,
   standardRunCredits: 5,
@@ -940,7 +940,7 @@ export const BAARALY_CREDIT_CONFIG = {
 } as const;
 
 /** Recharge packs */
-export const BAARALY_RECHARGE_PACKS = [
+export const BAARALI_RECHARGE_PACKS = [
   { id: "starter", name: "Starter", fcfa: 1_000, credits: 100, badge: "Pour commencer", badgeColor: null },
   { id: "standard", name: "Standard", fcfa: 5_000, credits: 600, badge: "⭐ Populaire", badgeColor: "#0071E3" },
   { id: "pro", name: "Pro", fcfa: 10_000, credits: 1_400, badge: "Meilleure valeur", badgeColor: "#30D158" },
@@ -960,7 +960,7 @@ export interface PaymentProvider {
   enabled: boolean;
 }
 
-export const BAARALY_PAYMENT_PROVIDERS: PaymentProvider[] = [
+export const BAARALI_PAYMENT_PROVIDERS: PaymentProvider[] = [
   // Mobile Money — Afrique
   { id: "orange_money", name: "Orange Money", icon: "🟠", regions: ["sn", "ml", "ci", "bf", "ne", "bj", "tg", "cm", "gn"], types: ["mobile_money"], enabled: true },
   { id: "wave", name: "Wave", icon: "🌊", regions: ["sn", "ci", "ml", "bf", "ug"], types: ["mobile_money"], enabled: true },
@@ -980,8 +980,8 @@ export const BAARALY_PAYMENT_PROVIDERS: PaymentProvider[] = [
 
 /** Get available payment providers for a country */
 export function getPaymentProvidersForCountry(country?: string): PaymentProvider[] {
-  if (!country) return BAARALY_PAYMENT_PROVIDERS.filter((p) => p.enabled);
-  return BAARALY_PAYMENT_PROVIDERS.filter(
+  if (!country) return BAARALI_PAYMENT_PROVIDERS.filter((p) => p.enabled);
+  return BAARALI_PAYMENT_PROVIDERS.filter(
     (p) => p.enabled && (p.regions.includes("*") || p.regions.includes(country))
   );
 }
@@ -1066,11 +1066,11 @@ export interface BillingPlanDefinition {
   trialDays: number | null;
 }
 
-export const BAARALY_BILLING_PLANS: BillingPlanDefinition[] = [
+export const BAARALI_BILLING_PLANS: BillingPlanDefinition[] = [
   {
     id: "trial",
     name: "Essai gratuit",
-    description: "Découvre Baaraly pendant 7 jours",
+    description: "Découvre Baarali pendant 7 jours",
     priceEur: 0,
     maxAgents: 1,
     maxProspectsPerDay: 5,
@@ -1104,21 +1104,21 @@ export const BAARALY_BILLING_PLANS: BillingPlanDefinition[] = [
 
 /** Get billing plan by ID */
 export function getBillingPlan(id: BillingPlanId): BillingPlanDefinition {
-  return BAARALY_BILLING_PLANS.find((p) => p.id === id) ?? BAARALY_BILLING_PLANS[0];
+  return BAARALI_BILLING_PLANS.find((p) => p.id === id) ?? BAARALI_BILLING_PLANS[0];
 }
 
 /** Get agents available for a given plan */
-export function getAgentsForPlan(planId: BillingPlanId): BaaralyAgentDefinition[] {
+export function getAgentsForPlan(planId: BillingPlanId): BaaraliAgentDefinition[] {
   const plan = getBillingPlan(planId);
-  if (!plan.allowedTiers) return BAARALY_AGENTS;
-  return BAARALY_AGENTS.filter((a) => plan.allowedTiers!.includes(a.tier));
+  if (!plan.allowedTiers) return BAARALI_AGENTS;
+  return BAARALI_AGENTS.filter((a) => plan.allowedTiers!.includes(a.tier));
 }
 
 /** Get agents grouped by tier */
-export function getAgentsByTier(): Record<AgentTier, BaaralyAgentDefinition[]> {
+export function getAgentsByTier(): Record<AgentTier, BaaraliAgentDefinition[]> {
   return {
-    1: BAARALY_AGENTS.filter((a) => a.tier === 1),
-    2: BAARALY_AGENTS.filter((a) => a.tier === 2),
-    3: BAARALY_AGENTS.filter((a) => a.tier === 3),
+    1: BAARALI_AGENTS.filter((a) => a.tier === 1),
+    2: BAARALI_AGENTS.filter((a) => a.tier === 2),
+    3: BAARALI_AGENTS.filter((a) => a.tier === 3),
   };
 }

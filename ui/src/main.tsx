@@ -14,6 +14,7 @@ import { DialogProvider } from "./context/DialogContext";
 import { ToastProvider } from "./context/ToastContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { LanguageProvider } from "./context/LanguageContext";
+import { ModeProvider } from "./context/ModeContext";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { initPluginBridge } from "./plugins/bridge-init";
 import { PluginLauncherProvider } from "./plugins/launchers";
@@ -42,6 +43,7 @@ createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <LanguageProvider>
+        <ModeProvider>
         <BrowserRouter>
           <CompanyProvider>
             <ToastProvider>
@@ -63,6 +65,7 @@ createRoot(document.getElementById("root")!).render(
             </ToastProvider>
           </CompanyProvider>
         </BrowserRouter>
+        </ModeProvider>
         </LanguageProvider>
       </ThemeProvider>
     </QueryClientProvider>

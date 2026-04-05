@@ -12,46 +12,46 @@ function expandHomePrefix(value: string): string {
   return value;
 }
 
-export function resolveBaaralyHomeDir(): string {
-  const envHome = process.env.BAARALY_HOME?.trim();
+export function resolveBaaraliHomeDir(): string {
+  const envHome = process.env.BAARALI_HOME?.trim();
   if (envHome) return path.resolve(expandHomePrefix(envHome));
-  return path.resolve(os.homedir(), ".baaraly");
+  return path.resolve(os.homedir(), ".baarali");
 }
 
-export function resolveBaaralyInstanceId(): string {
-  const raw = process.env.BAARALY_INSTANCE_ID?.trim() || DEFAULT_INSTANCE_ID;
+export function resolveBaaraliInstanceId(): string {
+  const raw = process.env.BAARALI_INSTANCE_ID?.trim() || DEFAULT_INSTANCE_ID;
   if (!INSTANCE_ID_RE.test(raw)) {
-    throw new Error(`Invalid BAARALY_INSTANCE_ID '${raw}'.`);
+    throw new Error(`Invalid BAARALI_INSTANCE_ID '${raw}'.`);
   }
   return raw;
 }
 
-export function resolveBaaralyInstanceRoot(): string {
-  return path.resolve(resolveBaaralyHomeDir(), "instances", resolveBaaralyInstanceId());
+export function resolveBaaraliInstanceRoot(): string {
+  return path.resolve(resolveBaaraliHomeDir(), "instances", resolveBaaraliInstanceId());
 }
 
 export function resolveDefaultConfigPath(): string {
-  return path.resolve(resolveBaaralyInstanceRoot(), "config.json");
+  return path.resolve(resolveBaaraliInstanceRoot(), "config.json");
 }
 
 export function resolveDefaultEmbeddedPostgresDir(): string {
-  return path.resolve(resolveBaaralyInstanceRoot(), "db");
+  return path.resolve(resolveBaaraliInstanceRoot(), "db");
 }
 
 export function resolveDefaultLogsDir(): string {
-  return path.resolve(resolveBaaralyInstanceRoot(), "logs");
+  return path.resolve(resolveBaaraliInstanceRoot(), "logs");
 }
 
 export function resolveDefaultSecretsKeyFilePath(): string {
-  return path.resolve(resolveBaaralyInstanceRoot(), "secrets", "master.key");
+  return path.resolve(resolveBaaraliInstanceRoot(), "secrets", "master.key");
 }
 
 export function resolveDefaultStorageDir(): string {
-  return path.resolve(resolveBaaralyInstanceRoot(), "data", "storage");
+  return path.resolve(resolveBaaraliInstanceRoot(), "data", "storage");
 }
 
 export function resolveDefaultBackupDir(): string {
-  return path.resolve(resolveBaaralyInstanceRoot(), "data", "backups");
+  return path.resolve(resolveBaaraliInstanceRoot(), "data", "backups");
 }
 
 export function resolveDefaultAgentWorkspaceDir(agentId: string): string {
@@ -59,7 +59,7 @@ export function resolveDefaultAgentWorkspaceDir(agentId: string): string {
   if (!PATH_SEGMENT_RE.test(trimmed)) {
     throw new Error(`Invalid agent id for workspace path '${agentId}'.`);
   }
-  return path.resolve(resolveBaaralyInstanceRoot(), "workspaces", trimmed);
+  return path.resolve(resolveBaaraliInstanceRoot(), "workspaces", trimmed);
 }
 
 function sanitizeFriendlyPathSegment(value: string | null | undefined, fallback = "_default"): string {
@@ -82,7 +82,7 @@ export function resolveManagedProjectWorkspaceDir(input: {
     throw new Error("Managed project workspace path requires companyId and projectId.");
   }
   return path.resolve(
-    resolveBaaralyInstanceRoot(),
+    resolveBaaraliInstanceRoot(),
     "projects",
     sanitizeFriendlyPathSegment(companyId, "company"),
     sanitizeFriendlyPathSegment(projectId, "project"),

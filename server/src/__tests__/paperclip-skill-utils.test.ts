@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
-  listBaaralySkillEntries,
+  listBaaraliSkillEntries,
   removeMaintainerOnlySkillSymlinks,
 } from "@paperclipai/adapter-utils/server-utils";
 
@@ -11,7 +11,7 @@ async function makeTempDir(prefix: string): Promise<string> {
   return fs.mkdtemp(path.join(os.tmpdir(), prefix));
 }
 
-describe("baaraly skill utils", () => {
+describe("baarali skill utils", () => {
   const cleanupDirs = new Set<string>();
 
   afterEach(async () => {
@@ -20,7 +20,7 @@ describe("baaraly skill utils", () => {
   });
 
   it("lists runtime skills from ./skills without pulling in .agents/skills", async () => {
-    const root = await makeTempDir("baaraly-skill-roots-");
+    const root = await makeTempDir("baarali-skill-roots-");
     cleanupDirs.add(root);
 
     const moduleDir = path.join(root, "a", "b", "c", "d", "e");
@@ -28,15 +28,15 @@ describe("baaraly skill utils", () => {
     await fs.mkdir(path.join(root, "skills", "paperclip"), { recursive: true });
     await fs.mkdir(path.join(root, ".agents", "skills", "release"), { recursive: true });
 
-    const entries = await listBaaralySkillEntries(moduleDir);
+    const entries = await listBaaraliSkillEntries(moduleDir);
 
-    expect(entries.map((entry) => entry.key)).toEqual(["baaralyai/baaraly/baaraly"]);
+    expect(entries.map((entry) => entry.key)).toEqual(["baaraliai/baarali/baarali"]);
     expect(entries.map((entry) => entry.runtimeName)).toEqual(["paperclip"]);
     expect(entries[0]?.source).toBe(path.join(root, "skills", "paperclip"));
   });
 
   it("removes stale maintainer-only symlinks from a shared skills home", async () => {
-    const root = await makeTempDir("baaraly-skill-cleanup-");
+    const root = await makeTempDir("baarali-skill-cleanup-");
     cleanupDirs.add(root);
 
     const skillsHome = path.join(root, "skills-home");
