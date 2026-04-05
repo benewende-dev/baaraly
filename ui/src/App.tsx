@@ -6,6 +6,8 @@ import { useMode } from "./context/ModeContext";
 import { Layout } from "./components/Layout";
 import { SimpleLayout } from "./components/SimpleLayout";
 import { SimpleDashboard } from "./pages/SimpleDashboard";
+import { SimpleAgentsList } from "./pages/SimpleAgentsList";
+import { SimpleTemplates } from "./pages/SimpleTemplates";
 import { OnboardingWizard } from "./components/OnboardingWizard";
 import { authApi } from "./api/auth";
 import { healthApi } from "./api/health";
@@ -312,8 +314,8 @@ export function App() {
           <Route path="simple" element={<SimpleLayout />}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<SimpleDashboard />} />
-            <Route path="templates" element={<AgentTemplates />} />
-            <Route path="agents" element={<Agents />} />
+            <Route path="templates" element={<SimpleTemplates />} />
+            <Route path="agents" element={<SimpleAgentsList />} />
             <Route path="agents/:agentId" element={<AgentDetail />} />
             <Route path="agents/:agentId/:tab" element={<AgentDetail />} />
           </Route>
