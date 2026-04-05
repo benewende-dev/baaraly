@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, useRef } from "react";
+import { useCallback, useEffect, useMemo, useState, useRef, createContext, useContext } from "react";
 import { useParams, useNavigate, Link, Navigate, useBeforeUnload } from "@/lib/router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -97,6 +97,9 @@ import {
   arraysEqual,
   isReadOnlyUnmanagedSkillEntry,
 } from "../lib/agent-skills-state";
+
+/* ---- Route prefix context (allows SimpleAgentDetail to override) ---- */
+export const AgentRoutePrefixCtx = createContext("/agents");
 
 const runStatusIcons: Record<string, { icon: typeof CheckCircle2; color: string }> = {
   succeeded: { icon: CheckCircle2, color: "text-green-600 dark:text-green-400" },
@@ -541,6 +544,7 @@ export function AgentDetail() {
   const saveConfigActionRef = useRef<(() => void) | null>(null);
   const cancelConfigActionRef = useRef<(() => void) | null>(null);
   const { isMobile } = useSidebar();
+  const prefix = useContext(AgentRoutePrefixCtx);
   const routeAgentRef = agentId ?? "";
   const routeCompanyId = useMemo(() => {
     if (!companyPrefix) return null;
@@ -638,7 +642,7 @@ export function AgentDetail() {
     if (!agent) return;
     if (urlRunId) {
       if (routeAgentRef !== canonicalAgentRef) {
-        navigate(`/agents/${canonicalAgentRef}/runs/${urlRunId}`, { replace: true });
+        navigate(`${prefix}/${canonicalAgentRef}/runs/${urlRunId}`, { replace: true });
       }
       return;
     }
@@ -655,7 +659,7 @@ export function AgentDetail() {
                 ? "budget"
               : "dashboard";
     if (routeAgentRef !== canonicalAgentRef || urlTab !== canonicalTab) {
-      navigate(`/agents/${canonicalAgentRef}/${canonicalTab}`, { replace: true });
+      navigate(`${prefix}/${canonicalAgentRef}/${canonicalTab}`, { replace: true });
       return;
     }
   }, [agent, routeAgentRef, canonicalAgentRef, urlRunId, urlTab, activeView, navigate]);
@@ -688,7 +692,7 @@ export function AgentDetail() {
         }
       }
       if (action === "invoke" && data && typeof data === "object" && "id" in data) {
-        navigate(`/agents/${canonicalAgentRef}/runs/${(data as HeartbeatRun).id}`);
+        navigate(`${prefix}/${canonicalAgentRef}/runs/${(data as HeartbeatRun).id}`);
       }
     },
     onError: (err) => {
@@ -756,15 +760,15 @@ export function AgentDetail() {
 
   useEffect(() => {
     const crumbs: { label: string; href?: string }[] = [
-      { label: t("Agents"), href: "/agents" },
+      { label: t("Agents"), href: prefix },
     ];
     const agentName = agent?.name ?? routeAgentRef ?? "Agent";
     if (activeView === "dashboard" && !urlRunId) {
       crumbs.push({ label: agentName });
     } else {
-      crumbs.push({ label: agentName, href: `/agents/${canonicalAgentRef}/dashboard` });
+      crumbs.push({ label: agentName, href: `${prefix}/${canonicalAgentRef}/dashboard` });
       if (urlRunId) {
-        crumbs.push({ label: t("Ex\u00e9cutions"), href: `/agents/${canonicalAgentRef}/runs` });
+        crumbs.push({ label: t("Ex\u00e9cutions"), href: `${prefix}/${canonicalAgentRef}/runs` });
         crumbs.push({ label: `${t("Ex\u00e9cution")} ${urlRunId.slice(0, 8)}` });
       } else if (activeView === "instructions") {
         crumbs.push({ label: t("Instructions") });
@@ -800,7 +804,7 @@ export function AgentDetail() {
   if (error) return <p className="text-sm text-destructive">{error.message}</p>;
   if (!agent) return null;
   if (!urlRunId && !urlTab) {
-    return <Navigate to={`/agents/${canonicalAgentRef}/dashboard`} replace />;
+    return <Navigate to={`${prefix}/${canonicalAgentRef}/dashboard`} replace />;
   }
   const isPendingApproval = agent.status === "pending_approval";
   const showConfigActionBar = (activeView === "configuration" || activeView === "instructions") && (configDirty || configSaving);
@@ -849,7 +853,7 @@ export function AgentDetail() {
           <span className="hidden sm:inline"><StatusBadge status={agent.status} /></span>
           {mobileLiveRun && (
             <Link
-              to={`/agents/${canonicalAgentRef}/runs/${mobileLiveRun.id}`}
+              to={`${prefix}/${canonicalAgentRef}/runs/${mobileLiveRun.id}`}
               className="sm:hidden flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-500/10 hover:bg-blue-500/20 transition-colors no-underline"
             >
               <span className="relative flex h-2 w-2">
@@ -911,7 +915,7 @@ export function AgentDetail() {
       {!urlRunId && (
         <Tabs
           value={activeView}
-          onValueChange={(value) => navigate(`/agents/${canonicalAgentRef}/${value}`)}
+          onValueChange={(value) => navigate(`${prefix}/${canonicalAgentRef}/${value}`)}
         >
           <PageTabBar
             items={[
@@ -923,7 +927,7 @@ export function AgentDetail() {
               { value: "budget", label: t("Budget") },
             ]}
             value={activeView}
-            onValueChange={(value) => navigate(`/agents/${canonicalAgentRef}/${value}`)}
+            onValueChange={(value) => navigate(`${prefix}/${canonicalAgentRef}/${value}`)}
           />
         </Tabs>
       )}
@@ -1072,6 +1076,7 @@ function SummaryRow({ label, children }: { label: string; children: React.ReactN
 
 function LatestRunCard({ runs, agentId }: { runs: HeartbeatRun[]; agentId: string }) {
   const { t } = useLanguage();
+  const prefix = useContext(AgentRoutePrefixCtx);
   if (runs.length === 0) return null;
 
   const sorted = [...runs].sort(
@@ -1118,7 +1123,7 @@ function LatestRunCard({ runs, agentId }: { runs: HeartbeatRun[]; agentId: strin
           {isLive ? t("En cours") : t("Derni\u00e8re ex\u00e9cution")}
         </h3>
         <Link
-          to={`/agents/${agentId}/runs/${run.id}`}
+          to={`${prefix}/${agentId}/runs/${run.id}`}
           className="shrink-0 text-xs text-muted-foreground hover:text-foreground transition-colors no-underline"
         >
           {t("Voir d\u00e9tails")} &rarr;
@@ -1126,7 +1131,7 @@ function LatestRunCard({ runs, agentId }: { runs: HeartbeatRun[]; agentId: strin
       </div>
 
       <Link
-        to={`/agents/${agentId}/runs/${run.id}`}
+        to={`${prefix}/${agentId}/runs/${run.id}`}
         className={cn(
           "block border rounded-lg p-4 space-y-2 w-full no-underline transition-colors hover:bg-muted/50 cursor-pointer",
           isLive ? "border-cyan-500/30 shadow-[0_0_12px_rgba(6,182,212,0.08)]" : "border-border"
@@ -2769,6 +2774,7 @@ function AgentSkillsTab({
 /* ---- Runs Tab ---- */
 
 function RunListItem({ run, isSelected, agentId }: { run: HeartbeatRun; isSelected: boolean; agentId: string }) {
+  const prefix = useContext(AgentRoutePrefixCtx);
   const statusInfo = runStatusIcons[run.status] ?? { icon: Clock, color: "text-neutral-400" };
   const StatusIcon = statusInfo.icon;
   const metrics = runMetrics(run);
@@ -2778,7 +2784,7 @@ function RunListItem({ run, isSelected, agentId }: { run: HeartbeatRun; isSelect
 
   return (
     <Link
-      to={isSelected ? `/agents/${agentId}/runs` : `/agents/${agentId}/runs/${run.id}`}
+      to={isSelected ? `${prefix}/${agentId}/runs` : `${prefix}/${agentId}/runs/${run.id}`}
       className={cn(
         "flex flex-col gap-1 w-full px-3 py-2.5 text-left border-b border-border last:border-b-0 transition-colors no-underline text-inherit",
         isSelected ? "bg-accent/40" : "hover:bg-accent/20",
@@ -2833,6 +2839,7 @@ function RunsTab({
   adapterType: string;
 }) {
   const { isMobile } = useSidebar();
+  const prefix = useContext(AgentRoutePrefixCtx);
 
   if (runs.length === 0) {
     return <p className="text-sm text-muted-foreground">No runs yet.</p>;
@@ -2853,7 +2860,7 @@ function RunsTab({
       return (
         <div className="space-y-3 min-w-0 overflow-x-hidden">
           <Link
-            to={`/agents/${agentRouteId}/runs`}
+            to={`${prefix}/${agentRouteId}/runs`}
             className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors no-underline"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
@@ -2902,6 +2909,7 @@ function RunsTab({
 function RunDetail({ run: initialRun, agentRouteId, adapterType }: { run: HeartbeatRun; agentRouteId: string; adapterType: string }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const prefix = useContext(AgentRoutePrefixCtx);
   const { data: hydratedRun } = useQuery({
     queryKey: queryKeys.runDetail(initialRun.id),
     queryFn: () => heartbeatsApi.get(initialRun.id),
@@ -2954,7 +2962,7 @@ function RunDetail({ run: initialRun, agentRouteId, adapterType }: { run: Heartb
     },
     onSuccess: (resumedRun) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.heartbeats(run.companyId, run.agentId) });
-      navigate(`/agents/${agentRouteId}/runs/${resumedRun.id}`);
+      navigate(`${prefix}/${agentRouteId}/runs/${resumedRun.id}`);
     },
   });
 
@@ -2986,7 +2994,7 @@ function RunDetail({ run: initialRun, agentRouteId, adapterType }: { run: Heartb
     },
     onSuccess: (newRun) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.heartbeats(run.companyId, run.agentId) });
-      navigate(`/agents/${agentRouteId}/runs/${newRun.id}`);
+      navigate(`${prefix}/${agentRouteId}/runs/${newRun.id}`);
     },
   });
 

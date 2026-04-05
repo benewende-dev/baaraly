@@ -15,6 +15,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { Companies } from "./pages/Companies";
 import { Agents } from "./pages/Agents";
 import { AgentDetail } from "./pages/AgentDetail";
+import { SimpleAgentDetail } from "./pages/SimpleAgentDetail";
 import { Projects } from "./pages/Projects";
 import { ProjectDetail } from "./pages/ProjectDetail";
 import { Issues } from "./pages/Issues";
@@ -316,8 +317,9 @@ export function App() {
             <Route path="dashboard" element={<SimpleDashboard />} />
             <Route path="templates" element={<SimpleTemplates />} />
             <Route path="agents" element={<SimpleAgentsList />} />
-            <Route path="agents/:agentId" element={<AgentDetail />} />
-            <Route path="agents/:agentId/:tab" element={<AgentDetail />} />
+            <Route path="agents/:agentId" element={<SimpleAgentDetail />} />
+            <Route path="agents/:agentId/:tab" element={<SimpleAgentDetail />} />
+            <Route path="agents/:agentId/runs/:runId" element={<SimpleAgentDetail />} />
           </Route>
           <Route path="welcome" element={<BaaraliOnboarding />} />
           <Route path="onboarding" element={<OnboardingRoutePage />} />
