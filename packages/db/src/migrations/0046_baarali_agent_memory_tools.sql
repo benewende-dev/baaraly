@@ -1,4 +1,4 @@
--- Baarali Phase 2 — Tables agents autonomes
+-- Baaraly Phase 2 — Tables agents autonomes
 -- AgentMemory : mémoire persistante court/long terme des agents
 CREATE TABLE "agent_memory" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
