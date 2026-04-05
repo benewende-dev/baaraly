@@ -6,6 +6,7 @@ import { useMode } from "./context/ModeContext";
 import { Layout } from "./components/Layout";
 import { SimpleLayout } from "./components/SimpleLayout";
 import { SimpleDashboard } from "./pages/SimpleDashboard";
+import { ModeRouter } from "./components/ModeRouter";
 import { OnboardingWizard } from "./components/OnboardingWizard";
 import { authApi } from "./api/auth";
 import { healthApi } from "./api/health";
@@ -309,8 +310,9 @@ export function App() {
         <Route element={<CloudAccessGate />}>
           <Route index element={<CompanyRootRedirect />} />
           <Route path="simple" element={<SimpleLayout />}>
-            <Route path="dashboard" element={<SimpleDashboard />} />
             <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard" element={<SimpleDashboard />} />
+            <Route path="templates" element={<AgentTemplates />} />
           </Route>
           <Route path="welcome" element={<BaaraliOnboarding />} />
           <Route path="onboarding" element={<OnboardingRoutePage />} />
@@ -343,7 +345,7 @@ export function App() {
           <Route path="projects/:projectId/issues/:filter" element={<UnprefixedBoardRedirect />} />
           <Route path="projects/:projectId/configuration" element={<UnprefixedBoardRedirect />} />
           <Route path="tests/ux/runs" element={<UnprefixedBoardRedirect />} />
-          <Route path=":companyPrefix" element={<Layout />}>
+          <Route path=":companyPrefix" element={<ModeRouter />}>
             {boardRoutes()}
           </Route>
           <Route path="*" element={<NotFoundPage scope="global" />} />

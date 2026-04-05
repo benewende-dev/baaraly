@@ -138,6 +138,23 @@ export function SimpleDashboard() {
           </div>
         </section>
       )}
+
+      {/* Templates */}
+      <section className="rounded-2xl border border-border bg-card p-6 flex items-center justify-between gap-4">
+        <div>
+          <h2 className="text-base font-semibold">{t("Templates d'agents")}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {t("Démarre rapidement avec un agent pré-configuré pour ton activité")}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => navigate("/simple/templates")}
+          className="shrink-0 rounded-xl border border-[#0071E3]/30 px-4 py-2 text-sm font-semibold text-[#0071E3] transition-all hover:bg-[#0071E3]/5"
+        >
+          {t("Explorer les templates")} →
+        </button>
+      </section>
     </div>
   );
 }
