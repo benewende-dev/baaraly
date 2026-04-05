@@ -91,10 +91,10 @@ export function Landing() {
                 ⚡ {t("Mode Simple")} — {t("Solo / TPE")} →
               </button>
               <button
-                onClick={() => { setMode("pro"); navigate("/welcome"); }}
+                onClick={() => { setMode("advanced"); navigate("/welcome"); }}
                 className="rounded-2xl px-7 py-4 text-sm font-bold border-2 border-[#5E5CE6] text-[#5E5CE6] transition-all hover:bg-[#5E5CE6]/5 hover:-translate-y-1 active:scale-[0.98]"
               >
-                🚀 {t("Mode Pro")} — {t("PME complète")} →
+                🚀 {t("Mode Avancé")} — {t("PME complète")} →
               </button>
             </div>
             <p className="text-xs text-muted-foreground mt-4">
@@ -297,7 +297,7 @@ export function Landing() {
         <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
           {[
             { name: "Essai Gratuit", price: "0 FCFA", sub: "7 jours", color: "#30D158", features: ["1 agent Standard", "WhatsApp inclus", "Dashboard basique"], cta: t("Commencer gratuitement") },
-            { name: "Pro", price: "30 000 FCFA", sub: "/mois · ~1 000 FCFA/jour", color: "#0071E3", popular: true, features: ["10 agents (Standard + Avancé)", "Multi WhatsApp", "Rapports avancés"], cta: t("Choisir Pro") },
+            { name: "Avancé", price: "30 000 FCFA", sub: "/mois · ~1 000 FCFA/jour", color: "#0071E3", popular: true, features: ["10 agents (Standard + Avancé)", "Multi WhatsApp", "Rapports avancés"], cta: t("Choisir Avancé") },
             { name: "Max", price: "95 000 FCFA", sub: "/mois · Pour les entreprises", color: "#BF5AF2", features: ["Tous les agents", "API access", "Support dédié"], cta: t("Choisir Max") },
           ].map((plan, i) => (
             <div

@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from "react";
 
-export type AppMode = "simple" | "pro";
+export type AppMode = "simple" | "advanced";
 
 const MODE_KEY = "baarali.mode";
 
@@ -15,7 +15,7 @@ interface ModeContextValue {
   mode: AppMode;
   setMode: (mode: AppMode) => void;
   isSimple: boolean;
-  isPro: boolean;
+  isAdvanced: boolean;
 }
 
 const ModeContext = createContext<ModeContextValue | undefined>(undefined);
@@ -23,7 +23,7 @@ const ModeContext = createContext<ModeContextValue | undefined>(undefined);
 function readStoredMode(): AppMode {
   try {
     const stored = localStorage.getItem(MODE_KEY);
-    if (stored === "simple" || stored === "pro") return stored;
+    if (stored === "simple" || stored === "advanced") return stored;
   } catch {
     // ignore
   }
@@ -47,7 +47,7 @@ export function ModeProvider({ children }: { children: ReactNode }) {
       mode,
       setMode,
       isSimple: mode === "simple",
-      isPro: mode === "pro",
+      isAdvanced: mode === "advanced",
     }),
     [mode, setMode],
   );

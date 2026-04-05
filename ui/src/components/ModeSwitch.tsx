@@ -9,7 +9,7 @@ export function ModeSwitch() {
   const { selectedCompany } = useCompany();
   const navigate = useNavigate();
 
-  function switchTo(next: "simple" | "pro") {
+  function switchTo(next: "simple" | "advanced") {
     if (next === mode) return;
     setMode(next);
     if (next === "simple") {
@@ -35,14 +35,14 @@ export function ModeSwitch() {
       </button>
       <button
         type="button"
-        onClick={() => switchTo("pro")}
+        onClick={() => switchTo("advanced")}
         className={`rounded-full px-3 py-1 text-xs font-semibold transition-all ${
-          mode === "pro"
+          mode === "advanced"
             ? "bg-primary text-primary-foreground shadow-sm"
             : "text-muted-foreground hover:text-foreground"
         }`}
       >
-        Pro
+        {t("Avancé")}
       </button>
     </div>
   );

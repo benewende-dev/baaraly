@@ -4,6 +4,6 @@ import { SimpleLayout } from "./SimpleLayout";
 
 /** Sélectionne le layout en fonction du mode courant. */
 export function ModeRouter() {
-  const { isSimple } = useMode();
-  return isSimple ? <SimpleLayout /> : <Layout />;
+  const { isAdvanced } = useMode();
+  return isAdvanced ? <Layout /> : <SimpleLayout />;
 }

@@ -2,43 +2,39 @@ import { Link, Outlet, useLocation } from "@/lib/router";
 import { ModeSwitch } from "./ModeSwitch";
 import { useTheme } from "../context/ThemeContext";
 import { useLanguage } from "../context/LanguageContext";
-import { useCompany } from "../context/CompanyContext";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ToastViewport } from "./ToastViewport";
 import { cn } from "../lib/utils";
 
+const NAV_LINKS = [
+  { labelKey: "Accueil", to: "/simple/dashboard" },
+  { labelKey: "Agents",  to: "/simple/agents" },
+  { labelKey: "Templates", to: "/simple/templates" },
+] as const;
+
 export function SimpleLayout() {
   const { theme, toggleTheme } = useTheme();
   const { t, language, setLanguage } = useLanguage();
-  const { selectedCompany } = useCompany();
   const location = useLocation();
   const nextThemeLabel = theme === "dark" ? t("Switch to light mode") : t("Switch to dark mode");
-
-  const prefix = selectedCompany?.issuePrefix ?? "";
-
-  const navLinks = [
-    { label: t("Accueil"), to: prefix ? `/${prefix}/dashboard` : "/simple/dashboard" },
-    { label: t("Agents"), to: prefix ? `/${prefix}/agents/all` : "/simple/dashboard" },
-    { label: t("Templates"), to: "/simple/templates" },
-  ];
 
   return (
     <div className="min-h-dvh bg-background text-foreground flex flex-col">
       {/* Top nav */}
       <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+
           {/* Logo + nav */}
-          <div className="flex items-center gap-6">
-            <Link to={prefix ? `/${prefix}/dashboard` : "/simple/dashboard"} className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-5">
+            <Link to="/simple/dashboard" className="flex items-center gap-2 shrink-0">
               <img src="/baarali-logo.svg" alt="Baarali" className="h-8 w-8" />
-              <span className="text-base font-extrabold tracking-tight hidden sm:inline">Baarali</span>
+              <span className="hidden sm:inline text-base font-extrabold tracking-tight">Baarali</span>
             </Link>
 
-            <nav className="flex items-center gap-1">
-              {navLinks.map((link) => {
-                const active = location.pathname === link.to ||
-                  (link.to.includes("/agents") && location.pathname.includes("/agents"));
+            <nav className="flex items-center gap-0.5">
+              {NAV_LINKS.map((link) => {
+                const active = location.pathname.startsWith(link.to);
                 return (
                   <Link
                     key={link.to}
@@ -50,7 +46,7 @@ export function SimpleLayout() {
                         : "text-muted-foreground hover:bg-muted hover:text-foreground",
                     )}
                   >
-                    {link.label}
+                    {t(link.labelKey)}
                   </Link>
                 );
               })}

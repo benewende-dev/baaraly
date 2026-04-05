@@ -6,7 +6,6 @@ import { queryKeys } from "../lib/queryKeys";
 import { agentsApi } from "../api/agents";
 import { CreditBalance } from "../components/CreditBalance";
 import { StatusBadge } from "../components/StatusBadge";
-import { agentUrl } from "../lib/utils";
 import { Zap, Users, Bot } from "lucide-react";
 import type { Agent } from "@paperclipai/shared";
 
@@ -24,7 +23,6 @@ export function SimpleDashboard() {
   const agents: Agent[] = agentsQuery.data ?? [];
   const activeAgents = agents.filter((a) => a.status === "active");
   const runningAgents = agents.filter((a) => a.status === "running");
-  const prefix = selectedCompany?.issuePrefix ?? "";
 
   return (
     <div className="space-y-8">
@@ -37,41 +35,24 @@ export function SimpleDashboard() {
         {selectedCompany && <CreditBalance companyId={selectedCompany.id} compact />}
       </div>
 
-      {/* Stats row */}
+      {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <StatCard
-          icon={<Users className="h-5 w-5 text-[#0071E3]" />}
-          label={t("Agents actifs")}
-          value={activeAgents.length}
-          bg="bg-[#0071E3]/10"
-        />
-        <StatCard
-          icon={<Zap className="h-5 w-5 text-[#5E5CE6]" />}
-          label={t("En cours")}
-          value={runningAgents.length}
-          bg="bg-[#5E5CE6]/10"
-        />
-        <StatCard
-          icon={<Bot className="h-5 w-5 text-[#30D158]" />}
-          label={t("Total agents")}
-          value={agents.length}
-          bg="bg-[#30D158]/10"
-        />
+        <StatCard icon={<Users className="h-5 w-5 text-[#0071E3]" />} label={t("Agents actifs")} value={activeAgents.length} bg="bg-[#0071E3]/10" />
+        <StatCard icon={<Zap className="h-5 w-5 text-[#5E5CE6]" />} label={t("En cours")} value={runningAgents.length} bg="bg-[#5E5CE6]/10" />
+        <StatCard icon={<Bot className="h-5 w-5 text-[#30D158]" />} label={t("Total")} value={agents.length} bg="bg-[#30D158]/10" />
       </div>
 
       {/* Agents grid */}
       <section>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-base font-semibold">{t("Mes agents")}</h2>
-          {prefix && (
-            <button
-              type="button"
-              onClick={() => navigate(`/${prefix}/agents/all`)}
-              className="text-xs font-medium text-[#0071E3] hover:underline"
-            >
-              {t("Voir tout")} →
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => navigate("/simple/agents")}
+            className="text-xs font-medium text-[#0071E3] hover:underline"
+          >
+            {t("Voir tout")} →
+          </button>
         </div>
 
         {agentsQuery.isLoading ? (
@@ -82,16 +63,14 @@ export function SimpleDashboard() {
           </div>
         ) : agents.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border p-8 text-center">
-            <p className="text-sm text-muted-foreground">{t("Aucun agent. Crée ton premier agent.")}</p>
-            {prefix && (
-              <button
-                type="button"
-                onClick={() => navigate(`/${prefix}/agents/new`)}
-                className="mt-4 rounded-xl bg-[#0071E3] px-5 py-2 text-sm font-semibold text-white hover:bg-[#0071E3]/90"
-              >
-                {t("Créer un agent")}
-              </button>
-            )}
+            <p className="text-sm text-muted-foreground">{t("Aucun agent. Commence avec un template.")}</p>
+            <button
+              type="button"
+              onClick={() => navigate("/simple/templates")}
+              className="mt-4 rounded-xl bg-[#0071E3] px-5 py-2 text-sm font-semibold text-white hover:bg-[#0071E3]/90"
+            >
+              {t("Explorer les templates")}
+            </button>
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -99,7 +78,7 @@ export function SimpleDashboard() {
               <button
                 key={agent.id}
                 type="button"
-                onClick={() => navigate(agentUrl(agent))}
+                onClick={() => navigate(`/simple/agents/${agent.urlKey ?? agent.id}`)}
                 className="group rounded-2xl border border-border bg-card p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md"
               >
                 <div className="mb-2 flex items-center justify-between">
@@ -116,7 +95,7 @@ export function SimpleDashboard() {
         )}
       </section>
 
-      {/* Quick chat CTA */}
+      {/* Quick chat */}
       {activeAgents.length > 0 && (
         <section className="rounded-2xl bg-gradient-to-r from-[#0071E3]/10 to-[#5E5CE6]/10 p-6">
           <h2 className="mb-1 text-base font-semibold">{t("Parler à un agent")}</h2>
@@ -128,7 +107,7 @@ export function SimpleDashboard() {
               <button
                 key={agent.id}
                 type="button"
-                onClick={() => navigate(agentUrl(agent))}
+                onClick={() => navigate(`/simple/agents/${agent.urlKey ?? agent.id}`)}
                 className="flex items-center gap-1.5 rounded-full border border-[#0071E3]/30 bg-white px-3 py-1.5 text-xs font-semibold text-[#0071E3] transition-all hover:bg-[#0071E3]/5 dark:bg-[#1c1c1e]"
               >
                 <span>{agent.icon ?? "🤖"}</span>
@@ -144,7 +123,7 @@ export function SimpleDashboard() {
         <div>
           <h2 className="text-base font-semibold">{t("Templates d'agents")}</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            {t("Démarre rapidement avec un agent pré-configuré pour ton activité")}
+            {t("Démarre rapidement avec un agent pré-configuré")}
           </p>
         </div>
         <button
@@ -152,24 +131,14 @@ export function SimpleDashboard() {
           onClick={() => navigate("/simple/templates")}
           className="shrink-0 rounded-xl border border-[#0071E3]/30 px-4 py-2 text-sm font-semibold text-[#0071E3] transition-all hover:bg-[#0071E3]/5"
         >
-          {t("Explorer les templates")} →
+          {t("Explorer")} →
         </button>
       </section>
     </div>
   );
 }
 
-function StatCard({
-  icon,
-  label,
-  value,
-  bg,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: number;
-  bg: string;
-}) {
+function StatCard({ icon, label, value, bg }: { icon: React.ReactNode; label: string; value: number; bg: string }) {
   return (
     <div className="rounded-2xl border border-border bg-card p-4">
       <div className={`mb-3 inline-flex rounded-xl p-2 ${bg}`}>{icon}</div>
